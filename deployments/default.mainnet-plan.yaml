@@ -9,45 +9,38 @@ plan:
     - id: 0
       transactions:
         - contract-publish:
-            contract-name: stacksusu-admin-v2
+            contract-name: stacksusu-admin-v3
             expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
-            cost: 733486
-            path: contracts/stacksusu-admin-v2.clar
+            cost: 50000
+            path: contracts/stacksusu-admin-v3.clar
             anchor-block-only: true
-            clarity-version: 1
+            clarity-version: 2
         - contract-publish:
-            contract-name: stacksusu-escrow-v2
+            contract-name: stacksusu-escrow-v3
             expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
-            cost: 733875
-            path: contracts/stacksusu-escrow-v2.clar
+            cost: 70000
+            path: contracts/stacksusu-escrow-v3.clar
             anchor-block-only: true
-            clarity-version: 1
+            clarity-version: 2
         - contract-publish:
-            contract-name: stacksusu-core-v2
+            contract-name: stacksusu-core-v3
             expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
-            cost: 734565
-            path: contracts/stacksusu-core-v2.clar
+            cost: 100000
+            path: contracts/stacksusu-core-v3.clar
             anchor-block-only: true
-            clarity-version: 1
+            clarity-version: 2
         - contract-publish:
-            contract-name: stacksusu-emergency-v2
+            contract-name: stacksusu-emergency-v3
             expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
-            cost: 733666
-            path: contracts/stacksusu-emergency-v2.clar
+            cost: 60000
+            path: contracts/stacksusu-emergency-v3.clar
             anchor-block-only: true
-            clarity-version: 1
+            clarity-version: 2
         - contract-publish:
-            contract-name: stacksusu-nft-v2
+            contract-name: stacksusu-nft-v3
             expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
-            cost: 733905
-            path: contracts/stacksusu-nft-v2.clar
+            cost: 70000
+            path: contracts/stacksusu-nft-v3.clar
             anchor-block-only: true
-            clarity-version: 1
-        - contract-publish:
-            contract-name: stacksusu-traits-v2
-            expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
-            cost: 733126
-            path: contracts/stacksusu-traits-v2.clar
-            anchor-block-only: true
-            clarity-version: 1
-      epoch: "2.05"
+            clarity-version: 2
+      epoch: "3.3"

@@ -1,14 +1,5 @@
-;; StackSUSU Membership NFT Contract
-;; SIP-009 compliant NFT representing circle membership slots
-;; Enables trading of payout positions
-
-;; ==============================================
-;; CONSTANTS
-;; ==============================================
-
 (define-constant CONTRACT-OWNER tx-sender)
 
-;; Errors
 (define-constant ERR-NOT-AUTHORIZED (err u1000))
 (define-constant ERR-NOT-FOUND (err u1001))
 (define-constant ERR-ALREADY-MINTED (err u1002))
@@ -21,18 +12,10 @@
 (define-constant ERR-PAUSED (err u1021))
 (define-constant ERR-TRANSFER-FAILED (err u1017))
 
-;; ==============================================
-;; NFT DEFINITION
-;; ==============================================
-
 (define-non-fungible-token stacksusu-slot uint)
 
 (define-data-var token-id-counter uint u0)
 (define-data-var base-uri (string-ascii 256) "https://api.stacksusu.xyz/metadata/")
-
-;; ==============================================
-;; DATA MAPS
-;; ==============================================
 
 (define-map token-metadata
   uint
@@ -57,9 +40,6 @@
 (define-map circle-trading-enabled uint bool)
 (define-map authorized-minters principal bool)
 
-;; ==============================================
-;; AUTHORIZATION
-;; ==============================================
 
 (define-read-only (is-authorized-minter (caller principal))
   (or (is-eq caller CONTRACT-OWNER) (default-to false (map-get? authorized-minters caller)))
@@ -79,9 +59,6 @@
   )
 )
 
-;; ==============================================
-;; SIP-009 FUNCTIONS
-;; ==============================================
 
 (define-read-only (get-last-token-id)
   (ok (var-get token-id-counter))
@@ -102,23 +79,20 @@
       (circle-id (get circle-id token-info))
       (slot (get slot token-info))
     )
-    (asserts! (not (contract-call? .stacksusu-admin-v2 is-paused)) ERR-PAUSED)
+    (asserts! (not (contract-call? .stacksusu-admin-v3 is-paused)) ERR-PAUSED)
     (asserts! (is-eq tx-sender sender) ERR-NOT-AUTHORIZED)
     (asserts! (not (is-eq sender recipient)) ERR-SELF-TRANSFER)
     (asserts! (is-trading-enabled circle-id) ERR-CIRCLE-NOT-TRADEABLE)
     (asserts! (is-eq (some sender) (nft-get-owner? stacksusu-slot token-id)) ERR-NOT-OWNER)
     
     (try! (nft-transfer? stacksusu-slot token-id sender recipient))
-    (try! (contract-call? .stacksusu-core-v2 update-slot-holder circle-id slot recipient))
+    (try! (contract-call? .stacksusu-core-v3 update-slot-holder circle-id slot recipient))
     (map-set slot-holder { circle-id: circle-id, slot: slot } recipient)
     (map-delete listings token-id)
     (ok true)
   )
 )
 
-;; ==============================================
-;; MINTING
-;; ==============================================
 
 (define-public (mint-slot-nft (circle-id uint) (slot uint) (member principal))
   (let ((token-id (+ (var-get token-id-counter) u1)))
@@ -137,9 +111,6 @@
   )
 )
 
-;; ==============================================
-;; MARKETPLACE
-;; ==============================================
 
 (define-public (list-for-sale (token-id uint) (price uint))
   (let
@@ -182,7 +153,7 @@
       success
         (begin
           (try! (nft-transfer? stacksusu-slot token-id seller buyer))
-          (try! (contract-call? .stacksusu-core-v2 update-slot-holder circle-id slot buyer))
+          (try! (contract-call? .stacksusu-core-v3 update-slot-holder circle-id slot buyer))
           (map-set slot-holder { circle-id: circle-id, slot: slot } buyer)
           (map-delete listings token-id)
           (ok price)
@@ -192,14 +163,11 @@
   )
 )
 
-;; ==============================================
-;; CIRCLE TRADING SETTINGS
-;; ==============================================
 
 (define-public (set-circle-trading (circle-id uint) (enabled bool))
   (let
     (
-      (circle-info (unwrap! (contract-call? .stacksusu-core-v2 get-circle-info circle-id) ERR-NOT-FOUND))
+      (circle-info (unwrap! (contract-call? .stacksusu-core-v3 get-circle-info circle-id) ERR-NOT-FOUND))
       (circle (unwrap! circle-info ERR-NOT-FOUND))
     )
     (asserts! (is-eq tx-sender (get creator circle)) ERR-NOT-AUTHORIZED)
@@ -211,9 +179,6 @@
   (default-to true (map-get? circle-trading-enabled circle-id))
 )
 
-;; ==============================================
-;; READ FUNCTIONS
-;; ==============================================
 
 (define-read-only (get-token-info (token-id uint))
   (ok (map-get? token-metadata token-id))

@@ -8,25 +8,25 @@ cache_dir = "./.cache"
 [contracts.stacksusu-traits-v2]
 path = "contracts/stacksusu-traits-v2.clar"
 
-[contracts.stacksusu-admin-v2]
-path = "contracts/stacksusu-admin-v2.clar"
+[contracts.stacksusu-admin-v3]
+path = "contracts/stacksusu-admin-v3.clar"
 depends_on = ["stacksusu-traits-v2"]
 
-[contracts.stacksusu-escrow-v2]
-path = "contracts/stacksusu-escrow-v2.clar"
-depends_on = ["stacksusu-traits-v2", "stacksusu-admin-v2"]
+[contracts.stacksusu-escrow-v3]
+path = "contracts/stacksusu-escrow-v3.clar"
+depends_on = ["stacksusu-traits-v2", "stacksusu-admin-v3"]
 
-[contracts.stacksusu-core-v2]
-path = "contracts/stacksusu-core-v2.clar"
-depends_on = ["stacksusu-traits-v2", "stacksusu-admin-v2", "stacksusu-escrow-v2"]
+[contracts.stacksusu-core-v3]
+path = "contracts/stacksusu-core-v3.clar"
+depends_on = ["stacksusu-traits-v2", "stacksusu-admin-v3", "stacksusu-escrow-v3"]
 
-[contracts.stacksusu-nft-v2]
-path = "contracts/stacksusu-nft-v2.clar"
-depends_on = ["stacksusu-traits-v2", "stacksusu-admin-v2", "stacksusu-core-v2"]
+[contracts.stacksusu-nft-v3]
+path = "contracts/stacksusu-nft-v3.clar"
+depends_on = ["stacksusu-traits-v2", "stacksusu-admin-v3", "stacksusu-core-v3"]
 
-[contracts.stacksusu-emergency-v2]
-path = "contracts/stacksusu-emergency-v2.clar"
-depends_on = ["stacksusu-traits-v2", "stacksusu-admin-v2", "stacksusu-escrow-v2", "stacksusu-core-v2"]
+[contracts.stacksusu-emergency-v3]
+path = "contracts/stacksusu-emergency-v3.clar"
+depends_on = ["stacksusu-traits-v2", "stacksusu-admin-v3", "stacksusu-escrow-v3", "stacksusu-core-v3"]
 
 [repl.analysis]
 passes = ["check_checker"]

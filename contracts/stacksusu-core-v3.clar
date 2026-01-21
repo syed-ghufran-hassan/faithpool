@@ -1,27 +1,17 @@
-;; StackSUSU Core Contract
-;; Main circle lifecycle and membership management
-
-;; ==============================================
-;; CONSTANTS
-;; ==============================================
-
 (define-constant CONTRACT-OWNER tx-sender)
 
-;; Limits
 (define-constant MIN-MEMBERS u25)
 (define-constant MAX-MEMBERS u50)
 (define-constant MIN-CONTRIBUTION u500000)
 (define-constant MAX-CONTRIBUTION u10000000)
 (define-constant BLOCKS-PER-DAY u144)
 
-;; Status codes
 (define-constant STATUS-PENDING u0)
 (define-constant STATUS-FUNDING u1)
 (define-constant STATUS-ACTIVE u2)
 (define-constant STATUS-COMPLETED u3)
 (define-constant STATUS-CANCELLED u4)
 
-;; Errors
 (define-constant ERR-NOT-AUTHORIZED (err u1000))
 (define-constant ERR-CIRCLE-NOT-FOUND (err u1001))
 (define-constant ERR-CIRCLE-FULL (err u1002))
@@ -40,11 +30,6 @@
 (define-constant ERR-PAUSED (err u1021))
 (define-constant ERR-INVALID-SLOT (err u1022))
 
-;; ==============================================
-;; DATA MAPS
-;; ==============================================
-
-;; Circle data
 (define-map circles
   uint
   {
@@ -61,36 +46,27 @@
   }
 )
 
-;; Member info per circle
 (define-map circle-members
   { circle-id: uint, member: principal }
   { slot: uint, joined-at: uint }
 )
 
-;; Slot to member mapping
 (define-map slot-to-member
   { circle-id: uint, slot: uint }
   principal
 )
 
-;; Track all circles a member belongs to
 (define-map member-circles
   principal
   (list 20 uint)
 )
 
-;; Circle ID counter
 (define-data-var circle-counter uint u0)
 
-;; NFT minting enabled
 (define-data-var nft-minting-enabled bool true)
 
-;; Authorized slot updaters (NFT contract)
 (define-map authorized-slot-updaters principal bool)
 
-;; ==============================================
-;; CIRCLE CREATION
-;; ==============================================
 
 (define-public (create-circle 
     (name (string-ascii 50))
@@ -103,7 +79,7 @@
       (circle-id (+ (var-get circle-counter) u1))
       (payout-interval-blocks (* payout-interval-days BLOCKS-PER-DAY))
     )
-    (asserts! (not (contract-call? .stacksusu-admin-v2 is-paused)) ERR-PAUSED)
+    (asserts! (not (contract-call? .stacksusu-admin-v3 is-paused)) ERR-PAUSED)
     (asserts! (and (>= contribution MIN-CONTRIBUTION) (<= contribution MAX-CONTRIBUTION)) 
               ERR-INVALID-AMOUNT)
     (asserts! (and (>= max-members MIN-MEMBERS) (<= max-members MAX-MEMBERS)) 
@@ -132,9 +108,6 @@
   )
 )
 
-;; ==============================================
-;; MEMBERSHIP
-;; ==============================================
 
 (define-private (internal-join-circle (circle-id uint) (member principal))
   (let
@@ -180,14 +153,11 @@
 
 (define-public (join-circle (circle-id uint))
   (begin
-    (asserts! (not (contract-call? .stacksusu-admin-v2 is-paused)) ERR-PAUSED)
+    (asserts! (not (contract-call? .stacksusu-admin-v3 is-paused)) ERR-PAUSED)
     (internal-join-circle circle-id tx-sender)
   )
 )
 
-;; ==============================================
-;; DEPOSIT
-;; ==============================================
 
 (define-public (deposit-to-circle (circle-id uint))
   (let
@@ -199,11 +169,11 @@
     )
     (asserts! (is-eq (get status circle) STATUS-FUNDING) ERR-CIRCLE-NOT-ACTIVE)
     
-    (try! (contract-call? .stacksusu-escrow-v2 deposit circle-id required-deposit true))
+    (try! (contract-call? .stacksusu-escrow-v3 deposit circle-id required-deposit true))
     
     (let
       (
-        (deposit-status (unwrap-panic (contract-call? .stacksusu-escrow-v2 get-circle-deposit-status circle-id)))
+        (deposit-status (unwrap-panic (contract-call? .stacksusu-escrow-v3 get-circle-deposit-status circle-id)))
       )
       (if (is-eq (get deposit-count deposit-status) (get max-members circle))
         (begin
@@ -221,9 +191,6 @@
   )
 )
 
-;; ==============================================
-;; PAYOUTS
-;; ==============================================
 
 (define-public (claim-payout (circle-id uint))
   (let
@@ -238,7 +205,7 @@
       (contribution (get contribution circle))
       (max-members (get max-members circle))
       (total-pot (* contribution max-members))
-      (admin-fee-bps (contract-call? .stacksusu-admin-v2 get-admin-fee-bps))
+      (admin-fee-bps (contract-call? .stacksusu-admin-v3 get-admin-fee-bps))
       (admin-fee (/ (* total-pot admin-fee-bps) u10000))
     )
     (asserts! (is-eq (get status circle) STATUS-ACTIVE) ERR-CIRCLE-NOT-ACTIVE)
@@ -248,10 +215,10 @@
       (asserts! (>= blocks-since-start (* current-round payout-interval)) ERR-PAYOUT-NOT-DUE)
     )
     
-    (asserts! (not (contract-call? .stacksusu-escrow-v2 has-received-payout circle-id caller)) 
+    (asserts! (not (contract-call? .stacksusu-escrow-v3 has-received-payout circle-id caller)) 
               ERR-ALREADY-CLAIMED)
     
-    (let ((payout-result (try! (contract-call? .stacksusu-escrow-v2 process-payout 
+    (let ((payout-result (try! (contract-call? .stacksusu-escrow-v3 process-payout 
                                  circle-id current-round caller total-pot admin-fee))))
       (let ((next-round (+ current-round u1)))
         (if (>= next-round max-members)
@@ -267,9 +234,6 @@
   )
 )
 
-;; ==============================================
-;; READ FUNCTIONS
-;; ==============================================
 
 (define-read-only (get-circle-info (circle-id uint))
   (ok (map-get? circles circle-id))
@@ -331,9 +295,6 @@
   )
 )
 
-;; ==============================================
-;; NFT SLOT TRADING SUPPORT
-;; ==============================================
 
 (define-public (authorize-slot-updater (updater principal))
   (begin

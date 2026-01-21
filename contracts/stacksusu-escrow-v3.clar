@@ -1,10 +1,3 @@
-;; StackSUSU Escrow Contract
-;; Handles all STX custody, deposits, and payouts
-
-;; ==============================================
-;; CONSTANTS
-;; ==============================================
-
 (define-constant CONTRACT-OWNER tx-sender)
 (define-constant ERR-NOT-AUTHORIZED (err u1000))
 (define-constant ERR-CIRCLE-NOT-FOUND (err u1001))
@@ -17,40 +10,28 @@
 (define-constant ERR-PAUSED (err u1021))
 (define-constant ERR-INSUFFICIENT-BALANCE (err u1024))
 
-;; ==============================================
-;; DATA MAPS
-;; ==============================================
-
-;; Track deposits per circle per member
 (define-map deposits 
   { circle-id: uint, member: principal }
   { deposited: bool, amount: uint, deposit-block: uint }
 )
 
-;; Track total deposits per circle
 (define-map circle-deposits
   uint
   { total-deposited: uint, deposit-count: uint }
 )
 
-;; Track payouts made
 (define-map payouts
   { circle-id: uint, round: uint }
   { recipient: principal, amount: uint, block: uint, is-emergency: bool }
 )
 
-;; Track if member has received their payout
 (define-map member-received-payout
   { circle-id: uint, member: principal }
   bool
 )
 
-;; Authorized callers (core and emergency contracts)
 (define-map authorized-callers principal bool)
 
-;; ==============================================
-;; AUTHORIZATION
-;; ==============================================
 
 (define-read-only (is-authorized (caller principal))
   (or 
@@ -73,9 +54,6 @@
   )
 )
 
-;; ==============================================
-;; DEPOSIT FUNCTIONS
-;; ==============================================
 
 (define-public (deposit (circle-id uint) (amount uint) (is-member bool))
   (let
@@ -85,7 +63,7 @@
                           (map-get? circle-deposits circle-id)))
       (existing-deposit (map-get? deposits { circle-id: circle-id, member: sender }))
     )
-    (asserts! (not (contract-call? .stacksusu-admin-v2 is-paused)) ERR-PAUSED)
+    (asserts! (not (contract-call? .stacksusu-admin-v3 is-paused)) ERR-PAUSED)
     (asserts! (> amount u0) ERR-ZERO-AMOUNT)
     (asserts! (is-none existing-deposit) ERR-ALREADY-DEPOSITED)
     (asserts! is-member ERR-NOT-MEMBER)
@@ -110,9 +88,6 @@
   )
 )
 
-;; ==============================================
-;; PAYOUT FUNCTIONS
-;; ==============================================
 
 (define-public (process-payout 
     (circle-id uint) 
@@ -123,7 +98,7 @@
   (let
     (
       (payout-amount (- total-pot admin-fee))
-      (treasury (contract-call? .stacksusu-admin-v2 get-treasury))
+      (treasury (contract-call? .stacksusu-admin-v3 get-treasury))
     )
     (asserts! (is-authorized contract-caller) ERR-NOT-AUTHORIZED)
     (asserts! (is-none (map-get? member-received-payout { circle-id: circle-id, member: recipient })) 
@@ -134,7 +109,7 @@
         (begin
           (if (> admin-fee u0)
             (match (as-contract (stx-transfer? admin-fee tx-sender treasury))
-              fee-success (begin (unwrap-panic (contract-call? .stacksusu-admin-v2 record-fee admin-fee)) true)
+              fee-success (begin (unwrap-panic (contract-call? .stacksusu-admin-v3 record-fee admin-fee)) true)
               fee-error true
             )
             true
@@ -162,7 +137,7 @@
     (
       (total-fees (+ emergency-fee admin-fee))
       (payout-amount (- total-pot total-fees))
-      (treasury (contract-call? .stacksusu-admin-v2 get-treasury))
+      (treasury (contract-call? .stacksusu-admin-v3 get-treasury))
     )
     (asserts! (is-authorized contract-caller) ERR-NOT-AUTHORIZED)
     (asserts! (is-none (map-get? member-received-payout { circle-id: circle-id, member: recipient }))
@@ -173,7 +148,7 @@
         (begin
           (if (> total-fees u0)
             (match (as-contract (stx-transfer? total-fees tx-sender treasury))
-              fee-success (begin (unwrap-panic (contract-call? .stacksusu-admin-v2 record-fee total-fees)) true)
+              fee-success (begin (unwrap-panic (contract-call? .stacksusu-admin-v3 record-fee total-fees)) true)
               fee-error true
             )
             true
@@ -190,9 +165,6 @@
   )
 )
 
-;; ==============================================
-;; READ FUNCTIONS
-;; ==============================================
 
 (define-read-only (get-deposit-info (circle-id uint) (member principal))
   (ok (default-to 
