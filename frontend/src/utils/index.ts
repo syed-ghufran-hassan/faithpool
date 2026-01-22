@@ -1,3 +1,8 @@
+// Re-export modular utilities
+export * from './date';
+export * from './numbers';
+export * from './strings';
+
 /**
  * Truncate a Stacks address for display
  * @param address Full Stacks address
