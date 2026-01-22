@@ -6,6 +6,11 @@ import Circles from './pages/Circles';
 import CreateCircle from './pages/CreateCircle';
 import Dashboard from './pages/Dashboard';
 import CircleDetail from './pages/CircleDetail';
+import Profile from './pages/Profile';
+import Settings from './pages/Settings';
+import About from './pages/About';
+import FAQ from './pages/FAQ';
+import NotFound from './pages/NotFound';
 import './App.css';
 
 function App() {
@@ -40,6 +45,11 @@ function App() {
             <Route path="/circle/:id" element={<CircleDetail />} />
             <Route path="/create" element={<CreateCircle />} />
             <Route path="/dashboard" element={<Dashboard address={address} />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
         <footer className="footer">
