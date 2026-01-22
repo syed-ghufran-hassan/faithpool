@@ -1,0 +1,1 @@
+export { useContracts } from './useContracts';
