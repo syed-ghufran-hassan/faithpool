@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Circles from './pages/Circles';
 import CreateCircle from './pages/CreateCircle';
 import Dashboard from './pages/Dashboard';
+import CircleDetail from './pages/CircleDetail';
 import './App.css';
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/circles" element={<Circles />} />
+            <Route path="/circle/:id" element={<CircleDetail />} />
             <Route path="/create" element={<CreateCircle />} />
             <Route path="/dashboard" element={<Dashboard address={address} />} />
           </Routes>
