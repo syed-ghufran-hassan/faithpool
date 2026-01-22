@@ -28,6 +28,27 @@ depends_on = ["stacksusu-traits-v2", "stacksusu-admin-v3", "stacksusu-core-v3"]
 path = "contracts/stacksusu-emergency-v3.clar"
 depends_on = ["stacksusu-traits-v2", "stacksusu-admin-v3", "stacksusu-escrow-v3", "stacksusu-core-v3"]
 
+# V4 - Test contracts with lower minimums (3 members, 0.01 STX)
+[contracts.stacksusu-admin-v4]
+path = "contracts/stacksusu-admin-v4.clar"
+depends_on = ["stacksusu-traits-v2"]
+
+[contracts.stacksusu-escrow-v4]
+path = "contracts/stacksusu-escrow-v4.clar"
+depends_on = ["stacksusu-traits-v2", "stacksusu-admin-v4"]
+
+[contracts.stacksusu-core-v4]
+path = "contracts/stacksusu-core-v4.clar"
+depends_on = ["stacksusu-traits-v2", "stacksusu-admin-v4", "stacksusu-escrow-v4"]
+
+[contracts.stacksusu-nft-v4]
+path = "contracts/stacksusu-nft-v4.clar"
+depends_on = ["stacksusu-traits-v2", "stacksusu-admin-v4", "stacksusu-core-v4"]
+
+[contracts.stacksusu-emergency-v4]
+path = "contracts/stacksusu-emergency-v4.clar"
+depends_on = ["stacksusu-traits-v2", "stacksusu-admin-v4", "stacksusu-escrow-v4", "stacksusu-core-v4"]
+
 [repl.analysis]
 passes = ["check_checker"]
 check_checker = { trusted_sender = false, trusted_caller = false, callee_filter = false }

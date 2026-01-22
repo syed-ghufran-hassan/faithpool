@@ -1,6 +1,6 @@
 ---
 id: 0
-name: Mainnet deployment
+name: Mainnet deployment - v4 test contracts
 network: mainnet
 stacks-node: "https://api.mainnet.hiro.so"
 bitcoin-node: "http://blockstack:blockstacksystem@bitcoin.blockstack.com:8332"
@@ -9,38 +9,38 @@ plan:
     - id: 0
       transactions:
         - contract-publish:
-            contract-name: stacksusu-admin-v3
+            contract-name: stacksusu-admin-v4
             expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
             cost: 50000
-            path: contracts/stacksusu-admin-v3.clar
+            path: contracts/stacksusu-admin-v4.clar
             anchor-block-only: true
             clarity-version: 2
         - contract-publish:
-            contract-name: stacksusu-escrow-v3
+            contract-name: stacksusu-escrow-v4
             expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
             cost: 70000
-            path: contracts/stacksusu-escrow-v3.clar
+            path: contracts/stacksusu-escrow-v4.clar
             anchor-block-only: true
             clarity-version: 2
         - contract-publish:
-            contract-name: stacksusu-core-v3
+            contract-name: stacksusu-core-v4
             expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
             cost: 100000
-            path: contracts/stacksusu-core-v3.clar
+            path: contracts/stacksusu-core-v4.clar
             anchor-block-only: true
             clarity-version: 2
         - contract-publish:
-            contract-name: stacksusu-emergency-v3
+            contract-name: stacksusu-emergency-v4
             expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
             cost: 60000
-            path: contracts/stacksusu-emergency-v3.clar
+            path: contracts/stacksusu-emergency-v4.clar
             anchor-block-only: true
             clarity-version: 2
         - contract-publish:
-            contract-name: stacksusu-nft-v3
+            contract-name: stacksusu-nft-v4
             expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
             cost: 70000
-            path: contracts/stacksusu-nft-v3.clar
+            path: contracts/stacksusu-nft-v4.clar
             anchor-block-only: true
             clarity-version: 2
       epoch: "3.3"

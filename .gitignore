@@ -11,3 +11,18 @@ coverage
 costs-reports.json
 node_modules
 settings/Devnet.toml
+
+# Terminal tools and test utilities
+tests/
+!tests/stacksusu.test.ts
+
+# Sensitive wallet data
+test-wallets.json
+*-wallets.json
+*.json.bak
+
+# Reports and output logs
+*-report.json
+*-output.log
+*-output.txt
+distribution-results.json
