@@ -13,3 +13,15 @@ export { default as Alert } from './Alert';
 export { default as Tabs } from './Tabs';
 export { default as Tooltip } from './Tooltip';
 export { default as Skeleton } from './Skeleton';
+
+// New component exports
+export { ToastContainer } from './ToastContainer';
+export { Sidebar } from './Sidebar';
+export { EmptyState } from './EmptyState';
+export { Stats } from './Stats';
+export { TransactionItem } from './TransactionItem';
+export { ConnectWallet } from './ConnectWallet';
+export { SearchBar } from './SearchBar';
+export { Pagination } from './Pagination';
+export { ActivityFeed } from './ActivityFeed';
+export type { Activity } from './ActivityFeed';
