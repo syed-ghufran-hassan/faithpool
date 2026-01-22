@@ -3,3 +3,8 @@ export { default as Circles } from './Circles';
 export { default as CircleDetail } from './CircleDetail';
 export { default as CreateCircle } from './CreateCircle';
 export { default as Dashboard } from './Dashboard';
+export { default as Profile } from './Profile';
+export { default as Settings } from './Settings';
+export { default as About } from './About';
+export { default as FAQ } from './FAQ';
+export { default as NotFound } from './NotFound';
