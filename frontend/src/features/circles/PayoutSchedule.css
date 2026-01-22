@@ -1,0 +1,146 @@
+.payout-schedule {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.schedule-timeline {
+  display: flex;
+  flex-direction: column;
+}
+
+.schedule-item {
+  display: flex;
+  gap: 1rem;
+  position: relative;
+}
+
+.timeline-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 32px;
+  flex-shrink: 0;
+}
+
+.timeline-dot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  background: #e5e7eb;
+  color: #6b7280;
+  z-index: 1;
+}
+
+.schedule-item.completed .timeline-dot {
+  background: #dcfce7;
+  color: #059669;
+}
+
+.schedule-item.current .timeline-dot {
+  background: #5546ff;
+  color: white;
+  animation: pulse 2s infinite;
+}
+
+.schedule-item.upcoming .timeline-dot {
+  background: #f3f4f6;
+  color: #9ca3af;
+}
+
+.schedule-item.is-you .timeline-dot {
+  background: linear-gradient(135deg, #5546ff, #7c3aed);
+  color: white;
+}
+
+.timeline-line {
+  width: 2px;
+  flex: 1;
+  min-height: 40px;
+  background: #e5e7eb;
+  margin: 0.5rem 0;
+}
+
+.schedule-item.completed .timeline-line {
+  background: #bbf7d0;
+}
+
+.schedule-content {
+  flex: 1;
+  padding-bottom: 1.5rem;
+}
+
+.schedule-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.round-label {
+  font-weight: 600;
+  color: #111827;
+}
+
+.schedule-date {
+  font-size: 0.8125rem;
+  color: #6b7280;
+}
+
+.schedule-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
+.schedule-item.current .schedule-body {
+  background: #f5f3ff;
+  border: 1px solid #c4b5fd;
+}
+
+.schedule-item.is-you .schedule-body {
+  background: linear-gradient(135deg, #f5f3ff, #faf5ff);
+  border: 1px solid #5546ff;
+}
+
+.recipient {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: monospace;
+  font-size: 0.875rem;
+  color: #374151;
+}
+
+.you-indicator {
+  padding: 0.125rem 0.5rem;
+  background: #5546ff;
+  color: white;
+  border-radius: 10px;
+  font-size: 0.625rem;
+  font-weight: 600;
+  font-family: system-ui, sans-serif;
+}
+
+.payout-amount {
+  font-weight: 600;
+  color: #111827;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(85, 70, 255, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(85, 70, 255, 0);
+  }
+}
