@@ -1,0 +1,102 @@
+.tabs {
+  width: 100%;
+}
+
+.tabs-list {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tabs-list::-webkit-scrollbar {
+  display: none;
+}
+
+.tab-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: none;
+  border: none;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: #6b7280;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.tab-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.tab-icon {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+}
+
+/* Default variant */
+.tabs-default .tabs-list {
+  background: #f3f4f6;
+  border-radius: 10px;
+  padding: 0.25rem;
+}
+
+.tabs-default .tab-button {
+  border-radius: 8px;
+}
+
+.tabs-default .tab-button.active {
+  background: white;
+  color: #111827;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Pills variant */
+.tabs-pills .tab-button {
+  border-radius: 20px;
+  background: #f3f4f6;
+}
+
+.tabs-pills .tab-button.active {
+  background: #5546ff;
+  color: white;
+}
+
+.tabs-pills .tab-button:hover:not(.active):not(:disabled) {
+  background: #e5e7eb;
+}
+
+/* Underline variant */
+.tabs-underline .tabs-list {
+  border-bottom: 1px solid #e5e7eb;
+  gap: 0;
+}
+
+.tabs-underline .tab-button {
+  border-radius: 0;
+  padding: 0.75rem 1.25rem;
+  position: relative;
+}
+
+.tabs-underline .tab-button.active {
+  color: #5546ff;
+}
+
+.tabs-underline .tab-button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #5546ff;
+}
+
+.tabs-underline .tab-button:hover:not(.active):not(:disabled) {
+  color: #374151;
+}
