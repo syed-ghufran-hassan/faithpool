@@ -1,0 +1,147 @@
+.faq-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.faq-page h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.faq-intro {
+  text-align: center;
+  color: #6b7280;
+  font-size: 1.125rem;
+  margin-bottom: 3rem;
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.faq-item {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.faq-question {
+  width: 100%;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #111827;
+  transition: background 0.2s ease;
+}
+
+.faq-question:hover {
+  background: #f9fafb;
+}
+
+.faq-icon {
+  font-size: 1.5rem;
+  color: #5546ff;
+  font-weight: 300;
+  flex-shrink: 0;
+  margin-left: 1rem;
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+}
+
+.faq-item.open .faq-answer {
+  max-height: 300px;
+  padding: 0 1.5rem 1.25rem;
+}
+
+.faq-answer p {
+  color: #4b5563;
+  line-height: 1.7;
+  font-size: 0.9375rem;
+}
+
+/* Contact Section */
+.faq-contact {
+  margin-top: 4rem;
+  text-align: center;
+  padding: 3rem;
+  background: linear-gradient(135deg, #5546ff, #7c3aed);
+  border-radius: 16px;
+  color: white;
+}
+
+.faq-contact h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.faq-contact p {
+  opacity: 0.9;
+  margin-bottom: 1.5rem;
+}
+
+.contact-links {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.contact-btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.contact-btn:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+.contact-btn.discord {
+  background: #5865f2;
+  color: white;
+}
+
+.contact-btn.twitter {
+  background: white;
+  color: #111827;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .faq-page h1 {
+    font-size: 2rem;
+  }
+
+  .faq-question {
+    padding: 1rem;
+    font-size: 0.9375rem;
+  }
+
+  .faq-item.open .faq-answer {
+    padding: 0 1rem 1rem;
+  }
+
+  .contact-links {
+    flex-direction: column;
+  }
+}
