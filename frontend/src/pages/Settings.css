@@ -1,0 +1,170 @@
+.settings-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.settings-page h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+}
+
+.settings-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.settings-section {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.settings-section.danger {
+  border: 1px solid #fee2e2;
+  background: #fef2f2;
+}
+
+.settings-section h2 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.settings-section.danger h2 {
+  color: #dc2626;
+  border-bottom-color: #fecaca;
+}
+
+.setting-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.setting-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.setting-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.setting-name {
+  font-weight: 500;
+  color: #111827;
+}
+
+.setting-desc {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+/* Toggle Switch */
+.toggle {
+  position: relative;
+  width: 48px;
+  height: 26px;
+  background: #d1d5db;
+  border: none;
+  border-radius: 13px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.toggle.active {
+  background: #5546ff;
+}
+
+.toggle-knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.toggle.active .toggle-knob {
+  transform: translateX(22px);
+}
+
+/* Select Dropdown */
+.setting-select {
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  background: white;
+  cursor: pointer;
+  min-width: 140px;
+}
+
+.setting-select:focus {
+  outline: none;
+  border-color: #5546ff;
+}
+
+/* Buttons */
+.btn {
+  padding: 0.625rem 1.25rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background: #5546ff;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #4338ca;
+}
+
+.btn-danger {
+  background: #dc2626;
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #b91c1c;
+}
+
+/* Settings Actions */
+.settings-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .setting-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .setting-select {
+    width: 100%;
+  }
+}
