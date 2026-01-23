@@ -1,12 +1,15 @@
-import { useState } from 'react';
+import { memo, useState, useCallback, useMemo } from 'react';
+import { ChevronDown, ChevronUp, MessageCircle, Twitter, HelpCircle } from 'lucide-react';
+import clsx from 'clsx';
+import { Button } from '../components/Button';
 import './FAQ.css';
 
-interface FAQItem {
+export interface FAQItem {
   question: string;
   answer: string;
 }
 
-const faqData: FAQItem[] = [
+const FAQ_DATA: FAQItem[] = [
   {
     question: 'What is a savings circle?',
     answer: 'A savings circle (also known as susu, tanda, or ROSCA) is a group of people who contribute a fixed amount regularly. Each period, one member receives the entire pool. This continues until everyone has received a payout.',
@@ -49,56 +52,112 @@ const faqData: FAQItem[] = [
   },
 ];
 
-function FAQ() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+interface FAQItemComponentProps {
+  item: FAQItem;
+  index: number;
+  isOpen: boolean;
+  onToggle: (index: number) => void;
+}
 
-  const toggleQuestion = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
-  };
+const FAQItemComponent = memo(function FAQItemComponent({
+  item,
+  index,
+  isOpen,
+  onToggle
+}: FAQItemComponentProps) {
+  const handleClick = useCallback(() => onToggle(index), [onToggle, index]);
 
   return (
-    <div className="faq-page">
-      <h1>Frequently Asked Questions</h1>
-      <p className="faq-intro">
-        Everything you need to know about StackSusu savings circles
-      </p>
+    <div className={clsx('faq__item', isOpen && 'faq__item--open')}>
+      <button
+        className="faq__question"
+        onClick={handleClick}
+        aria-expanded={isOpen}
+        aria-controls={`faq-answer-${index}`}
+      >
+        <HelpCircle className="faq__question-icon" size={20} />
+        <span className="faq__question-text">{item.question}</span>
+        {isOpen ? (
+          <ChevronUp className="faq__chevron" size={20} />
+        ) : (
+          <ChevronDown className="faq__chevron" size={20} />
+        )}
+      </button>
+      <div 
+        id={`faq-answer-${index}`}
+        className="faq__answer"
+        role="region"
+        aria-hidden={!isOpen}
+      >
+        <p>{item.answer}</p>
+      </div>
+    </div>
+  );
+});
 
-      <div className="faq-list">
-        {faqData.map((item, index) => (
-          <div
-            key={index}
-            className={`faq-item ${openIndex === index ? 'open' : ''}`}
-          >
-            <button
-              className="faq-question"
-              onClick={() => toggleQuestion(index)}
-            >
-              <span>{item.question}</span>
-              <span className="faq-icon">{openIndex === index ? '−' : '+'}</span>
-            </button>
-            <div className="faq-answer">
-              <p>{item.answer}</p>
-            </div>
-          </div>
-        ))}
+const FAQ = memo(function FAQ() {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const toggleQuestion = useCallback((index: number) => {
+    setOpenIndex(prev => prev === index ? null : index);
+  }, []);
+
+  const faqItems = useMemo(() =>
+    FAQ_DATA.map((item, index) => (
+      <FAQItemComponent
+        key={index}
+        item={item}
+        index={index}
+        isOpen={openIndex === index}
+        onToggle={toggleQuestion}
+      />
+    )),
+    [openIndex, toggleQuestion]
+  );
+
+  return (
+    <div className="faq">
+      <header className="faq__header">
+        <h1 className="faq__title">Frequently Asked Questions</h1>
+        <p className="faq__intro">
+          Everything you need to know about StackSusu savings circles
+        </p>
+      </header>
+
+      <div className="faq__list">
+        {faqItems}
       </div>
 
-      <div className="faq-contact">
-        <h2>Still have questions?</h2>
-        <p>
+      <div className="faq__contact">
+        <h2 className="faq__contact-title">Still have questions?</h2>
+        <p className="faq__contact-text">
           Can't find the answer you're looking for? Reach out to our community.
         </p>
-        <div className="contact-links">
-          <a href="https://discord.gg/stacksusu" className="contact-btn discord">
+        <div className="faq__contact-links">
+          <Button
+            as="a"
+            href="https://discord.gg/stacksusu"
+            target="_blank"
+            rel="noopener noreferrer"
+            variant="secondary"
+            leftIcon={<MessageCircle size={18} />}
+          >
             Join Discord
-          </a>
-          <a href="https://twitter.com/stacksusu" className="contact-btn twitter">
+          </Button>
+          <Button
+            as="a"
+            href="https://twitter.com/stacksusu"
+            target="_blank"
+            rel="noopener noreferrer"
+            variant="secondary"
+            leftIcon={<Twitter size={18} />}
+          >
             Follow on X
-          </a>
+          </Button>
         </div>
       </div>
     </div>
   );
-}
+});
 
-export default FAQ;
+export { FAQ as default };
