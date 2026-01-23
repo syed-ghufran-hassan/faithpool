@@ -1,3 +1,7 @@
+/* ==========================================================================
+   ContributionTracker Component
+   ========================================================================== */
+
 .contribution-tracker {
   padding: 0;
 }
@@ -7,20 +11,23 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 1.25rem;
+  padding: var(--space-4) var(--space-5);
   border-bottom: 1px solid var(--color-border);
 }
 
 .contribution-tracker__header h3 {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
   margin: 0;
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   font-weight: 600;
   color: var(--color-text-primary);
 }
 
 /* Progress */
 .contribution-tracker__progress {
-  padding: 1rem 1.25rem;
+  padding: var(--space-4) var(--space-5);
   border-bottom: 1px solid var(--color-border);
 }
 
@@ -28,8 +35,8 @@
 .contribution-tracker__stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-  padding: 1rem 1.25rem;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
   background: var(--color-background);
   border-bottom: 1px solid var(--color-border);
 }
@@ -39,23 +46,31 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 0.25rem;
+  gap: var(--space-1);
+}
+
+.contribution-tracker__stat-icon {
+  color: var(--color-text-tertiary);
+}
+
+.contribution-tracker__stat-icon--highlight {
+  color: var(--color-primary);
 }
 
 .contribution-tracker__stat-label {
-  font-size: 0.6875rem;
+  font-size: var(--font-size-xs);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   color: var(--color-text-tertiary);
 }
 
 .contribution-tracker__stat-value {
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   font-weight: 600;
   color: var(--color-text-primary);
 }
 
-.contribution-tracker__stat-value.highlight {
+.contribution-tracker__stat-value--highlight {
   color: var(--color-primary);
 }
 
@@ -64,49 +79,52 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 1.25rem;
-  background: linear-gradient(
-    to right,
-    rgba(252, 109, 38, 0.05),
-    rgba(252, 109, 38, 0.1)
-  );
+  padding: var(--space-4) var(--space-5);
+  background: var(--color-primary-subtle);
   border-bottom: 1px solid var(--color-border);
 }
 
 .contribution-tracker__next-due-info {
   display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.contribution-tracker__next-due-icon {
+  color: var(--color-primary);
 }
 
 .contribution-tracker__next-due-label {
-  font-size: 0.6875rem;
+  display: block;
+  font-size: var(--font-size-xs);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   color: var(--color-text-tertiary);
 }
 
 .contribution-tracker__next-due-date {
-  font-size: 0.875rem;
+  display: block;
+  font-size: var(--font-size-sm);
   font-weight: 500;
   color: var(--color-text-primary);
+  margin-top: var(--space-0-5);
 }
 
 .contribution-tracker__countdown {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 0.125rem;
+  gap: 2px;
 }
 
 .contribution-tracker__countdown-value {
-  font-size: 1.25rem;
+  font-size: var(--font-size-xl);
   font-weight: 700;
   color: var(--color-primary);
 }
 
 .contribution-tracker__countdown-label {
-  font-size: 0.6875rem;
+  font-size: var(--font-size-xs);
   color: var(--color-text-tertiary);
 }
 
@@ -114,48 +132,53 @@
 .contribution-tracker__pending-alert {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 1rem 1.25rem;
-  background: rgba(245, 158, 11, 0.1);
-  border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  background: var(--color-warning-subtle);
+  border-bottom: 1px solid var(--color-warning);
 }
 
-.contribution-tracker__pending-alert svg {
-  width: 20px;
-  height: 20px;
+.contribution-tracker__pending-icon {
   color: var(--color-warning);
   flex-shrink: 0;
 }
 
 .contribution-tracker__pending-alert span {
   flex: 1;
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   color: var(--color-text-primary);
 }
 
 /* List */
 .contribution-tracker__list {
-  padding: 1rem 1.25rem;
+  padding: var(--space-4) var(--space-5);
 }
 
 .contribution-tracker__list h4 {
-  margin: 0 0 0.75rem;
-  font-size: 0.8125rem;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-3);
+  font-size: var(--font-size-sm);
   font-weight: 600;
   color: var(--color-text-secondary);
 }
 
 .contribution-tracker__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
   text-align: center;
-  padding: 2rem;
+  padding: var(--space-8);
   color: var(--color-text-tertiary);
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
 }
 
 .contribution-tracker__items {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--space-2);
   max-height: 300px;
   overflow-y: auto;
 }
@@ -164,15 +187,15 @@
 .contribution-tracker__item {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  padding: 0.75rem;
+  gap: var(--space-4);
+  padding: var(--space-3);
   background: var(--color-background);
   border-radius: var(--radius-md);
   transition: background-color var(--transition-fast);
 }
 
 .contribution-tracker__item:hover {
-  background: var(--color-border);
+  background: var(--color-surface-hover);
 }
 
 .contribution-tracker__item--paid {
@@ -196,28 +219,28 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.125rem;
+  gap: 2px;
 }
 
 .contribution-tracker__round-number {
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   font-weight: 500;
   color: var(--color-text-primary);
 }
 
 .contribution-tracker__paid-date {
-  font-size: 0.6875rem;
+  font-size: var(--font-size-xs);
   color: var(--color-text-tertiary);
 }
 
 .contribution-tracker__item-amount {
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   font-weight: 600;
   color: var(--color-text-primary);
 }
 
 .contribution-tracker__item-status {
-  min-width: 70px;
+  min-width: 80px;
   text-align: center;
 }
 
@@ -242,23 +265,23 @@
   color: white;
 }
 
-.contribution-tracker__tx-link svg {
-  width: 14px;
-  height: 14px;
+/* Compact mode */
+.contribution-tracker--compact .contribution-tracker__list {
+  display: none;
 }
 
 /* Responsive */
 @media (max-width: 480px) {
   .contribution-tracker__stats {
     grid-template-columns: 1fr;
-    gap: 0.75rem;
+    gap: var(--space-3);
   }
 
   .contribution-tracker__stat {
     flex-direction: row;
     justify-content: space-between;
     text-align: left;
-    padding: 0.5rem 0;
+    padding: var(--space-2) 0;
     border-bottom: 1px solid var(--color-border);
   }
 
@@ -269,7 +292,7 @@
   .contribution-tracker__next-due {
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.75rem;
+    gap: var(--space-3);
   }
 
   .contribution-tracker__countdown {
@@ -284,6 +307,6 @@
     order: -1;
     width: 100%;
     text-align: left;
-    margin-bottom: 0.5rem;
+    margin-bottom: var(--space-2);
   }
 }
