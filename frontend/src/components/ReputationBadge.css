@@ -1,101 +1,141 @@
+/* ReputationBadge Component */
 .reputation-badge {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
-.badge-icon {
+.reputation-badge__icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   border: 2px solid;
+  transition: transform var(--transition-fast);
 }
 
-.size-sm .badge-icon {
+.reputation-badge:hover .reputation-badge__icon {
+  transform: scale(1.05);
+}
+
+/* Size Variants */
+.reputation-badge--sm .reputation-badge__icon {
   width: 32px;
   height: 32px;
 }
 
-.size-md .badge-icon {
+.reputation-badge--md .reputation-badge__icon {
   width: 48px;
   height: 48px;
 }
 
-.size-lg .badge-icon {
+.reputation-badge--lg .reputation-badge__icon {
   width: 64px;
   height: 64px;
 }
 
-.tier-icon {
+.reputation-badge__emoji {
   font-size: 16px;
 }
 
-.size-md .tier-icon {
+.reputation-badge--md .reputation-badge__emoji {
   font-size: 24px;
 }
 
-.size-lg .tier-icon {
+.reputation-badge--lg .reputation-badge__emoji {
   font-size: 32px;
 }
 
-.badge-info {
+.reputation-badge__lucide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.reputation-badge--sm .reputation-badge__lucide svg {
+  width: 14px;
+  height: 14px;
+}
+
+.reputation-badge--md .reputation-badge__lucide svg {
+  width: 20px;
+  height: 20px;
+}
+
+.reputation-badge--lg .reputation-badge__lucide svg {
+  width: 28px;
+  height: 28px;
+}
+
+/* Info Section */
+.reputation-badge__info {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--space-1);
 }
 
-.tier-name {
-  font-weight: 700;
-  font-size: 14px;
+.reputation-badge__tier-name {
+  font-weight: var(--font-bold);
+  font-size: var(--text-sm);
 }
 
-.size-lg .tier-name {
-  font-size: 18px;
+.reputation-badge--lg .reputation-badge__tier-name {
+  font-size: var(--text-lg);
 }
 
-.tier-score {
-  font-size: 12px;
-  color: var(--text-secondary);
+.reputation-badge__score {
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
 }
 
-.size-lg .tier-score {
-  font-size: 14px;
+.reputation-badge--lg .reputation-badge__score {
+  font-size: var(--text-sm);
 }
 
-.tier-progress {
+/* Progress */
+.reputation-badge__progress {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  margin-top: 4px;
+  gap: var(--space-1);
+  margin-top: var(--space-1);
 }
 
-.progress-bar {
+.reputation-badge__progress-bar {
   width: 100px;
   height: 4px;
-  background: var(--surface-secondary);
-  border-radius: 2px;
+  background: var(--color-surface-elevated);
+  border-radius: var(--radius-full);
   overflow: hidden;
 }
 
-.progress-fill {
+.reputation-badge--lg .reputation-badge__progress-bar {
+  width: 120px;
+  height: 6px;
+}
+
+.reputation-badge__progress-fill {
   height: 100%;
-  border-radius: 2px;
+  border-radius: var(--radius-full);
   transition: width 0.3s ease;
 }
 
-.next-tier {
-  font-size: 10px;
-  color: var(--text-tertiary);
+.reputation-badge__next-tier {
+  font-size: var(--text-xs);
+  color: var(--color-text-tertiary);
 }
 
-/* Compact variant */
+/* Compact Variant */
 .reputation-badge-compact {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 4px 10px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 600;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-lg);
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+  transition: transform var(--transition-fast);
+}
+
+.reputation-badge-compact:hover {
+  transform: scale(1.05);
 }
