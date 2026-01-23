@@ -1,0 +1,180 @@
+.countdown-timer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+/* Complete State */
+.countdown-timer--complete {
+  padding: 1rem;
+}
+
+/* Default Variant */
+.countdown-timer--default {
+  gap: 0.75rem;
+}
+
+.countdown-timer__block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  min-width: 60px;
+}
+
+.countdown-timer__number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-primary);
+  line-height: 1;
+}
+
+.countdown-timer__text {
+  font-size: 0.625rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-text-tertiary);
+  margin-top: 0.375rem;
+}
+
+/* Compact Variant */
+.countdown-timer--compact {
+  gap: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--color-background);
+  border-radius: var(--radius-md);
+}
+
+.countdown-timer--compact .countdown-timer__unit {
+  display: flex;
+  align-items: baseline;
+  gap: 0.125rem;
+}
+
+.countdown-timer--compact .countdown-timer__value {
+  font-size: 1.125rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-primary);
+}
+
+.countdown-timer--compact .countdown-timer__label {
+  font-size: 0.625rem;
+  font-weight: 500;
+  color: var(--color-text-tertiary);
+}
+
+.countdown-timer__separator {
+  color: var(--color-text-tertiary);
+  font-weight: 600;
+}
+
+/* Minimal Variant */
+.countdown-timer--minimal {
+  font-size: 1rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-primary);
+}
+
+/* Sizes */
+.countdown-timer--small .countdown-timer__block {
+  padding: 0.5rem 0.75rem;
+  min-width: 48px;
+}
+
+.countdown-timer--small .countdown-timer__number {
+  font-size: 1.125rem;
+}
+
+.countdown-timer--small .countdown-timer__text {
+  font-size: 0.5rem;
+}
+
+.countdown-timer--small.countdown-timer--compact .countdown-timer__value {
+  font-size: 0.875rem;
+}
+
+.countdown-timer--small.countdown-timer--minimal {
+  font-size: 0.875rem;
+}
+
+.countdown-timer--large .countdown-timer__block {
+  padding: 1rem 1.5rem;
+  min-width: 80px;
+}
+
+.countdown-timer--large .countdown-timer__number {
+  font-size: 2rem;
+}
+
+.countdown-timer--large .countdown-timer__text {
+  font-size: 0.75rem;
+}
+
+.countdown-timer--large.countdown-timer--compact .countdown-timer__value {
+  font-size: 1.5rem;
+}
+
+.countdown-timer--large.countdown-timer--minimal {
+  font-size: 1.25rem;
+}
+
+/* Urgency States */
+.countdown-timer--warning .countdown-timer__number,
+.countdown-timer--warning .countdown-timer__value,
+.countdown-timer--warning.countdown-timer--minimal {
+  color: var(--color-warning);
+}
+
+.countdown-timer--warning .countdown-timer__block {
+  border-color: rgba(245, 158, 11, 0.3);
+  background: rgba(245, 158, 11, 0.05);
+}
+
+.countdown-timer--urgent .countdown-timer__number,
+.countdown-timer--urgent .countdown-timer__value,
+.countdown-timer--urgent.countdown-timer--minimal {
+  color: var(--color-error);
+  animation: pulse 1s ease-in-out infinite;
+}
+
+.countdown-timer--urgent .countdown-timer__block {
+  border-color: rgba(239, 68, 68, 0.3);
+  background: rgba(239, 68, 68, 0.05);
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .countdown-timer--default {
+    gap: 0.5rem;
+  }
+
+  .countdown-timer__block {
+    padding: 0.5rem;
+    min-width: 50px;
+  }
+
+  .countdown-timer__number {
+    font-size: 1.25rem;
+  }
+
+  .countdown-timer__text {
+    font-size: 0.5rem;
+  }
+}
