@@ -1,48 +1,77 @@
+import { forwardRef } from 'react';
+import type { ButtonHTMLAttributes, ReactNode } from 'react';
+import { Loader2 } from 'lucide-react';
+import clsx from 'clsx';
 import './Button.css';
 
-interface ButtonProps {
-  children: React.ReactNode;
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
-  size?: 'small' | 'medium' | 'large';
+export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'success';
+export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  children: ReactNode;
+  variant?: ButtonVariant;
+  size?: ButtonSize;
   fullWidth?: boolean;
-  disabled?: boolean;
   loading?: boolean;
-  onClick?: () => void;
-  type?: 'button' | 'submit' | 'reset';
-  className?: string;
+  leftIcon?: ReactNode;
+  rightIcon?: ReactNode;
 }
 
-function Button({
-  children,
-  variant = 'primary',
-  size = 'medium',
-  fullWidth = false,
-  disabled = false,
-  loading = false,
-  onClick,
-  type = 'button',
-  className = '',
-}: ButtonProps) {
-  const classes = [
-    'button',
-    `button-${variant}`,
-    `button-${size}`,
-    fullWidth ? 'button-full' : '',
-    loading ? 'button-loading' : '',
-    className,
-  ].filter(Boolean).join(' ');
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  (
+    {
+      children,
+      variant = 'primary',
+      size = 'md',
+      fullWidth = false,
+      disabled = false,
+      loading = false,
+      leftIcon,
+      rightIcon,
+      className,
+      type = 'button',
+      ...props
+    },
+    ref
+  ) => {
+    const isDisabled = disabled || loading;
 
-  return (
-    <button
-      type={type}
-      className={classes}
-      disabled={disabled || loading}
-      onClick={onClick}
-    >
-      {loading && <span className="spinner" />}
-      <span className={loading ? 'button-text-hidden' : ''}>{children}</span>
-    </button>
-  );
-}
+    return (
+      <button
+        ref={ref}
+        type={type}
+        disabled={isDisabled}
+        className={clsx(
+          'button',
+          `button--${variant}`,
+          `button--${size}`,
+          {
+            'button--full-width': fullWidth,
+            'button--loading': loading,
+            'button--disabled': isDisabled,
+            'button--has-icon': leftIcon || rightIcon,
+          },
+          className
+        )}
+        {...props}
+      >
+        {loading ? (
+          <Loader2 className="button__spinner" size={16} />
+        ) : leftIcon ? (
+          <span className="button__icon button__icon--left">{leftIcon}</span>
+        ) : null}
+        
+        <span className="button__content">{children}</span>
+        
+        {!loading && rightIcon && (
+          <span className="button__icon button__icon--right">{rightIcon}</span>
+        )}
+      </button>
+    );
+  }
+);
 
+Button.displayName = 'Button';
+
+export { Button };
 export default Button;
