@@ -1,102 +1,229 @@
+/**
+ * Tabs Component Styles
+ * Enhanced tabs with multiple variants, sizes, and features
+ */
+
 .tabs {
   width: 100%;
 }
 
-.tabs-list {
+.tabs--full-width {
+  width: 100%;
+}
+
+.tabs--full-width .tabs__list {
+  width: 100%;
+}
+
+.tabs--full-width .tab {
+  flex: 1;
+  justify-content: center;
+}
+
+/* ===== TAB LIST ===== */
+
+.tabs__list {
   display: flex;
-  gap: 0.5rem;
+  gap: var(--space-1);
   overflow-x: auto;
   scrollbar-width: none;
 }
 
-.tabs-list::-webkit-scrollbar {
+.tabs__list::-webkit-scrollbar {
   display: none;
 }
 
-.tab-button {
+/* ===== TAB BUTTON ===== */
+
+.tab {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1rem;
+  gap: var(--space-2);
   background: none;
   border: none;
-  font-size: 0.9375rem;
-  font-weight: 500;
-  color: #6b7280;
+  font-weight: var(--font-medium);
+  color: var(--color-text-tertiary);
   cursor: pointer;
   white-space: nowrap;
-  transition: all 0.2s ease;
+  transition: all var(--duration-fast);
+  position: relative;
 }
 
-.tab-button:disabled {
+.tab:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+}
+
+.tab--disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-.tab-icon {
+/* ===== TAB PARTS ===== */
+
+.tab__icon {
   display: flex;
   align-items: center;
-  font-size: 1rem;
+  flex-shrink: 0;
 }
 
-/* Default variant */
-.tabs-default .tabs-list {
-  background: #f3f4f6;
-  border-radius: 10px;
-  padding: 0.25rem;
+.tab__label {
+  line-height: 1;
 }
 
-.tabs-default .tab-button {
-  border-radius: 8px;
+.tab__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 var(--space-1);
+  background: var(--color-bg-tertiary);
+  border-radius: var(--radius-full);
+  font-size: 10px;
+  font-weight: var(--font-semibold);
+  color: var(--color-text-secondary);
 }
 
-.tabs-default .tab-button.active {
-  background: white;
-  color: #111827;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+.tab--active .tab__badge {
+  background: rgba(139, 92, 246, 0.2);
+  color: var(--color-primary-400);
 }
 
-/* Pills variant */
-.tabs-pills .tab-button {
-  border-radius: 20px;
-  background: #f3f4f6;
+/* ===== SIZES ===== */
+
+.tabs--sm .tab {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-xs);
 }
 
-.tabs-pills .tab-button.active {
-  background: #5546ff;
+.tabs--md .tab {
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-sm);
+}
+
+.tabs--lg .tab {
+  padding: var(--space-4) var(--space-5);
+  font-size: var(--text-base);
+}
+
+/* ===== DEFAULT VARIANT ===== */
+
+.tabs--default .tabs__list {
+  background: var(--color-bg-tertiary);
+  border-radius: var(--radius-lg);
+  padding: var(--space-1);
+}
+
+.tabs--default .tab {
+  border-radius: var(--radius-md);
+}
+
+.tabs--default .tab--active {
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.tabs--default .tab:hover:not(.tab--active):not(.tab--disabled) {
+  color: var(--color-text-secondary);
+}
+
+/* ===== PILLS VARIANT ===== */
+
+.tabs--pills .tabs__list {
+  gap: var(--space-2);
+}
+
+.tabs--pills .tab {
+  border-radius: var(--radius-full);
+  background: var(--color-bg-tertiary);
+}
+
+.tabs--pills .tab--active {
+  background: var(--color-primary-500);
   color: white;
 }
 
-.tabs-pills .tab-button:hover:not(.active):not(:disabled) {
-  background: #e5e7eb;
+.tabs--pills .tab:hover:not(.tab--active):not(.tab--disabled) {
+  background: var(--color-bg-elevated);
 }
 
-/* Underline variant */
-.tabs-underline .tabs-list {
-  border-bottom: 1px solid #e5e7eb;
+/* ===== UNDERLINE VARIANT ===== */
+
+.tabs--underline .tabs__list {
+  border-bottom: 1px solid var(--color-border);
   gap: 0;
 }
 
-.tabs-underline .tab-button {
+.tabs--underline .tab {
   border-radius: 0;
-  padding: 0.75rem 1.25rem;
-  position: relative;
+  padding-left: var(--space-4);
+  padding-right: var(--space-4);
 }
 
-.tabs-underline .tab-button.active {
-  color: #5546ff;
+.tabs--underline .tab--active {
+  color: var(--color-primary-400);
 }
 
-.tabs-underline .tab-button.active::after {
+.tabs--underline .tab::after {
   content: '';
   position: absolute;
   bottom: -1px;
   left: 0;
   right: 0;
   height: 2px;
-  background: #5546ff;
+  background: transparent;
+  transition: background var(--duration-fast);
 }
 
-.tabs-underline .tab-button:hover:not(.active):not(:disabled) {
-  color: #374151;
+.tabs--underline .tab--active::after {
+  background: var(--color-primary-500);
+}
+
+.tabs--underline .tab:hover:not(.tab--active):not(.tab--disabled) {
+  color: var(--color-text-primary);
+}
+
+/* ===== BORDERED VARIANT ===== */
+
+.tabs--bordered .tabs__list {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-1);
+}
+
+.tabs--bordered .tab {
+  border-radius: var(--radius-md);
+}
+
+.tabs--bordered .tab--active {
+  background: var(--color-primary-500);
+  color: white;
+}
+
+.tabs--bordered .tab:hover:not(.tab--active):not(.tab--disabled) {
+  background: var(--color-bg-tertiary);
+}
+
+/* ===== TAB PANEL ===== */
+
+.tab-panel {
+  padding-top: var(--space-4);
+  animation: tab-panel-fade-in var(--duration-normal) var(--ease-out);
+}
+
+.tab-panel--hidden {
+  display: none;
+}
+
+@keyframes tab-panel-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
