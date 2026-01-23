@@ -1,29 +1,53 @@
+/* ==========================================================================
+   CountdownTimer Component
+   ========================================================================== */
+
 .countdown-timer {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: var(--space-2);
 }
 
 /* Complete State */
 .countdown-timer--complete {
-  padding: 1rem;
+  padding: var(--space-4);
+  gap: var(--space-2);
 }
 
-/* Default Variant */
+.countdown-timer__complete-icon {
+  color: var(--color-success);
+}
+
+/* Icon */
+.countdown-timer__icon {
+  color: var(--color-text-tertiary);
+  flex-shrink: 0;
+}
+
+.countdown-timer__warning-icon {
+  color: var(--color-error);
+  animation: countdown-pulse 1s ease-in-out infinite;
+}
+
+/* ==========================================================================
+   Default Variant
+   ========================================================================== */
+
 .countdown-timer--default {
-  gap: 0.75rem;
+  gap: var(--space-3);
 }
 
 .countdown-timer__block {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0.75rem 1rem;
+  padding: var(--space-3) var(--space-4);
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   min-width: 60px;
+  transition: all var(--transition-fast);
 }
 
 .countdown-timer__number {
@@ -35,18 +59,21 @@
 }
 
 .countdown-timer__text {
-  font-size: 0.625rem;
+  font-size: var(--font-size-xs);
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   color: var(--color-text-tertiary);
-  margin-top: 0.375rem;
+  margin-top: var(--space-1-5);
 }
 
-/* Compact Variant */
+/* ==========================================================================
+   Compact Variant
+   ========================================================================== */
+
 .countdown-timer--compact {
-  gap: 0.25rem;
-  padding: 0.5rem 0.75rem;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
   background: var(--color-background);
   border-radius: var(--radius-md);
 }
@@ -54,7 +81,7 @@
 .countdown-timer--compact .countdown-timer__unit {
   display: flex;
   align-items: baseline;
-  gap: 0.125rem;
+  gap: 2px;
 }
 
 .countdown-timer--compact .countdown-timer__value {
@@ -65,7 +92,7 @@
 }
 
 .countdown-timer--compact .countdown-timer__label {
-  font-size: 0.625rem;
+  font-size: var(--font-size-xs);
   font-weight: 500;
   color: var(--color-text-tertiary);
 }
@@ -75,58 +102,140 @@
   font-weight: 600;
 }
 
-/* Minimal Variant */
+/* ==========================================================================
+   Minimal Variant
+   ========================================================================== */
+
 .countdown-timer--minimal {
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   color: var(--color-text-primary);
+  gap: var(--space-1);
 }
 
-/* Sizes */
-.countdown-timer--small .countdown-timer__block {
-  padding: 0.5rem 0.75rem;
+.countdown-timer__time {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   Card Variant
+   ========================================================================== */
+
+.countdown-timer--card {
+  flex-direction: column;
+  padding: var(--space-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  gap: var(--space-3);
+}
+
+.countdown-timer__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+}
+
+.countdown-timer__header-icon {
+  color: var(--color-text-tertiary);
+}
+
+.countdown-timer__title {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.countdown-timer__blocks {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.countdown-timer--card .countdown-timer__block {
+  flex: 1;
+  min-width: auto;
+}
+
+.countdown-timer__status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  width: 100%;
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+}
+
+.countdown-timer__status--warning {
+  background: var(--color-warning-subtle);
+  color: var(--color-warning);
+}
+
+.countdown-timer__status--urgent {
+  background: var(--color-error-subtle);
+  color: var(--color-error);
+  animation: countdown-pulse 1s ease-in-out infinite;
+}
+
+/* ==========================================================================
+   Size Variants
+   ========================================================================== */
+
+/* Small */
+.countdown-timer--sm .countdown-timer__block {
+  padding: var(--space-2) var(--space-3);
   min-width: 48px;
 }
 
-.countdown-timer--small .countdown-timer__number {
+.countdown-timer--sm .countdown-timer__number {
   font-size: 1.125rem;
 }
 
-.countdown-timer--small .countdown-timer__text {
-  font-size: 0.5rem;
+.countdown-timer--sm .countdown-timer__text {
+  font-size: 10px;
 }
 
-.countdown-timer--small.countdown-timer--compact .countdown-timer__value {
-  font-size: 0.875rem;
+.countdown-timer--sm.countdown-timer--compact .countdown-timer__value {
+  font-size: var(--font-size-sm);
 }
 
-.countdown-timer--small.countdown-timer--minimal {
-  font-size: 0.875rem;
+.countdown-timer--sm.countdown-timer--minimal {
+  font-size: var(--font-size-sm);
 }
 
-.countdown-timer--large .countdown-timer__block {
-  padding: 1rem 1.5rem;
+/* Large */
+.countdown-timer--lg .countdown-timer__block {
+  padding: var(--space-4) var(--space-6);
   min-width: 80px;
 }
 
-.countdown-timer--large .countdown-timer__number {
+.countdown-timer--lg .countdown-timer__number {
   font-size: 2rem;
 }
 
-.countdown-timer--large .countdown-timer__text {
-  font-size: 0.75rem;
+.countdown-timer--lg .countdown-timer__text {
+  font-size: var(--font-size-sm);
 }
 
-.countdown-timer--large.countdown-timer--compact .countdown-timer__value {
+.countdown-timer--lg.countdown-timer--compact .countdown-timer__value {
   font-size: 1.5rem;
 }
 
-.countdown-timer--large.countdown-timer--minimal {
-  font-size: 1.25rem;
+.countdown-timer--lg.countdown-timer--minimal {
+  font-size: var(--font-size-lg);
 }
 
-/* Urgency States */
+/* ==========================================================================
+   Urgency States
+   ========================================================================== */
+
 .countdown-timer--warning .countdown-timer__number,
 .countdown-timer--warning .countdown-timer__value,
 .countdown-timer--warning.countdown-timer--minimal {
@@ -134,23 +243,27 @@
 }
 
 .countdown-timer--warning .countdown-timer__block {
-  border-color: rgba(245, 158, 11, 0.3);
-  background: rgba(245, 158, 11, 0.05);
+  border-color: var(--color-warning);
+  background: var(--color-warning-subtle);
 }
 
 .countdown-timer--urgent .countdown-timer__number,
 .countdown-timer--urgent .countdown-timer__value,
 .countdown-timer--urgent.countdown-timer--minimal {
   color: var(--color-error);
-  animation: pulse 1s ease-in-out infinite;
+  animation: countdown-pulse 1s ease-in-out infinite;
 }
 
 .countdown-timer--urgent .countdown-timer__block {
-  border-color: rgba(239, 68, 68, 0.3);
-  background: rgba(239, 68, 68, 0.05);
+  border-color: var(--color-error);
+  background: var(--color-error-subtle);
 }
 
-@keyframes pulse {
+/* ==========================================================================
+   Animations
+   ========================================================================== */
+
+@keyframes countdown-pulse {
   0%, 100% {
     opacity: 1;
   }
@@ -159,14 +272,17 @@
   }
 }
 
-/* Responsive */
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
 @media (max-width: 480px) {
   .countdown-timer--default {
-    gap: 0.5rem;
+    gap: var(--space-2);
   }
 
   .countdown-timer__block {
-    padding: 0.5rem;
+    padding: var(--space-2);
     min-width: 50px;
   }
 
@@ -175,6 +291,10 @@
   }
 
   .countdown-timer__text {
-    font-size: 0.5rem;
+    font-size: 10px;
+  }
+
+  .countdown-timer--card {
+    padding: var(--space-3);
   }
 }
