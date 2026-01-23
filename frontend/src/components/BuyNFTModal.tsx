@@ -1,5 +1,8 @@
 // Buy NFT Confirmation Modal
 
+import { memo, useCallback } from 'react';
+import { AlertTriangle, User, ShoppingCart } from 'lucide-react';
+import clsx from 'clsx';
 import { Modal } from './Modal';
 import { Button } from './Button';
 import { formatSTX, truncateAddress } from '../utils/helpers';
@@ -7,89 +10,103 @@ import type { NFTToken } from '../types/blockchain';
 import { formatNFTDisplay } from '../services/nft';
 import './BuyNFTModal.css';
 
-interface BuyNFTModalProps {
+export interface BuyNFTModalProps {
   isOpen: boolean;
   onClose: () => void;
   token: NFTToken;
   userBalance: number;
   onConfirm: () => Promise<void>;
   isProcessing?: boolean;
+  className?: string;
 }
 
-export function BuyNFTModal({
+export const BuyNFTModal = memo<BuyNFTModalProps>(function BuyNFTModal({
   isOpen,
   onClose,
   token,
   userBalance,
   onConfirm,
   isProcessing = false,
-}: BuyNFTModalProps) {
+  className,
+}) {
   const display = formatNFTDisplay(token);
   const price = token.listing?.price ?? 0;
   const hasEnoughBalance = userBalance >= price;
   const remainingBalance = userBalance - price;
 
+  const handleConfirm = useCallback(async () => {
+    await onConfirm();
+  }, [onConfirm]);
+
+  const handleClose = useCallback(() => {
+    if (!isProcessing) {
+      onClose();
+    }
+  }, [onClose, isProcessing]);
+
   return (
     <Modal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleClose}
       title="Confirm Purchase"
     >
-      <div className="buy-nft-modal">
-        <div className="nft-purchase-preview">
+      <div className={clsx('buy-nft-modal', className)}>
+        <div className="buy-nft-modal__preview">
           <img
             src={display.image}
             alt={display.title}
-            className="purchase-image"
+            className="buy-nft-modal__image"
           />
-          <div className="purchase-details">
-            <h3 className="purchase-title">{display.title}</h3>
-            <p className="purchase-description">{display.description}</p>
-            <div className="purchase-seller">
-              <span className="seller-label">Seller:</span>
-              <span className="seller-address">
+          <div className="buy-nft-modal__details">
+            <h3 className="buy-nft-modal__title">{display.title}</h3>
+            <p className="buy-nft-modal__description">{display.description}</p>
+            <div className="buy-nft-modal__seller">
+              <User size={12} className="buy-nft-modal__seller-icon" />
+              <span className="buy-nft-modal__seller-label">Seller:</span>
+              <span className="buy-nft-modal__seller-address">
                 {truncateAddress(token.listing?.seller || token.owner || '')}
               </span>
             </div>
           </div>
         </div>
 
-        <div className="purchase-breakdown">
-          <div className="breakdown-row">
+        <div className="buy-nft-modal__breakdown">
+          <div className="buy-nft-modal__row">
             <span>NFT Price</span>
-            <span className="price-value">{formatSTX(price, 2)}</span>
+            <span className="buy-nft-modal__price">{formatSTX(price, 2)}</span>
           </div>
-          <div className="breakdown-row">
+          <div className="buy-nft-modal__row">
             <span>Your Balance</span>
-            <span className={!hasEnoughBalance ? 'insufficient' : ''}>
+            <span className={clsx(!hasEnoughBalance && 'buy-nft-modal__insufficient')}>
               {formatSTX(userBalance, 2)}
             </span>
           </div>
-          <div className="breakdown-divider" />
-          <div className="breakdown-row total">
+          <div className="buy-nft-modal__divider" />
+          <div className="buy-nft-modal__row buy-nft-modal__row--total">
             <span>Remaining After Purchase</span>
-            <span className={remainingBalance < 0 ? 'insufficient' : ''}>
+            <span className={clsx(remainingBalance < 0 && 'buy-nft-modal__insufficient')}>
               {formatSTX(Math.max(0, remainingBalance), 2)}
             </span>
           </div>
         </div>
 
         {!hasEnoughBalance && (
-          <div className="insufficient-funds-warning">
-            <span className="warning-icon">⚠️</span>
+          <div className="buy-nft-modal__warning" role="alert">
+            <AlertTriangle size={20} className="buy-nft-modal__warning-icon" />
             <span>Insufficient balance. You need {formatSTX(price - userBalance, 2)} more.</span>
           </div>
         )}
 
-        <div className="modal-actions">
-          <Button variant="secondary" onClick={onClose} disabled={isProcessing}>
+        <div className="buy-nft-modal__actions">
+          <Button variant="secondary" onClick={handleClose} disabled={isProcessing}>
             Cancel
           </Button>
           <Button
             variant="primary"
-            onClick={onConfirm}
+            onClick={handleConfirm}
             disabled={!hasEnoughBalance || isProcessing}
             loading={isProcessing}
+            leftIcon={<ShoppingCart size={16} />}
           >
             Buy for {formatSTX(price, 2)}
           </Button>
@@ -97,6 +114,6 @@ export function BuyNFTModal({
       </div>
     </Modal>
   );
-}
+});
 
 export default BuyNFTModal;
