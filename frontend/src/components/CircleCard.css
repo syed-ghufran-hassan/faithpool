@@ -1,0 +1,107 @@
+.circle-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.circle-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.circle-card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  padding: 1.25rem;
+}
+
+.circle-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  gap: 0.5rem;
+}
+
+.circle-name {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--color-text-primary);
+  line-height: 1.3;
+}
+
+.circle-card-body {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.circle-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stat-value {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+.stat-value.capitalize {
+  text-transform: capitalize;
+}
+
+.circle-card-progress {
+  margin-bottom: 0.75rem;
+}
+
+.slots-available {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--color-warning);
+  margin-top: 0.25rem;
+  text-align: right;
+}
+
+.circle-card-escrow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.escrow-label {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.escrow-value {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .circle-card-body {
+    grid-template-columns: 1fr;
+  }
+  
+  .circle-stat {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
