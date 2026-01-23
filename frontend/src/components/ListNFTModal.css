@@ -1,0 +1,113 @@
+.list-nft-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.nft-preview {
+  display: flex;
+  justify-content: center;
+  padding: 24px;
+  background: linear-gradient(135deg, var(--color-primary-light), var(--color-secondary-light));
+  border-radius: 12px;
+}
+
+.preview-badge {
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--text-primary);
+}
+
+.price-input-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.price-label {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.price-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.price-input-wrapper .price-input {
+  flex: 1;
+  font-size: 24px;
+  font-weight: 600;
+  text-align: right;
+}
+
+.price-suffix {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.price-error {
+  color: var(--color-error);
+  font-size: 14px;
+  margin: 0;
+}
+
+.price-suggestions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.price-suggestion {
+  padding: 8px 16px;
+  background: var(--surface-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.price-suggestion:hover {
+  background: var(--color-primary-light);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.listing-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: var(--surface-secondary);
+  border-radius: 12px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.info-row span:first-child {
+  color: var(--text-secondary);
+}
+
+.receive-amount {
+  font-weight: 600;
+  color: var(--color-success);
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color);
+}
