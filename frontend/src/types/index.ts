@@ -119,3 +119,67 @@ export interface UserStats {
   nextPayout?: string;
   nftBadges: number;
 }
+
+// Re-export blockchain types
+export * from './blockchain';
+
+// Circle creation parameters for contract calls
+export interface CreateCircleParams {
+  name: string;
+  contribution: number;       // In STX
+  maxMembers: number;
+  payoutIntervalDays: number;
+}
+
+// Join circle parameters
+export interface JoinCircleParams {
+  circleId: number;
+  referrer?: string;          // Optional referral address
+}
+
+// Deposit parameters
+export interface DepositParams {
+  circleId: number;
+}
+
+// Claim payout parameters
+export interface ClaimPayoutParams {
+  circleId: number;
+}
+
+// Emergency withdraw parameters
+export interface EmergencyWithdrawParams {
+  circleId: number;
+}
+
+// Toast notification
+export interface Toast {
+  id: string;
+  type: 'success' | 'error' | 'warning' | 'info';
+  title: string;
+  message?: string;
+  duration?: number;
+  action?: {
+    label: string;
+    onClick: () => void;
+  };
+}
+
+// Theme
+export type Theme = 'light' | 'dark' | 'system';
+
+// App settings
+export interface AppSettings {
+  theme: Theme;
+  notifications: {
+    payoutReminders: boolean;
+    depositReminders: boolean;
+    circleUpdates: boolean;
+    marketplaceAlerts: boolean;
+  };
+  display: {
+    currency: 'STX' | 'USD';
+    compactNumbers: boolean;
+    showTestnet: boolean;
+  };
+}
