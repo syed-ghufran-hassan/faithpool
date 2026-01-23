@@ -1,0 +1,233 @@
+.circle-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Filters */
+.circle-list__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+}
+
+.circle-list__search {
+  flex: 1;
+  min-width: 200px;
+}
+
+.circle-list__checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  user-select: none;
+}
+
+.circle-list__checkbox input {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}
+
+.circle-list__checkbox:hover {
+  color: var(--color-text-primary);
+}
+
+/* Count */
+.circle-list__count {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+
+/* Grid */
+.circle-list__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Item */
+.circle-list__item {
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.circle-list__item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.circle-list__item--joined {
+  border-color: var(--color-primary);
+  background: linear-gradient(
+    to bottom right,
+    rgba(252, 109, 38, 0.05),
+    transparent
+  );
+}
+
+.circle-list__item-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.25rem;
+}
+
+/* Item Header */
+.circle-list__item-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+}
+
+.circle-list__item-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.circle-list__item-title h3 {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.circle-list__item-creator {
+  font-size: 0.75rem;
+  color: var(--color-text-tertiary);
+}
+
+/* Item Stats */
+.circle-list__item-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: var(--color-background);
+  border-radius: var(--radius-md);
+  margin-bottom: 1rem;
+}
+
+.circle-list__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.25rem;
+}
+
+.circle-list__stat-label {
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-text-tertiary);
+}
+
+.circle-list__stat-value {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+/* Progress */
+.circle-list__item-progress {
+  margin-bottom: 1rem;
+}
+
+/* Footer */
+.circle-list__item-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: 1rem;
+}
+
+.circle-list__item-pool,
+.circle-list__item-countdown {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.circle-list__pool-label,
+.circle-list__countdown-label {
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-text-tertiary);
+}
+
+.circle-list__pool-value {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.circle-list__countdown-value {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-success);
+}
+
+/* Actions */
+.circle-list__item-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.circle-list__item-actions .btn {
+  flex: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .circle-list__filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .circle-list__search {
+    width: 100%;
+  }
+
+  .circle-list__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .circle-list__item-stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .circle-list__item-stats {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .circle-list__stat {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0.25rem 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .circle-list__stat:last-child {
+    border-bottom: none;
+  }
+}
