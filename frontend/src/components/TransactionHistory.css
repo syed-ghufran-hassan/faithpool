@@ -1,0 +1,214 @@
+.transaction-history {
+  padding: 0;
+}
+
+/* Header */
+.transaction-history__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.transaction-history__header h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.transaction-history__count {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+
+/* Filters */
+.transaction-history__filters {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-background);
+}
+
+.transaction-history__filters > *:first-child {
+  flex: 1;
+}
+
+/* Content */
+.transaction-history__content {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+/* Group */
+.transaction-history__group {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.transaction-history__group:last-child {
+  border-bottom: none;
+}
+
+.transaction-history__date {
+  padding: 0.625rem 1.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-text-tertiary);
+  background: var(--color-background);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.transaction-history__items {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Item */
+.transaction-history__item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.875rem 1.25rem;
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.transaction-history__item:hover {
+  background: var(--color-background);
+}
+
+.transaction-history__item:not(:last-child) {
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* Icon */
+.transaction-history__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+.transaction-history__icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.transaction-history__icon--success {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--color-success);
+}
+
+.transaction-history__icon--error {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--color-error);
+}
+
+.transaction-history__icon--warning {
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--color-warning);
+}
+
+.transaction-history__icon--info {
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--color-info);
+}
+
+.transaction-history__icon--primary {
+  background: rgba(252, 109, 38, 0.1);
+  color: var(--color-primary);
+}
+
+/* Details */
+.transaction-history__details {
+  flex: 1;
+  min-width: 0;
+}
+
+.transaction-history__type {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.transaction-history__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--color-text-tertiary);
+}
+
+.transaction-history__txid {
+  font-family: monospace;
+}
+
+.transaction-history__circle {
+  padding-left: 0.5rem;
+  border-left: 1px solid var(--color-border);
+}
+
+/* Amount */
+.transaction-history__amount {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.transaction-history__amount.incoming {
+  color: var(--color-success);
+}
+
+.transaction-history__amount.outgoing {
+  color: var(--color-error);
+}
+
+/* Load More */
+.transaction-history__load-more {
+  display: flex;
+  justify-content: center;
+  padding: 1.5rem;
+  border-top: 1px solid var(--color-border);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .transaction-history__filters {
+    flex-direction: column;
+  }
+
+  .transaction-history__filters > *:first-child {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .transaction-history__item {
+    flex-wrap: wrap;
+  }
+
+  .transaction-history__details {
+    flex: 1;
+    min-width: calc(100% - 56px);
+  }
+
+  .transaction-history__amount {
+    width: 100%;
+    text-align: right;
+    padding-left: 56px;
+    margin-top: 0.5rem;
+  }
+}
