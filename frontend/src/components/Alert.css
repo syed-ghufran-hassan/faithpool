@@ -1,92 +1,154 @@
+/**
+ * Alert Component Styles
+ * Enhanced alerts with multiple style variants
+ */
+
 .alert {
   display: flex;
   align-items: flex-start;
-  gap: 0.75rem;
-  padding: 1rem;
-  border-radius: 8px;
-  font-size: 0.9375rem;
-}
-
-/* Types */
-.alert-info {
-  background: #eff6ff;
-  border: 1px solid #bfdbfe;
-  color: #1e40af;
-}
-
-.alert-success {
-  background: #f0fdf4;
-  border: 1px solid #bbf7d0;
-  color: #166534;
-}
-
-.alert-warning {
-  background: #fefce8;
-  border: 1px solid #fef08a;
-  color: #854d0e;
-}
-
-.alert-error {
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  color: #991b1b;
-}
-
-.alert-icon {
-  flex-shrink: 0;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.875rem;
-}
-
-.alert-info .alert-icon {
-  background: #dbeafe;
-}
-
-.alert-success .alert-icon {
-  background: #dcfce7;
-}
-
-.alert-warning .alert-icon {
-  background: #fef9c3;
-}
-
-.alert-error .alert-icon {
-  background: #fee2e2;
-}
-
-.alert-content {
-  flex: 1;
-}
-
-.alert-title {
-  font-weight: 600;
-  margin-bottom: 0.25rem;
-}
-
-.alert-message {
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  font-size: var(--text-sm);
   line-height: 1.5;
 }
 
-.alert-close {
+/* ===== ICON ===== */
+
+.alert__icon {
   flex-shrink: 0;
-  width: 24px;
-  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: none;
-  border: none;
-  font-size: 1.25rem;
-  cursor: pointer;
-  opacity: 0.6;
-  transition: opacity 0.2s ease;
 }
 
-.alert-close:hover {
+/* ===== BODY ===== */
+
+.alert__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.alert__title {
+  font-weight: var(--font-semibold);
+  margin-bottom: var(--space-1);
+}
+
+.alert__message {
+  color: inherit;
+  opacity: 0.9;
+}
+
+.alert__message a {
+  font-weight: var(--font-medium);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ===== ACTIONS ===== */
+
+.alert__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+.alert__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-md);
+  color: currentColor;
+  opacity: 0.6;
+  cursor: pointer;
+  transition: all var(--duration-fast);
+}
+
+.alert__close:hover {
   opacity: 1;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+/* ===== SOFT STYLE (Default) ===== */
+
+.alert--soft.alert--info {
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  color: var(--color-info-400);
+}
+
+.alert--soft.alert--success {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  color: var(--color-success-400);
+}
+
+.alert--soft.alert--warning {
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  color: var(--color-warning-400);
+}
+
+.alert--soft.alert--error {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: var(--color-error-400);
+}
+
+/* ===== FILLED STYLE ===== */
+
+.alert--filled.alert--info {
+  background: var(--color-info-500);
+  color: white;
+}
+
+.alert--filled.alert--success {
+  background: var(--color-success-500);
+  color: white;
+}
+
+.alert--filled.alert--warning {
+  background: var(--color-warning-500);
+  color: white;
+}
+
+.alert--filled.alert--error {
+  background: var(--color-error-500);
+  color: white;
+}
+
+.alert--filled .alert__close:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ===== OUTLINED STYLE ===== */
+
+.alert--outlined {
+  background: transparent;
+}
+
+.alert--outlined.alert--info {
+  border: 1px solid var(--color-info-500);
+  color: var(--color-info-400);
+}
+
+.alert--outlined.alert--success {
+  border: 1px solid var(--color-success-500);
+  color: var(--color-success-400);
+}
+
+.alert--outlined.alert--warning {
+  border: 1px solid var(--color-warning-500);
+  color: var(--color-warning-400);
+}
+
+.alert--outlined.alert--error {
+  border: 1px solid var(--color-error-500);
+  color: var(--color-error-400);
 }
