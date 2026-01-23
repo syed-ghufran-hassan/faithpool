@@ -1,94 +1,210 @@
+/**
+ * Input Component Styles
+ * Modern input with multiple sizes, states, and icon support
+ */
+
 .input-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 0.375rem;
+  gap: var(--space-1);
+  width: 100%;
 }
 
-.input-label {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #374151;
+/* Label */
+.input__label {
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-1);
 }
 
-.input-required {
-  color: #dc2626;
-  margin-left: 0.25rem;
+.input__required {
+  color: var(--color-error-400);
+  margin-left: var(--space-1);
 }
 
-.input-container {
+/* Container */
+.input__container {
   display: flex;
   align-items: center;
-  background: white;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  padding: 0 0.75rem;
-  transition: all 0.2s ease;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  transition: all var(--duration-fast) var(--ease-default);
+  position: relative;
 }
 
-.input-container:focus-within {
-  border-color: #5546ff;
-  box-shadow: 0 0 0 3px rgba(85, 70, 255, 0.1);
+.input__container:hover:not(.input__container--disabled) {
+  border-color: var(--color-border-hover);
+  background: var(--color-surface-hover);
 }
 
-.input-container.input-error {
-  border-color: #dc2626;
+.input__container:focus-within:not(.input__container--disabled) {
+  border-color: var(--color-primary-400);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+  background: var(--color-surface);
 }
 
-.input-container.input-error:focus-within {
-  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+/* Error state */
+.input__container--error {
+  border-color: var(--color-error-400);
 }
 
-.input-container.input-disabled {
-  background: #f3f4f6;
+.input__container--error:focus-within {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+}
+
+/* Success state */
+.input__container--success {
+  border-color: var(--color-success-400);
+}
+
+.input__container--success:focus-within {
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15);
+}
+
+/* Disabled state */
+.input__container--disabled {
+  opacity: 0.5;
   cursor: not-allowed;
+  background: var(--color-surface);
 }
 
-.input-field {
+/* Sizes */
+.input__container--sm {
+  padding: 0 var(--space-3);
+}
+
+.input__container--sm .input__field {
+  padding: var(--space-2) 0;
+  font-size: var(--text-sm);
+}
+
+.input__container--md {
+  padding: 0 var(--space-3);
+}
+
+.input__container--md .input__field {
+  padding: var(--space-3) 0;
+  font-size: var(--text-sm);
+}
+
+.input__container--lg {
+  padding: 0 var(--space-4);
+}
+
+.input__container--lg .input__field {
+  padding: var(--space-4) 0;
+  font-size: var(--text-base);
+}
+
+/* Field */
+.input__field {
   flex: 1;
-  padding: 0.75rem 0;
   border: none;
   background: transparent;
-  font-size: 0.9375rem;
-  color: #111827;
+  color: var(--color-text-primary);
   outline: none;
+  font-family: var(--font-sans);
+  min-width: 0;
+  width: 100%;
 }
 
-.input-field::placeholder {
-  color: #9ca3af;
+.input__field::placeholder {
+  color: var(--color-text-muted);
 }
 
-.input-field:disabled {
+.input__field:disabled {
   cursor: not-allowed;
-  color: #6b7280;
 }
 
-.input-icon {
+/* Autofill styling */
+.input__field:-webkit-autofill,
+.input__field:-webkit-autofill:hover,
+.input__field:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--color-text-primary);
+  -webkit-box-shadow: 0 0 0 1000px var(--color-surface) inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Icons */
+.input__icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #9ca3af;
+  color: var(--color-text-muted);
+  flex-shrink: 0;
 }
 
-.input-icon-left {
-  margin-right: 0.5rem;
+.input__icon--left {
+  margin-right: var(--space-2);
 }
 
-.input-icon-right {
-  margin-left: 0.5rem;
+.input__icon--right {
+  margin-left: var(--space-2);
 }
 
-.input-hint {
-  font-size: 0.75rem;
-  color: #6b7280;
+.input__icons-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-left: var(--space-2);
 }
 
-.input-error-text {
-  font-size: 0.75rem;
-  color: #dc2626;
+/* Status icons */
+.input__status-icon {
+  flex-shrink: 0;
 }
 
-/* Textarea variant */
-.input-field.textarea {
-  min-height: 100px;
-  resize: vertical;
+.input__status-icon--error {
+  color: var(--color-error-400);
+}
+
+.input__status-icon--success {
+  color: var(--color-success-400);
+}
+
+/* Password toggle */
+.input__toggle-password {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-1);
+  color: var(--color-text-muted);
+  border-radius: var(--radius-md);
+  transition: all var(--duration-fast) var(--ease-default);
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.input__toggle-password:hover {
+  color: var(--color-text-secondary);
+  background: var(--color-surface-hover);
+}
+
+/* Hint text */
+.input__hint {
+  font-size: var(--text-xs);
+  color: var(--color-text-tertiary);
+  margin-top: var(--space-1);
+}
+
+/* Error text */
+.input__error {
+  font-size: var(--text-xs);
+  color: var(--color-error-400);
+  margin-top: var(--space-1);
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+/* With icons padding adjustments */
+.input__container--has-left-icon .input__field {
+  padding-left: 0;
+}
+
+.input__container--has-right-icon .input__field {
+  padding-right: 0;
 }
