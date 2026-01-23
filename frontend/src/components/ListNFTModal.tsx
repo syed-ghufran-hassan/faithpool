@@ -1,39 +1,48 @@
 // List NFT Modal - Set price and list NFT for sale
 
-import { useState } from 'react';
+import { useState, useCallback, memo } from 'react';
+import { Tag, Percent, Coins, AlertCircle, Sparkles, TrendingDown } from 'lucide-react';
+import clsx from 'clsx';
 import { Modal } from './Modal';
 import { Input } from './Input';
 import { Button } from './Button';
 import { formatSTX } from '../utils/helpers';
 import './ListNFTModal.css';
 
-interface ListNFTModalProps {
+export interface ListNFTModalProps {
   isOpen: boolean;
   onClose: () => void;
   tokenId: number;
   onConfirm: (tokenId: number, price: number) => Promise<void>;
   suggestedPrice?: number;
   floorPrice?: number;
+  className?: string;
 }
 
-export function ListNFTModal({
+const MARKETPLACE_FEE = 0.025; // 2.5%
+const MIN_PRICE = 0.1;
+const MAX_PRICE = 100000;
+
+export const ListNFTModal = memo<ListNFTModalProps>(function ListNFTModal({
   isOpen,
   onClose,
   tokenId,
   onConfirm,
   suggestedPrice,
   floorPrice,
-}: ListNFTModalProps) {
+  className,
+}) {
   const [price, setPrice] = useState(suggestedPrice?.toString() || '');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const priceNum = parseFloat(price) || 0;
-  const isValidPrice = priceNum >= 0.1 && priceNum <= 100000;
+  const isValidPrice = priceNum >= MIN_PRICE && priceNum <= MAX_PRICE;
+  const receiveAmount = priceNum * (1 - MARKETPLACE_FEE);
 
-  const handleSubmit = async () => {
+  const handleSubmit = useCallback(async () => {
     if (!isValidPrice) {
-      setError('Price must be between 0.1 and 100,000 STX');
+      setError(`Price must be between ${MIN_PRICE} and ${MAX_PRICE.toLocaleString()} STX`);
       return;
     }
 
@@ -48,80 +57,114 @@ export function ListNFTModal({
     } finally {
       setIsSubmitting(false);
     }
-  };
+  }, [isValidPrice, onConfirm, tokenId, priceNum, onClose]);
 
-  const handlePriceChange = (value: string) => {
+  const handlePriceChange = useCallback((value: string) => {
     // Only allow numbers and decimal point
     if (/^[0-9]*\.?[0-9]*$/.test(value)) {
       setPrice(value);
       setError(null);
     }
-  };
+  }, []);
+
+  const handleClose = useCallback(() => {
+    if (!isSubmitting) {
+      onClose();
+    }
+  }, [onClose, isSubmitting]);
+
+  const handleSetSuggested = useCallback(() => {
+    if (suggestedPrice) {
+      setPrice(suggestedPrice.toString());
+    }
+  }, [suggestedPrice]);
+
+  const handleSetFloor = useCallback(() => {
+    if (floorPrice) {
+      setPrice(floorPrice.toString());
+    }
+  }, [floorPrice]);
 
   return (
     <Modal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleClose}
       title="List NFT for Sale"
     >
-      <div className="list-nft-modal">
-        <div className="nft-preview">
-          <div className="preview-badge">NFT #{tokenId}</div>
+      <div className={clsx('list-nft-modal', className)}>
+        <div className="list-nft-modal__preview">
+          <div className="list-nft-modal__badge">
+            <Tag size={16} />
+            NFT #{tokenId}
+          </div>
         </div>
 
-        <div className="price-input-section">
-          <label className="price-label">Set Your Price (STX)</label>
-          <div className="price-input-wrapper">
+        <div className="list-nft-modal__price-section">
+          <label className="list-nft-modal__label">Set Your Price (STX)</label>
+          <div className="list-nft-modal__input-wrapper">
             <Input
               type="text"
               value={price}
               onChange={(e) => handlePriceChange(e.target.value)}
               placeholder="0.00"
-              className="price-input"
+              className="list-nft-modal__input"
               autoFocus
             />
-            <span className="price-suffix">STX</span>
+            <span className="list-nft-modal__suffix">STX</span>
           </div>
 
-          {error && <p className="price-error">{error}</p>}
+          {error && (
+            <p className="list-nft-modal__error" role="alert">
+              <AlertCircle size={14} />
+              {error}
+            </p>
+          )}
 
-          <div className="price-suggestions">
+          <div className="list-nft-modal__suggestions">
             {suggestedPrice && (
               <button
                 type="button"
-                className="price-suggestion"
-                onClick={() => setPrice(suggestedPrice.toString())}
+                className="list-nft-modal__suggestion"
+                onClick={handleSetSuggested}
               >
+                <Sparkles size={14} />
                 Suggested: {formatSTX(suggestedPrice, 2)}
               </button>
             )}
             {floorPrice && (
               <button
                 type="button"
-                className="price-suggestion"
-                onClick={() => setPrice(floorPrice.toString())}
+                className="list-nft-modal__suggestion"
+                onClick={handleSetFloor}
               >
+                <TrendingDown size={14} />
                 Floor: {formatSTX(floorPrice, 2)}
               </button>
             )}
           </div>
         </div>
 
-        <div className="listing-info">
-          <div className="info-row">
-            <span>Marketplace Fee</span>
-            <span>2.5%</span>
+        <div className="list-nft-modal__info">
+          <div className="list-nft-modal__info-row">
+            <span>
+              <Percent size={14} />
+              Marketplace Fee
+            </span>
+            <span>{(MARKETPLACE_FEE * 100).toFixed(1)}%</span>
           </div>
-          <div className="info-row">
-            <span>You Receive</span>
-            <span className="receive-amount">
-              {formatSTX(priceNum * 0.975, 2)}
+          <div className="list-nft-modal__info-row list-nft-modal__info-row--highlight">
+            <span>
+              <Coins size={14} />
+              You Receive
+            </span>
+            <span className="list-nft-modal__receive">
+              {formatSTX(receiveAmount, 2)}
             </span>
           </div>
         </div>
 
-        <div className="modal-actions">
-          <Button variant="secondary" onClick={onClose} disabled={isSubmitting}>
+        <div className="list-nft-modal__actions">
+          <Button variant="secondary" onClick={handleClose} disabled={isSubmitting}>
             Cancel
           </Button>
           <Button
@@ -129,6 +172,7 @@ export function ListNFTModal({
             onClick={handleSubmit}
             disabled={!isValidPrice || isSubmitting}
             loading={isSubmitting}
+            leftIcon={<Tag size={16} />}
           >
             List for Sale
           </Button>
@@ -136,6 +180,6 @@ export function ListNFTModal({
       </div>
     </Modal>
   );
-}
+});
 
 export default ListNFTModal;
