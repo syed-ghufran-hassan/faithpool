@@ -1,21 +1,13 @@
 import { Link, useLocation } from 'react-router-dom';
+import { useWallet } from '../context/WalletContext';
+import { truncateAddress, formatSTX } from '../utils/helpers';
 import './Navbar.css';
 
-interface NavbarProps {
-  isConnected: boolean;
-  address?: string;
-  onConnect: () => void;
-  onDisconnect: () => void;
-}
-
-function Navbar({ isConnected, address, onConnect, onDisconnect }: NavbarProps) {
+function Navbar() {
   const location = useLocation();
+  const { isConnected, isConnecting, address, balance, connect, disconnect, error } = useWallet();
 
   const isActive = (path: string) => location.pathname === path;
-
-  const truncateAddress = (addr: string) => {
-    return `${addr.slice(0, 6)}...${addr.slice(-4)}`;
-  };
 
   return (
     <nav className="navbar">
@@ -51,19 +43,27 @@ function Navbar({ isConnected, address, onConnect, onDisconnect }: NavbarProps) 
         <div className="navbar-actions">
           {isConnected ? (
             <div className="wallet-info">
+              <div className="wallet-balance">
+                <span className="balance-amount">{formatSTX(balance, 2)}</span>
+              </div>
               <div className="wallet-address">
                 <span className="wallet-icon">👛</span>
                 <span>{truncateAddress(address || '')}</span>
               </div>
-              <button onClick={onDisconnect} className="btn-disconnect">
+              <button onClick={disconnect} className="btn-disconnect">
                 Disconnect
               </button>
             </div>
           ) : (
-            <button onClick={onConnect} className="btn-connect">
-              Connect Wallet
+            <button 
+              onClick={connect} 
+              className="btn-connect"
+              disabled={isConnecting}
+            >
+              {isConnecting ? 'Connecting...' : 'Connect Wallet'}
             </button>
           )}
+          {error && <span className="wallet-error">{error}</span>}
         </div>
 
         <button className="mobile-menu-btn">
