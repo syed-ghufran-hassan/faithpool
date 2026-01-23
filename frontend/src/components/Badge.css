@@ -1,45 +1,176 @@
+/**
+ * Badge Component Styles
+ * Versatile badge with dot, icon, and removable variants
+ */
+
 .badge {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  border-radius: 20px;
-  font-weight: 600;
-  text-transform: capitalize;
+  gap: var(--space-1);
+  border-radius: var(--radius-full);
+  font-weight: var(--font-medium);
+  white-space: nowrap;
+  transition: all var(--duration-fast);
 }
 
-/* Sizes */
-.badge-small {
+/* ===== SIZES ===== */
+
+.badge--xs {
+  padding: 2px 6px;
+  font-size: var(--text-xs);
+  gap: 2px;
+}
+
+.badge--sm {
   padding: 4px 10px;
-  font-size: 0.7rem;
+  font-size: var(--text-xs);
 }
 
-.badge-medium {
+.badge--md {
   padding: 6px 14px;
-  font-size: 0.8rem;
+  font-size: var(--text-sm);
 }
 
-/* Variants */
-.badge-default {
-  background: #f3f4f6;
-  color: #6b7280;
+.badge--lg {
+  padding: 8px 18px;
+  font-size: var(--text-base);
 }
 
-.badge-success {
-  background: rgba(16, 185, 129, 0.1);
-  color: #10b981;
+/* ===== VARIANTS ===== */
+
+.badge--default {
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-secondary);
 }
 
-.badge-warning {
-  background: rgba(245, 158, 11, 0.1);
-  color: #f59e0b;
+.badge--primary {
+  background: rgba(139, 92, 246, 0.15);
+  color: var(--color-primary-400);
 }
 
-.badge-error {
-  background: rgba(239, 68, 68, 0.1);
-  color: #ef4444;
+.badge--secondary {
+  background: rgba(6, 182, 212, 0.15);
+  color: var(--color-secondary-400);
 }
 
-.badge-info {
-  background: rgba(102, 126, 234, 0.1);
-  color: #667eea;
+.badge--success {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--color-success-400);
+}
+
+.badge--warning {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--color-warning-400);
+}
+
+.badge--error {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--color-error-400);
+}
+
+.badge--info {
+  background: rgba(59, 130, 246, 0.15);
+  color: var(--color-info-400);
+}
+
+/* ===== OUTLINE VARIANT ===== */
+
+.badge--outline {
+  background: transparent;
+  border: 1px solid currentColor;
+}
+
+.badge--outline.badge--default {
+  border-color: var(--color-border);
+  color: var(--color-text-secondary);
+}
+
+/* ===== ROUNDED PILL ===== */
+
+.badge--rounded {
+  border-radius: var(--radius-md);
+}
+
+/* ===== DOT INDICATOR ===== */
+
+.badge__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+.badge--lg .badge__dot {
+  width: 8px;
+  height: 8px;
+}
+
+/* Pulsing dot animation for active status */
+.badge--success .badge__dot {
+  animation: badge-dot-pulse 2s ease-in-out infinite;
+}
+
+@keyframes badge-dot-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(0.9);
+  }
+}
+
+/* ===== ICON ===== */
+
+.badge__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.badge__icon svg {
+  width: 1em;
+  height: 1em;
+}
+
+/* ===== CONTENT ===== */
+
+.badge__content {
+  line-height: 1;
+}
+
+/* ===== REMOVE BUTTON ===== */
+
+.badge__remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  padding: 0;
+  margin-left: var(--space-1);
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 50%;
+  color: currentColor;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: all var(--duration-fast);
+}
+
+.badge__remove:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.badge--lg .badge__remove {
+  width: 18px;
+  height: 18px;
+  font-size: 14px;
 }
