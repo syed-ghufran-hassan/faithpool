@@ -1,166 +1,247 @@
+/* ClaimPayoutCard Component */
 .claim-payout-card {
   background: var(--color-card);
-  border-radius: 0.75rem;
-  padding: 1.25rem;
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
   border: 1px solid var(--color-border);
-  transition: all 0.2s ease;
+  transition: all var(--transition-fast);
 }
 
-.claim-payout-card.claimable {
-  border-color: rgba(34, 197, 94, 0.3);
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.05), transparent);
+.claim-payout-card--compact {
+  padding: var(--space-4);
 }
 
-.claim-payout-card.pending {
-  border-color: rgba(245, 158, 11, 0.3);
-  background: linear-gradient(135deg, rgba(245, 158, 11, 0.05), transparent);
+.claim-payout-card--claimable {
+  border-color: color-mix(in srgb, var(--color-success) 30%, transparent);
+  background: linear-gradient(135deg, 
+    color-mix(in srgb, var(--color-success) 5%, transparent), 
+    transparent
+  );
 }
 
-.payout-header {
+.claim-payout-card--claimable:hover {
+  border-color: color-mix(in srgb, var(--color-success) 50%, transparent);
+  box-shadow: 0 4px 20px color-mix(in srgb, var(--color-success) 15%, transparent);
+}
+
+.claim-payout-card--pending {
+  border-color: color-mix(in srgb, var(--color-warning) 30%, transparent);
+  background: linear-gradient(135deg, 
+    color-mix(in srgb, var(--color-warning) 5%, transparent), 
+    transparent
+  );
+}
+
+.claim-payout-card--claimed {
+  border-color: var(--color-success);
+  background: linear-gradient(135deg, 
+    color-mix(in srgb, var(--color-success) 10%, transparent), 
+    transparent
+  );
+  animation: claimSuccess 0.3s ease;
+}
+
+@keyframes claimSuccess {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.98); }
+  100% { transform: scale(1); }
+}
+
+/* Header */
+.claim-payout-card__header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-4);
 }
 
-.payout-circle-info {
+.claim-payout-card__circle-info {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: var(--space-1);
 }
 
-.payout-circle-name {
-  font-size: 1rem;
-  font-weight: 600;
+.claim-payout-card__circle-name {
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
   color: var(--color-text-primary);
   margin: 0;
 }
 
-.payout-circle-id {
-  font-size: 0.75rem;
+.claim-payout-card__circle-id {
+  font-size: var(--text-xs);
   color: var(--color-text-tertiary);
 }
 
-.payout-details {
-  margin-bottom: 1rem;
+/* Details */
+.claim-payout-card__details {
+  margin-bottom: var(--space-4);
 }
 
-.payout-amount {
+.claim-payout-card__amount {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background: var(--color-background);
-  border-radius: 0.5rem;
-  padding: 0.75rem 1rem;
-  margin-bottom: 0.75rem;
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-3);
 }
 
-.amount-label {
-  font-size: 0.75rem;
+.claim-payout-card__amount-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
   color: var(--color-text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
-.amount-value {
-  font-size: 1.25rem;
-  font-weight: 700;
+.claim-payout-card__amount-value {
+  font-size: var(--text-xl);
+  font-weight: var(--font-bold);
   color: var(--color-success);
 }
 
-.payout-info-grid {
+.claim-payout-card--compact .claim-payout-card__amount-value {
+  font-size: var(--text-lg);
+}
+
+/* Info Grid */
+.claim-payout-card__info-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.75rem;
+  gap: var(--space-3);
 }
 
-.payout-info-item {
+.claim-payout-card__info-item {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: var(--space-1);
 }
 
-.info-label {
-  font-size: 0.75rem;
+.claim-payout-card__info-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-xs);
   color: var(--color-text-tertiary);
 }
 
-.info-value {
-  font-size: 0.875rem;
-  font-weight: 600;
+.claim-payout-card__info-value {
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
   color: var(--color-text-primary);
 }
 
-.text-success {
-  color: var(--color-success) !important;
+.claim-payout-card__info-value--success {
+  color: var(--color-success);
 }
 
-.text-warning {
-  color: var(--color-warning) !important;
+.claim-payout-card__info-value--warning {
+  color: var(--color-warning);
 }
 
-.payout-error {
-  background: rgba(239, 68, 68, 0.1);
-  color: var(--color-error);
-  font-size: 0.75rem;
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.375rem;
-  margin-bottom: 1rem;
-}
-
-.payout-actions {
+/* Error */
+.claim-payout-card__error {
   display: flex;
-  gap: 0.75rem;
+  align-items: center;
+  gap: var(--space-2);
+  background: color-mix(in srgb, var(--color-error) 10%, transparent);
+  color: var(--color-error);
+  font-size: var(--text-xs);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--space-4);
 }
 
-.payout-actions button {
+/* Success State */
+.claim-payout-card__success {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-6);
+  color: var(--color-success);
+  font-weight: var(--font-medium);
+}
+
+.claim-payout-card__success-icon {
+  width: 24px;
+  height: 24px;
+}
+
+/* Actions */
+.claim-payout-card__actions {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.claim-payout-card__actions button {
   flex: 1;
 }
 
-/* List styles */
+/* List Styles */
 .claim-payout-list {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: var(--space-4);
 }
 
-.claim-summary {
+.claim-payout-list__summary {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background: var(--color-success);
   color: white;
-  padding: 0.75rem 1rem;
-  border-radius: 0.5rem;
-  font-size: 0.875rem;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
 }
 
-.claim-total {
-  font-weight: 700;
+.claim-payout-list__summary-count {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
 }
 
-.payout-cards {
+.claim-payout-list__summary-total {
+  font-weight: var(--font-bold);
+}
+
+.claim-payout-list__cards {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: var(--space-3);
 }
 
+/* Empty State */
 .claim-payout-empty {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 3rem 2rem;
+  padding: var(--space-12) var(--space-8);
   text-align: center;
   color: var(--color-text-tertiary);
 }
 
-.empty-icon {
-  font-size: 2.5rem;
-  margin-bottom: 0.75rem;
+.claim-payout-empty__icon {
+  width: 48px;
+  height: 48px;
+  margin-bottom: var(--space-3);
+  opacity: 0.5;
 }
 
 .claim-payout-empty p {
-  font-size: 0.875rem;
+  font-size: var(--text-sm);
   margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .claim-payout-card__actions {
+    flex-direction: column;
+  }
 }
