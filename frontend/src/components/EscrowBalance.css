@@ -1,0 +1,223 @@
+/* ==========================================================================
+   EscrowBalance Component
+   ========================================================================== */
+
+.escrow-balance {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+}
+
+/* Header */
+.escrow-balance__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-3);
+}
+
+.escrow-balance__title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.escrow-balance__total {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+/* Progress Bar */
+.escrow-balance__bar {
+  display: flex;
+  height: 8px;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  background: var(--color-background);
+  margin-bottom: var(--space-4);
+}
+
+.escrow-balance__segment {
+  height: 100%;
+  transition: width var(--transition-base);
+  min-width: 2px;
+}
+
+.escrow-balance__segment--locked {
+  background: var(--color-error);
+}
+
+.escrow-balance__segment--pending {
+  background: var(--color-warning);
+}
+
+.escrow-balance__segment--available {
+  background: var(--color-success);
+}
+
+/* Legend */
+.escrow-balance__legend {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.escrow-balance__legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.escrow-balance__legend-icon {
+  flex-shrink: 0;
+}
+
+.escrow-balance__legend-icon--locked {
+  color: var(--color-error);
+}
+
+.escrow-balance__legend-icon--pending {
+  color: var(--color-warning);
+}
+
+.escrow-balance__legend-icon--available {
+  color: var(--color-success);
+}
+
+.escrow-balance__legend-label {
+  flex: 1;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.escrow-balance__legend-value {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+/* Variant: Card */
+.escrow-balance--card {
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Variant: Compact */
+.escrow-balance--compact {
+  padding: var(--space-3);
+}
+
+.escrow-balance--compact .escrow-balance__legend {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.escrow-balance--compact .escrow-balance__legend-item {
+  flex: 1;
+  min-width: 100px;
+}
+
+/* ==========================================================================
+   CompactEscrow Component
+   ========================================================================== */
+
+.compact-escrow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+}
+
+.compact-escrow__icon {
+  color: var(--color-primary);
+}
+
+.compact-escrow__label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.compact-escrow__value {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-left: auto;
+}
+
+/* ==========================================================================
+   CircleEscrow Component
+   ========================================================================== */
+
+.circle-escrow {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+}
+
+.circle-escrow__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.circle-escrow__id {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.circle-escrow__pool {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.circle-escrow__details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.circle-escrow__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--font-size-sm);
+}
+
+.circle-escrow__row > span:first-child {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--color-text-secondary);
+}
+
+.circle-escrow__row > span:last-child {
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+.circle-escrow__recipient {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  color: var(--color-primary);
+}
