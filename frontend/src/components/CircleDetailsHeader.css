@@ -1,126 +1,166 @@
-.circle-details-header {
+/* CircleDetailsHeader - BEM naming convention */
+
+.circle-header {
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  padding: 24px;
-  background: var(--surface-primary);
-  border-radius: 16px;
+  gap: var(--space-6);
+  padding: var(--space-6);
+  background: var(--color-surface);
+  border-radius: var(--radius-xl);
   box-shadow: var(--shadow-sm);
 }
 
-.header-main {
+/* Main section */
+.circle-header__main {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
-.header-title-row {
+.circle-header__title-row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-3);
   flex-wrap: wrap;
 }
 
-.circle-name {
-  font-size: 28px;
+.circle-header__name {
+  font-size: var(--text-3xl);
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
   margin: 0;
 }
 
-.header-creator {
+.circle-header__creator {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 14px;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
 }
 
-.creator-label {
-  color: var(--text-tertiary);
+.circle-header__creator-label {
+  color: var(--color-text-tertiary);
 }
 
-.creator-address {
+.circle-header__creator-address {
   font-family: var(--font-mono);
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
 }
 
-.header-stats {
+/* Stats grid */
+.circle-header__stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 16px;
+  gap: var(--space-4);
 }
 
-.stat-card {
+.circle-header__stat {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 16px;
-  background: var(--surface-secondary);
-  border-radius: 12px;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--color-surface-secondary);
+  border-radius: var(--radius-lg);
+  transition: transform var(--transition-fast);
 }
 
-.stat-card.highlight {
-  background: linear-gradient(135deg, var(--color-primary-light), var(--color-secondary-light));
+.circle-header__stat:hover {
+  transform: translateY(-2px);
+}
+
+.circle-header__stat--highlight {
+  background: linear-gradient(135deg, var(--color-primary-muted), var(--color-secondary-muted, var(--color-primary-muted)));
   border: 2px solid var(--color-primary);
 }
 
-.stat-icon {
-  font-size: 24px;
+.circle-header__stat-icon {
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.stat-content {
+.circle-header__stat--highlight .circle-header__stat-icon {
+  color: var(--color-primary);
+}
+
+.circle-header__stat-content {
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
-.stat-value {
-  font-size: 18px;
+.circle-header__stat-value {
+  font-size: var(--text-lg);
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.stat-label {
-  font-size: 12px;
-  color: var(--text-secondary);
+.circle-header__stat-label {
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
 }
 
-.header-progress {
+/* Progress section */
+.circle-header__progress {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-4);
 }
 
-.progress-section {
+.circle-header__progress-section {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
-.progress-header {
+.circle-header__progress-header {
   display: flex;
   justify-content: space-between;
-  font-size: 14px;
+  align-items: center;
+  font-size: var(--text-sm);
 }
 
-.progress-label {
-  color: var(--text-secondary);
+.circle-header__progress-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-text-secondary);
 }
 
-.progress-value {
+.circle-header__progress-value {
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--color-text-primary);
 }
 
+/* Responsive */
 @media (max-width: 640px) {
-  .circle-details-header {
-    padding: 16px;
+  .circle-header {
+    padding: var(--space-4);
   }
 
-  .circle-name {
-    font-size: 22px;
+  .circle-header__name {
+    font-size: var(--text-2xl);
   }
 
-  .header-stats {
+  .circle-header__stats {
     grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .circle-header__stat {
+    padding: var(--space-3);
+  }
+  
+  .circle-header__stat-value {
+    font-size: var(--text-base);
+  }
+}
+
+@media (max-width: 400px) {
+  .circle-header__stats {
+    grid-template-columns: 1fr;
   }
 }
