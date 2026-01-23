@@ -1,0 +1,101 @@
+.reputation-badge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.badge-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 2px solid;
+}
+
+.size-sm .badge-icon {
+  width: 32px;
+  height: 32px;
+}
+
+.size-md .badge-icon {
+  width: 48px;
+  height: 48px;
+}
+
+.size-lg .badge-icon {
+  width: 64px;
+  height: 64px;
+}
+
+.tier-icon {
+  font-size: 16px;
+}
+
+.size-md .tier-icon {
+  font-size: 24px;
+}
+
+.size-lg .tier-icon {
+  font-size: 32px;
+}
+
+.badge-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tier-name {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.size-lg .tier-name {
+  font-size: 18px;
+}
+
+.tier-score {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.size-lg .tier-score {
+  font-size: 14px;
+}
+
+.tier-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.progress-bar {
+  width: 100px;
+  height: 4px;
+  background: var(--surface-secondary);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.next-tier {
+  font-size: 10px;
+  color: var(--text-tertiary);
+}
+
+/* Compact variant */
+.reputation-badge-compact {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
