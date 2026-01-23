@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, memo } from 'react';
+import { ChevronDown, Users, Coins, Calendar, Lock, FileText, PlusCircle, AlertTriangle } from 'lucide-react';
+import clsx from 'clsx';
 import { Modal } from './Modal';
 import { Button } from './Button';
 import { Input } from './Input';
@@ -6,7 +8,7 @@ import { Select } from './Select';
 import { Alert } from './Alert';
 import './CreateCircleModal.css';
 
-interface CreateCircleModalProps {
+export interface CreateCircleModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (circleData: CircleFormData) => Promise<void>;
@@ -28,53 +30,49 @@ const FREQUENCY_OPTIONS = [
   { value: 'weekly', label: 'Weekly' },
   { value: 'biweekly', label: 'Bi-weekly' },
   { value: 'monthly', label: 'Monthly' },
-];
+] as const;
 
 const MEMBER_OPTIONS = [
   { value: '5', label: '5 Members' },
   { value: '10', label: '10 Members' },
   { value: '15', label: '15 Members' },
   { value: '20', label: '20 Members' },
-];
+] as const;
 
 const MIN_CONTRIBUTION = 1; // 1 STX
 const MAX_CONTRIBUTION = 10000; // 10,000 STX
+const PLATFORM_FEE = 0.02; // 2%
 
-export const CreateCircleModal: React.FC<CreateCircleModalProps> = ({
+const DEFAULT_FORM_DATA: CircleFormData = {
+  name: '',
+  maxMembers: 10,
+  contributionAmount: 10,
+  payoutFrequency: 'weekly',
+  description: '',
+  isPrivate: false,
+};
+
+export const CreateCircleModal = memo<CreateCircleModalProps>(function CreateCircleModal({
   isOpen,
   onClose,
   onSubmit,
   isLoading = false,
   userBalance = 0,
-}) => {
-  const [formData, setFormData] = useState<CircleFormData>({
-    name: '',
-    maxMembers: 10,
-    contributionAmount: 10,
-    payoutFrequency: 'weekly',
-    description: '',
-    isPrivate: false,
-  });
+}) {
+  const [formData, setFormData] = useState<CircleFormData>(DEFAULT_FORM_DATA);
   const [errors, setErrors] = useState<Partial<Record<keyof CircleFormData, string>>>({});
   const [showAdvanced, setShowAdvanced] = useState(false);
 
   useEffect(() => {
     if (!isOpen) {
       // Reset form when modal closes
-      setFormData({
-        name: '',
-        maxMembers: 10,
-        contributionAmount: 10,
-        payoutFrequency: 'weekly',
-        description: '',
-        isPrivate: false,
-      });
+      setFormData(DEFAULT_FORM_DATA);
       setErrors({});
       setShowAdvanced(false);
     }
   }, [isOpen]);
 
-  const validateForm = (): boolean => {
+  const validateForm = useCallback((): boolean => {
     const newErrors: Partial<Record<keyof CircleFormData, string>> = {};
 
     if (!formData.name.trim()) {
@@ -97,9 +95,9 @@ export const CreateCircleModal: React.FC<CreateCircleModalProps> = ({
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  };
+  }, [formData, userBalance]);
 
-  const handleSubmit = async () => {
+  const handleSubmit = useCallback(async () => {
     if (!validateForm()) return;
 
     try {
@@ -111,17 +109,21 @@ export const CreateCircleModal: React.FC<CreateCircleModalProps> = ({
     } catch (error) {
       console.error('Failed to create circle:', error);
     }
-  };
+  }, [validateForm, onSubmit, formData, onClose]);
 
-  const handleInputChange = (field: keyof CircleFormData, value: string | number | boolean) => {
+  const handleInputChange = useCallback((field: keyof CircleFormData, value: string | number | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }));
-    if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: undefined }));
-    }
-  };
+    setErrors(prev => (prev[field] ? { ...prev, [field]: undefined } : prev));
+  }, []);
+
+  const toggleAdvanced = useCallback(() => {
+    setShowAdvanced(prev => !prev);
+  }, []);
 
   const totalPoolSize = formData.contributionAmount * formData.maxMembers;
-  const estimatedPayout = totalPoolSize - (totalPoolSize * 0.02); // 2% platform fee
+  const estimatedPayout = totalPoolSize * (1 - PLATFORM_FEE);
+  const userBalanceSTX = userBalance / 1_000_000;
+  const isOverBalance = formData.contributionAmount > userBalanceSTX;
 
   return (
     <Modal
@@ -135,6 +137,7 @@ export const CreateCircleModal: React.FC<CreateCircleModalProps> = ({
           {/* Circle Name */}
           <div className="create-circle-modal__field">
             <label className="create-circle-modal__label">
+              <FileText size={14} />
               Circle Name
               <span className="create-circle-modal__required">*</span>
             </label>
@@ -153,7 +156,10 @@ export const CreateCircleModal: React.FC<CreateCircleModalProps> = ({
           {/* Members & Contribution Row */}
           <div className="create-circle-modal__row">
             <div className="create-circle-modal__field">
-              <label className="create-circle-modal__label">Max Members</label>
+              <label className="create-circle-modal__label">
+                <Users size={14} />
+                Max Members
+              </label>
               <Select
                 value={String(formData.maxMembers)}
                 onChange={(e) => handleInputChange('maxMembers', parseInt(e.target.value))}
@@ -163,6 +169,7 @@ export const CreateCircleModal: React.FC<CreateCircleModalProps> = ({
 
             <div className="create-circle-modal__field">
               <label className="create-circle-modal__label">
+                <Coins size={14} />
                 Contribution (STX)
                 <span className="create-circle-modal__required">*</span>
               </label>
@@ -180,7 +187,10 @@ export const CreateCircleModal: React.FC<CreateCircleModalProps> = ({
 
           {/* Payout Frequency */}
           <div className="create-circle-modal__field">
-            <label className="create-circle-modal__label">Payout Frequency</label>
+            <label className="create-circle-modal__label">
+              <Calendar size={14} />
+              Payout Frequency
+            </label>
             <Select
               value={formData.payoutFrequency}
               onChange={(e) => handleInputChange('payoutFrequency', e.target.value as CircleFormData['payoutFrequency'])}
@@ -192,25 +202,23 @@ export const CreateCircleModal: React.FC<CreateCircleModalProps> = ({
           <button
             type="button"
             className="create-circle-modal__advanced-toggle"
-            onClick={() => setShowAdvanced(!showAdvanced)}
+            onClick={toggleAdvanced}
           >
             <span>{showAdvanced ? 'Hide' : 'Show'} Advanced Options</span>
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              className={showAdvanced ? 'rotated' : ''}
-            >
-              <polyline points="6,9 12,15 18,9" />
-            </svg>
+            <ChevronDown
+              size={16}
+              className={clsx(showAdvanced && 'create-circle-modal__chevron--rotated')}
+            />
           </button>
 
           {/* Advanced Options */}
           {showAdvanced && (
             <div className="create-circle-modal__advanced">
               <div className="create-circle-modal__field">
-                <label className="create-circle-modal__label">Description</label>
+                <label className="create-circle-modal__label">
+                  <FileText size={14} />
+                  Description
+                </label>
                 <textarea
                   className="create-circle-modal__textarea"
                   placeholder="Describe your circle..."
@@ -230,6 +238,7 @@ export const CreateCircleModal: React.FC<CreateCircleModalProps> = ({
                   checked={formData.isPrivate}
                   onChange={(e) => handleInputChange('isPrivate', e.target.checked)}
                 />
+                <Lock size={16} className="create-circle-modal__checkbox-icon" />
                 <span className="create-circle-modal__checkbox-text">
                   <strong>Private Circle</strong>
                   <small>Only invited members can join</small>
@@ -252,7 +261,7 @@ export const CreateCircleModal: React.FC<CreateCircleModalProps> = ({
               </div>
               <div className="create-circle-modal__summary-item">
                 <span className="summary-label">Platform Fee</span>
-                <span className="summary-value">2%</span>
+                <span className="summary-value">{(PLATFORM_FEE * 100).toFixed(0)}%</span>
               </div>
               <div className="create-circle-modal__summary-item">
                 <span className="summary-label">Payout Schedule</span>
@@ -262,9 +271,10 @@ export const CreateCircleModal: React.FC<CreateCircleModalProps> = ({
           </div>
 
           {/* Balance Warning */}
-          {formData.contributionAmount > userBalance / 1_000_000 && (
+          {isOverBalance && (
             <Alert variant="warning" className="create-circle-modal__alert">
-              Your balance ({(userBalance / 1_000_000).toFixed(2)} STX) is less than the contribution amount.
+              <AlertTriangle size={16} />
+              Your balance ({userBalanceSTX.toFixed(2)} STX) is less than the contribution amount.
             </Alert>
           )}
         </div>
@@ -277,8 +287,9 @@ export const CreateCircleModal: React.FC<CreateCircleModalProps> = ({
           <Button
             variant="primary"
             onClick={handleSubmit}
-            isLoading={isLoading}
+            loading={isLoading}
             disabled={!formData.name.trim() || formData.contributionAmount <= 0}
+            leftIcon={<PlusCircle size={16} />}
           >
             Create Circle
           </Button>
@@ -286,6 +297,6 @@ export const CreateCircleModal: React.FC<CreateCircleModalProps> = ({
       </div>
     </Modal>
   );
-};
+});
 
 export default CreateCircleModal;

@@ -202,6 +202,10 @@
   margin-top: 0;
 }
 
+.create-circle-modal__alert svg {
+  flex-shrink: 0;
+}
+
 /* Actions */
 .create-circle-modal__actions {
   display: flex;
@@ -209,6 +213,36 @@
   gap: 0.75rem;
   padding-top: 1rem;
   border-top: 1px solid var(--color-border);
+}
+
+/* Label with icon */
+.create-circle-modal__label {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.create-circle-modal__label svg {
+  color: var(--color-text-tertiary);
+}
+
+/* Chevron rotation */
+.create-circle-modal__chevron--rotated {
+  transform: rotate(180deg);
+}
+
+.create-circle-modal__advanced-toggle svg {
+  transition: transform var(--transition-fast);
+}
+
+/* Checkbox icon */
+.create-circle-modal__checkbox-icon {
+  color: var(--color-text-tertiary);
+  flex-shrink: 0;
+}
+
+.create-circle-modal__checkbox input:checked + .create-circle-modal__checkbox-icon {
+  color: var(--color-primary);
 }
 
 /* Responsive */
