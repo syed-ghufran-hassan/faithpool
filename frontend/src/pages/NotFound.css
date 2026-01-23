@@ -1,121 +1,116 @@
-.not-found-page {
-  min-height: 70vh;
+.not-found {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  min-height: calc(100vh - var(--navbar-height, 80px));
+  padding: var(--space-8);
+  background: var(--color-bg-primary);
   text-align: center;
-  padding: 2rem;
-  position: relative;
-  overflow: hidden;
 }
 
-.not-found-content {
-  position: relative;
-  z-index: 2;
-}
-
-.error-code {
-  font-size: 8rem;
-  font-weight: 800;
-  background: linear-gradient(135deg, #5546ff, #7c3aed);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  line-height: 1;
-  margin-bottom: 1rem;
-}
-
-.not-found-page h1 {
-  font-size: 2rem;
-  font-weight: 600;
-  color: #111827;
-  margin-bottom: 0.75rem;
-}
-
-.not-found-page p {
-  color: #6b7280;
-  font-size: 1.125rem;
-  margin-bottom: 2rem;
-}
-
-.not-found-actions {
+.not-found__content {
   display: flex;
-  gap: 1rem;
-  justify-content: center;
-}
-
-.btn {
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  font-weight: 500;
-  text-decoration: none;
-  transition: all 0.2s ease;
-}
-
-.btn-primary {
-  background: #5546ff;
-  color: white;
-}
-
-.btn-primary:hover {
-  background: #4338ca;
-}
-
-.btn-secondary {
-  background: #f3f4f6;
-  color: #374151;
-}
-
-.btn-secondary:hover {
-  background: #e5e7eb;
-}
-
-/* Floating Circles Animation */
-.not-found-illustration {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  max-width: 480px;
   z-index: 1;
 }
 
-.floating-circles {
-  position: absolute;
-  inset: 0;
+.not-found__icon {
+  color: var(--color-primary);
+  opacity: 0.8;
+  animation: pulse 2s ease-in-out infinite;
 }
 
-.circle {
+.not-found__code {
+  font-size: var(--text-7xl, 6rem);
+  font-weight: var(--font-bold);
+  color: var(--color-text-primary);
+  line-height: 1;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.not-found__title {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-semibold);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.not-found__text {
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.not-found__actions {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.not-found__illustration {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.not-found__circles {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.not-found__circle {
   position: absolute;
   border-radius: 50%;
-  opacity: 0.1;
+  background: var(--color-primary);
+  opacity: 0.05;
   animation: float 6s ease-in-out infinite;
 }
 
-.circle-1 {
-  width: 200px;
-  height: 200px;
-  background: #5546ff;
+.not-found__circle--1 {
+  width: 300px;
+  height: 300px;
   top: 10%;
   left: 10%;
   animation-delay: 0s;
 }
 
-.circle-2 {
-  width: 150px;
-  height: 150px;
-  background: #7c3aed;
+.not-found__circle--2 {
+  width: 200px;
+  height: 200px;
   top: 60%;
   right: 15%;
   animation-delay: 2s;
 }
 
-.circle-3 {
-  width: 100px;
-  height: 100px;
-  background: #5546ff;
+.not-found__circle--3 {
+  width: 150px;
+  height: 150px;
   bottom: 20%;
-  left: 20%;
+  left: 30%;
   animation-delay: 4s;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
 }
 
 @keyframes float {
@@ -127,17 +122,42 @@
   }
 }
 
-/* Responsive */
-@media (max-width: 640px) {
-  .error-code {
-    font-size: 5rem;
+@media (max-width: 768px) {
+  .not-found {
+    padding: var(--space-6);
   }
 
-  .not-found-page h1 {
-    font-size: 1.5rem;
+  .not-found__code {
+    font-size: var(--text-5xl, 4rem);
   }
 
-  .not-found-actions {
+  .not-found__title {
+    font-size: var(--text-xl);
+  }
+
+  .not-found__circle--1 {
+    width: 200px;
+    height: 200px;
+  }
+
+  .not-found__circle--2 {
+    width: 150px;
+    height: 150px;
+  }
+
+  .not-found__circle--3 {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .not-found__actions {
     flex-direction: column;
+    width: 100%;
+  }
+
+  .not-found__actions > * {
+    width: 100%;
   }
 }
