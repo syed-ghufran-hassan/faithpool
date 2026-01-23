@@ -1,125 +1,309 @@
+/* ==========================================================================
+   MemberList Component
+   ========================================================================== */
+
 .member-list {
   background: var(--color-surface);
-  border-radius: 0.5rem;
-  padding: 1rem;
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
 }
 
-.member-list-title {
-  font-size: 0.875rem;
+/* Variants */
+.member-list--bordered {
+  background: transparent;
+  border: 1px solid var(--color-border);
+}
+
+.member-list--minimal {
+  background: transparent;
+  padding: 0;
+}
+
+/* Empty state */
+.member-list--empty {
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.member-list__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-text-tertiary);
+  padding: var(--space-6);
+}
+
+.member-list__empty-icon {
+  opacity: 0.5;
+}
+
+.member-list__empty-text {
+  font-size: var(--font-size-sm);
+  margin: 0;
+}
+
+/* Header */
+.member-list__header {
+  margin-bottom: var(--space-3);
+}
+
+.member-list__title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
   font-weight: 600;
   color: var(--color-text-secondary);
-  margin: 0 0 0.75rem 0;
+  margin: 0;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
-.member-items {
+.member-list__title-icon {
+  opacity: 0.7;
+}
+
+/* Title skeleton */
+.member-list__title-skeleton {
+  width: 120px;
+  height: 16px;
+  background: var(--color-skeleton);
+  border-radius: var(--radius-sm);
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+/* Items list */
+.member-list__items {
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--space-2);
 }
+
+/* ==========================================================================
+   Member Item
+   ========================================================================== */
 
 .member-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.375rem;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
   background: var(--color-background);
+  transition: all var(--transition-fast);
+}
+
+/* Size variants */
+.member-item--sm {
+  padding: var(--space-2);
+}
+
+.member-item--lg {
+  padding: var(--space-4);
+}
+
+/* Clickable state */
+.member-item--clickable {
   cursor: pointer;
-  transition: background-color 0.15s ease;
 }
 
-.member-item:hover {
+.member-item--clickable:hover {
   background: var(--color-surface-hover);
+  transform: translateX(2px);
 }
 
-.member-item.is-user {
+.member-item--clickable:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Current user highlight */
+.member-item--is-user {
   border: 1px solid var(--color-primary);
-  background: rgba(99, 102, 241, 0.05);
+  background: var(--color-primary-subtle);
 }
 
-.member-item.is-current-turn {
+/* Current turn highlight */
+.member-item--is-current-turn {
   border: 1px solid var(--color-success);
-  background: rgba(34, 197, 94, 0.05);
+  background: var(--color-success-subtle);
 }
 
-.member-info {
+/* Skeleton state */
+.member-item--skeleton {
   display: flex;
-  align-items: center;
-  gap: 0.75rem;
+  gap: var(--space-3);
+  pointer-events: none;
 }
 
-.member-details {
+.member-item__avatar-skeleton {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--color-skeleton);
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+.member-item__details-skeleton {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.125rem;
+  gap: var(--space-1);
 }
 
-.member-address {
-  font-size: 0.875rem;
+.member-item__address-skeleton {
+  width: 100px;
+  height: 14px;
+  background: var(--color-skeleton);
+  border-radius: var(--radius-sm);
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+.member-item__slot-skeleton {
+  width: 60px;
+  height: 12px;
+  background: var(--color-skeleton);
+  border-radius: var(--radius-sm);
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+/* Member info */
+.member-item__info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.member-item__details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-0-5);
+}
+
+.member-item__address {
+  font-size: var(--font-size-sm);
   font-weight: 500;
   color: var(--color-text-primary);
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--space-2);
 }
 
-.you-badge {
-  font-size: 0.625rem;
-  padding: 0.125rem 0.375rem;
-  background: var(--color-primary);
-  color: white;
-  border-radius: 9999px;
-  text-transform: uppercase;
-  font-weight: 600;
-}
-
-.member-slot {
-  font-size: 0.75rem;
+.member-item__slot {
+  font-size: var(--font-size-xs);
   color: var(--color-text-tertiary);
-}
-
-.member-status {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--space-1);
 }
 
-.deposit-check {
+.member-item__reputation {
+  color: var(--color-text-secondary);
+}
+
+/* Member status */
+.member-item__status {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.member-item__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.member-item__deposited {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--color-success-subtle);
   color: var(--color-success);
-  font-size: 1rem;
 }
 
-/* Compact version */
+.member-item__chevron {
+  color: var(--color-text-tertiary);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: all var(--transition-fast);
+}
+
+.member-item--clickable:hover .member-item__chevron {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ==========================================================================
+   Compact Version
+   ========================================================================== */
+
 .member-list-compact {
   display: flex;
   align-items: center;
+  gap: var(--space-2);
 }
 
-.member-avatars {
+.member-list-compact__avatars {
   display: flex;
   align-items: center;
 }
 
-.member-avatars > * {
+.member-list-compact__avatar {
   border: 2px solid var(--color-surface);
 }
 
-.member-count-badge {
+.member-list-compact__badge {
   width: 28px;
   height: 28px;
   border-radius: 50%;
   background: var(--color-surface-hover);
   color: var(--color-text-secondary);
-  font-size: 0.625rem;
+  font-size: var(--font-size-xs);
   font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-left: -8px;
   border: 2px solid var(--color-surface);
+}
+
+.member-list-compact__count {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+/* Size variants for compact */
+.member-list-compact--xs .member-list-compact__badge {
+  width: 20px;
+  height: 20px;
+  font-size: 10px;
+}
+
+.member-list-compact--md .member-list-compact__badge {
+  width: 36px;
+  height: 36px;
+  font-size: var(--font-size-sm);
+}
+
+/* ==========================================================================
+   Animations
+   ========================================================================== */
+
+@keyframes skeleton-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
 }
