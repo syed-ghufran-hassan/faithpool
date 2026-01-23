@@ -1,0 +1,78 @@
+.circle-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+  background: var(--surface-primary);
+  border-radius: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.main-action {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.action-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px;
+  background: var(--surface-secondary);
+  border-radius: 12px;
+  font-size: 15px;
+  color: var(--text-secondary);
+}
+
+.action-message.completed {
+  background: linear-gradient(135deg, var(--color-success-light), var(--color-success-lighter));
+  color: var(--color-success-dark);
+}
+
+.action-message.cancelled {
+  background: var(--color-error-light);
+  color: var(--color-error);
+}
+
+.action-message.deposited {
+  background: linear-gradient(135deg, var(--color-success-light), var(--color-success-lighter));
+  color: var(--color-success-dark);
+}
+
+.message-icon {
+  font-size: 24px;
+}
+
+.secondary-actions {
+  display: flex;
+  justify-content: center;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-color);
+}
+
+.confirm-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.confirm-modal p {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.confirm-modal.warning p {
+  padding: 16px;
+  background: var(--color-warning-light);
+  border-radius: 8px;
+  border-left: 4px solid var(--color-warning);
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
