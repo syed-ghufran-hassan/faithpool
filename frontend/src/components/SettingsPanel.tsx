@@ -1,4 +1,16 @@
-import React, { useState } from 'react';
+import { forwardRef, useState, useCallback, memo } from 'react';
+import type { HTMLAttributes } from 'react';
+import { 
+  User, 
+  Bell, 
+  Lock, 
+  Settings,
+  Save,
+  RotateCcw,
+  X,
+  type LucideIcon
+} from 'lucide-react';
+import clsx from 'clsx';
 import { Card } from './Card';
 import { Button } from './Button';
 import { Input } from './Input';
@@ -7,7 +19,7 @@ import { Badge } from './Badge';
 import { Alert } from './Alert';
 import './SettingsPanel.css';
 
-interface UserSettings {
+export interface UserSettings {
   displayName: string;
   email: string;
   notifications: {
@@ -25,99 +37,131 @@ interface UserSettings {
   currency: 'USD' | 'EUR' | 'GBP' | 'BTC';
 }
 
-interface SettingsPanelProps {
-  settings: UserSettings;
-  onSave: (settings: UserSettings) => Promise<void>;
-  onCancel?: () => void;
-  isLoading?: boolean;
-  className?: string;
+type TabId = 'profile' | 'notifications' | 'privacy' | 'preferences';
+
+interface TabConfig {
+  id: TabId;
+  label: string;
+  icon: LucideIcon;
 }
 
-export const SettingsPanel: React.FC<SettingsPanelProps> = ({
-  settings: initialSettings,
-  onSave,
-  onCancel,
-  isLoading = false,
-  className = '',
-}) => {
-  const [settings, setSettings] = useState<UserSettings>(initialSettings);
-  const [activeTab, setActiveTab] = useState<'profile' | 'notifications' | 'privacy' | 'preferences'>('profile');
-  const [hasChanges, setHasChanges] = useState(false);
-  const [saveSuccess, setSaveSuccess] = useState(false);
+export interface SettingsPanelProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onSave'> {
+  /** Current settings */
+  settings: UserSettings;
+  /** Save handler */
+  onSave: (settings: UserSettings) => Promise<void>;
+  /** Cancel handler */
+  onCancel?: () => void;
+  /** Loading state */
+  isLoading?: boolean;
+  /** Default active tab */
+  defaultTab?: TabId;
+}
 
-  const handleChange = <K extends keyof UserSettings>(
-    key: K,
-    value: UserSettings[K]
-  ) => {
-    setSettings(prev => ({ ...prev, [key]: value }));
-    setHasChanges(true);
-    setSaveSuccess(false);
-  };
+const TABS: TabConfig[] = [
+  { id: 'profile', label: 'Profile', icon: User },
+  { id: 'notifications', label: 'Notifications', icon: Bell },
+  { id: 'privacy', label: 'Privacy', icon: Lock },
+  { id: 'preferences', label: 'Preferences', icon: Settings },
+];
 
-  const handleNestedChange = <K extends 'notifications' | 'privacy'>(
-    category: K,
-    key: keyof UserSettings[K],
-    value: boolean
-  ) => {
-    setSettings(prev => ({
-      ...prev,
-      [category]: {
-        ...prev[category],
-        [key]: value,
-      },
-    }));
-    setHasChanges(true);
-    setSaveSuccess(false);
-  };
+export const SettingsPanel = memo(forwardRef<HTMLDivElement, SettingsPanelProps>(
+  function SettingsPanel(
+    {
+      settings: initialSettings,
+      onSave,
+      onCancel,
+      isLoading = false,
+      defaultTab = 'profile',
+      className,
+      ...props
+    },
+    ref
+  ) {
+    const [settings, setSettings] = useState<UserSettings>(initialSettings);
+    const [activeTab, setActiveTab] = useState<TabId>(defaultTab);
+    const [hasChanges, setHasChanges] = useState(false);
+    const [saveSuccess, setSaveSuccess] = useState(false);
 
-  const handleSave = async () => {
-    try {
-      await onSave(settings);
+    const handleChange = useCallback(<K extends keyof UserSettings>(
+      key: K,
+      value: UserSettings[K]
+    ) => {
+      setSettings(prev => ({ ...prev, [key]: value }));
+      setHasChanges(true);
+      setSaveSuccess(false);
+    }, []);
+
+    const handleNestedChange = useCallback(<K extends 'notifications' | 'privacy'>(
+      category: K,
+      key: keyof UserSettings[K],
+      value: boolean
+    ) => {
+      setSettings(prev => ({
+        ...prev,
+        [category]: {
+          ...prev[category],
+          [key]: value,
+        },
+      }));
+      setHasChanges(true);
+      setSaveSuccess(false);
+    }, []);
+
+    const handleSave = useCallback(async () => {
+      try {
+        await onSave(settings);
+        setHasChanges(false);
+        setSaveSuccess(true);
+        setTimeout(() => setSaveSuccess(false), 3000);
+      } catch (error) {
+        console.error('Failed to save settings:', error);
+      }
+    }, [onSave, settings]);
+
+    const handleReset = useCallback(() => {
+      setSettings(initialSettings);
       setHasChanges(false);
-      setSaveSuccess(true);
-      setTimeout(() => setSaveSuccess(false), 3000);
-    } catch (error) {
-      console.error('Failed to save settings:', error);
-    }
-  };
+    }, [initialSettings]);
 
-  const handleReset = () => {
-    setSettings(initialSettings);
-    setHasChanges(false);
-  };
+    return (
+      <div
+        ref={ref}
+        className={clsx('settings-panel', className)}
+        {...props}
+      >
+        {/* Tabs */}
+        <div className="settings-panel__tabs" role="tablist">
+          {TABS.map(tab => {
+            const Icon = tab.icon;
+            return (
+              <button
+                key={tab.id}
+                role="tab"
+                aria-selected={activeTab === tab.id}
+                className={clsx(
+                  'settings-panel__tab',
+                  activeTab === tab.id && 'settings-panel__tab--active'
+                )}
+                onClick={() => setActiveTab(tab.id)}
+                type="button"
+              >
+                <Icon className="settings-panel__tab-icon" size={18} />
+                <span className="settings-panel__tab-label">{tab.label}</span>
+              </button>
+            );
+          })}
+        </div>
 
-  const tabs = [
-    { id: 'profile' as const, label: 'Profile', icon: '👤' },
-    { id: 'notifications' as const, label: 'Notifications', icon: '🔔' },
-    { id: 'privacy' as const, label: 'Privacy', icon: '🔒' },
-    { id: 'preferences' as const, label: 'Preferences', icon: '⚙️' },
-  ];
-
-  return (
-    <div className={`settings-panel ${className}`}>
-      {/* Tabs */}
-      <div className="settings-panel__tabs">
-        {tabs.map(tab => (
-          <button
-            key={tab.id}
-            className={`settings-panel__tab ${activeTab === tab.id ? 'settings-panel__tab--active' : ''}`}
-            onClick={() => setActiveTab(tab.id)}
-          >
-            <span className="settings-panel__tab-icon">{tab.icon}</span>
-            <span className="settings-panel__tab-label">{tab.label}</span>
-          </button>
-        ))}
-      </div>
-
-      {/* Content */}
-      <Card className="settings-panel__content">
-        {/* Profile Tab */}
-        {activeTab === 'profile' && (
-          <div className="settings-panel__section">
-            <h3>Profile Settings</h3>
-            <p className="settings-panel__description">
-              Manage your profile information
-            </p>
+        {/* Content */}
+        <Card className="settings-panel__content">
+          {/* Profile Tab */}
+          {activeTab === 'profile' && (
+            <div className="settings-panel__section">
+              <h3>Profile Settings</h3>
+              <p className="settings-panel__description">
+                Manage your profile information
+              </p>
 
             <div className="settings-panel__field">
               <label>Display Name</label>
@@ -326,6 +370,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
               variant="ghost"
               onClick={handleReset}
               disabled={!hasChanges || isLoading}
+              leftIcon={<RotateCcw size={16} />}
             >
               Reset
             </Button>
@@ -334,6 +379,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
                 variant="secondary"
                 onClick={onCancel}
                 disabled={isLoading}
+                leftIcon={<X size={16} />}
               >
                 Cancel
               </Button>
@@ -341,8 +387,9 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
             <Button
               variant="primary"
               onClick={handleSave}
-              isLoading={isLoading}
+              loading={isLoading}
               disabled={!hasChanges}
+              leftIcon={<Save size={16} />}
             >
               Save Changes
             </Button>
@@ -351,6 +398,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
       </Card>
     </div>
   );
-};
+}
+));
 
-export default SettingsPanel;
+export { SettingsPanel as default };
