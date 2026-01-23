@@ -4,50 +4,62 @@ description = "StackSUSU - Decentralized Rotating Savings (Ajo/Susu) on Stacks"
 authors = ["StackSUSU Team"]
 telemetry = true
 cache_dir = "./.cache"
+boot_contracts = ["pox-4"]
 
-[contracts.stacksusu-traits-v2]
-path = "contracts/stacksusu-traits-v2.clar"
+# V5 - Production contracts with reputation, governance, referrals
+# Using Clarity 2 for epoch 3.0 compatibility
+[contracts.stacksusu-traits-v3]
+path = "contracts/stacksusu-traits-v3.clar"
+clarity_version = 2
+epoch = 3.0
 
-[contracts.stacksusu-admin-v3]
-path = "contracts/stacksusu-admin-v3.clar"
-depends_on = ["stacksusu-traits-v2"]
+[contracts.stacksusu-admin-v5]
+path = "contracts/stacksusu-admin-v5.clar"
+clarity_version = 2
+epoch = 3.0
+depends_on = ["stacksusu-traits-v3"]
 
-[contracts.stacksusu-escrow-v3]
-path = "contracts/stacksusu-escrow-v3.clar"
-depends_on = ["stacksusu-traits-v2", "stacksusu-admin-v3"]
+[contracts.stacksusu-reputation-v5]
+path = "contracts/stacksusu-reputation-v5.clar"
+clarity_version = 2
+epoch = 3.0
+depends_on = ["stacksusu-traits-v3", "stacksusu-admin-v5"]
 
-[contracts.stacksusu-core-v3]
-path = "contracts/stacksusu-core-v3.clar"
-depends_on = ["stacksusu-traits-v2", "stacksusu-admin-v3", "stacksusu-escrow-v3"]
+[contracts.stacksusu-referral-v5]
+path = "contracts/stacksusu-referral-v5.clar"
+clarity_version = 2
+epoch = 3.0
+depends_on = ["stacksusu-traits-v3", "stacksusu-admin-v5"]
 
-[contracts.stacksusu-nft-v3]
-path = "contracts/stacksusu-nft-v3.clar"
-depends_on = ["stacksusu-traits-v2", "stacksusu-admin-v3", "stacksusu-core-v3"]
+[contracts.stacksusu-core-v5]
+path = "contracts/stacksusu-core-v5.clar"
+clarity_version = 2
+epoch = 3.0
+depends_on = ["stacksusu-traits-v3", "stacksusu-admin-v5", "stacksusu-reputation-v5", "stacksusu-referral-v5"]
 
-[contracts.stacksusu-emergency-v3]
-path = "contracts/stacksusu-emergency-v3.clar"
-depends_on = ["stacksusu-traits-v2", "stacksusu-admin-v3", "stacksusu-escrow-v3", "stacksusu-core-v3"]
+[contracts.stacksusu-escrow-v5]
+path = "contracts/stacksusu-escrow-v5.clar"
+clarity_version = 2
+epoch = 3.0
+depends_on = ["stacksusu-traits-v3", "stacksusu-admin-v5", "stacksusu-reputation-v5", "stacksusu-referral-v5", "stacksusu-core-v5"]
 
-# V4 - Test contracts with lower minimums (3 members, 0.01 STX)
-[contracts.stacksusu-admin-v4]
-path = "contracts/stacksusu-admin-v4.clar"
-depends_on = ["stacksusu-traits-v2"]
+[contracts.stacksusu-emergency-v5]
+path = "contracts/stacksusu-emergency-v5.clar"
+clarity_version = 2
+epoch = 3.0
+depends_on = ["stacksusu-traits-v3", "stacksusu-admin-v5", "stacksusu-reputation-v5", "stacksusu-escrow-v5", "stacksusu-core-v5"]
 
-[contracts.stacksusu-escrow-v4]
-path = "contracts/stacksusu-escrow-v4.clar"
-depends_on = ["stacksusu-traits-v2", "stacksusu-admin-v4"]
+[contracts.stacksusu-governance-v5]
+path = "contracts/stacksusu-governance-v5.clar"
+clarity_version = 2
+epoch = 3.0
+depends_on = ["stacksusu-traits-v3", "stacksusu-admin-v5", "stacksusu-core-v5"]
 
-[contracts.stacksusu-core-v4]
-path = "contracts/stacksusu-core-v4.clar"
-depends_on = ["stacksusu-traits-v2", "stacksusu-admin-v4", "stacksusu-escrow-v4"]
-
-[contracts.stacksusu-nft-v4]
-path = "contracts/stacksusu-nft-v4.clar"
-depends_on = ["stacksusu-traits-v2", "stacksusu-admin-v4", "stacksusu-core-v4"]
-
-[contracts.stacksusu-emergency-v4]
-path = "contracts/stacksusu-emergency-v4.clar"
-depends_on = ["stacksusu-traits-v2", "stacksusu-admin-v4", "stacksusu-escrow-v4", "stacksusu-core-v4"]
+[contracts.stacksusu-nft-v5]
+path = "contracts/stacksusu-nft-v5.clar"
+clarity_version = 2
+epoch = 3.0
+depends_on = ["stacksusu-traits-v3", "stacksusu-admin-v5", "stacksusu-reputation-v5", "stacksusu-core-v5"]
 
 [repl.analysis]
 passes = ["check_checker"]

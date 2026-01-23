@@ -1,6 +1,6 @@
 ---
 id: 0
-name: Mainnet deployment - v4 test contracts
+name: Mainnet deployment
 network: mainnet
 stacks-node: "https://api.mainnet.hiro.so"
 bitcoin-node: "http://blockstack:blockstacksystem@bitcoin.blockstack.com:8332"
@@ -9,38 +9,60 @@ plan:
     - id: 0
       transactions:
         - contract-publish:
-            contract-name: stacksusu-admin-v4
+
+            contract-name: stacksusu-referral-v5
             expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
-            cost: 50000
-            path: contracts/stacksusu-admin-v4.clar
+            cost: 995962
+            path: contracts/stacksusu-referral-v5.clar
             anchor-block-only: true
             clarity-version: 2
         - contract-publish:
-            contract-name: stacksusu-escrow-v4
+            contract-name: stacksusu-reputation-v5
             expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
-            cost: 70000
-            path: contracts/stacksusu-escrow-v4.clar
+            cost: 995840
+            path: contracts/stacksusu-reputation-v5.clar
             anchor-block-only: true
             clarity-version: 2
         - contract-publish:
-            contract-name: stacksusu-core-v4
+            contract-name: stacksusu-core-v5
             expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
-            cost: 100000
-            path: contracts/stacksusu-core-v4.clar
+            cost: 866744
+            path: contracts/stacksusu-core-v5.clar
             anchor-block-only: true
             clarity-version: 2
         - contract-publish:
-            contract-name: stacksusu-emergency-v4
+            contract-name: stacksusu-escrow-v5
             expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
-            cost: 60000
-            path: contracts/stacksusu-emergency-v4.clar
+            cost: 866674
+            path: contracts/stacksusu-escrow-v5.clar
             anchor-block-only: true
             clarity-version: 2
         - contract-publish:
-            contract-name: stacksusu-nft-v4
+            contract-name: stacksusu-emergency-v5
             expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
-            cost: 70000
-            path: contracts/stacksusu-nft-v4.clar
+            cost: 865295
+            path: contracts/stacksusu-emergency-v5.clar
             anchor-block-only: true
             clarity-version: 2
-      epoch: "3.3"
+        - contract-publish:
+            contract-name: stacksusu-governance-v5
+            expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
+            cost: 865613
+            path: contracts/stacksusu-governance-v5.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: stacksusu-nft-v5
+            expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
+            cost: 866250
+            path: contracts/stacksusu-nft-v5.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: stacksusu-traits-v3
+            expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
+            cost: 864059
+            path: contracts/stacksusu-traits-v3.clar
+            anchor-block-only: true
+            clarity-version: 2
+      epoch: "3.0"
