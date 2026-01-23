@@ -1,105 +1,156 @@
 .search-bar {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 0.75rem;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: 0.5rem;
-  transition: all 0.2s ease;
+  width: 280px;
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: 
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    background-color var(--transition-fast);
 }
 
 .search-bar:focus-within {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.1);
+  box-shadow: 0 0 0 3px var(--color-primary-alpha);
+  background: var(--color-bg-primary);
 }
 
+.search-bar:hover:not(.search-bar--disabled) {
+  border-color: var(--color-border-hover);
+}
+
+/* Size variants */
+.search-bar--sm {
+  width: 200px;
+}
+
+.search-bar--sm .search-bar__input {
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--font-size-sm);
+}
+
+.search-bar--sm .search-bar__icon {
+  left: var(--space-xs);
+}
+
+.search-bar--sm .search-bar__input {
+  padding-left: calc(var(--space-xl) - var(--space-xs));
+}
+
+.search-bar--lg {
+  width: 360px;
+}
+
+.search-bar--lg .search-bar__input {
+  padding: var(--space-md) var(--space-lg);
+  font-size: var(--font-size-lg);
+}
+
+.search-bar--lg .search-bar__icon {
+  left: var(--space-md);
+}
+
+.search-bar--lg .search-bar__input {
+  padding-left: calc(var(--space-3xl));
+}
+
+/* Full width modifier */
+.search-bar--full {
+  width: 100%;
+}
+
+/* Disabled state */
 .search-bar--disabled {
   opacity: 0.5;
   cursor: not-allowed;
+  pointer-events: none;
 }
 
+/* Icon */
 .search-bar__icon {
+  position: absolute;
+  left: var(--space-sm);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-muted);
-  flex-shrink: 0;
+  color: var(--color-text-muted);
+  pointer-events: none;
+  transition: color var(--transition-fast);
 }
 
+.search-bar:focus-within .search-bar__icon {
+  color: var(--color-primary);
+}
+
+/* Input */
 .search-bar__input {
-  flex: 1;
-  min-width: 0;
-  border: none;
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  padding-left: calc(var(--space-xl) + var(--space-xs));
+  padding-right: var(--space-xl);
+  font-family: inherit;
+  font-size: var(--font-size-md);
+  color: var(--color-text-primary);
   background: transparent;
-  font-size: 0.875rem;
-  color: var(--text-primary);
+  border: none;
   outline: none;
 }
 
 .search-bar__input::placeholder {
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 
 .search-bar__input:disabled {
   cursor: not-allowed;
 }
 
+/* Clear button */
 .search-bar__clear {
+  position: absolute;
+  right: var(--space-xs);
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   padding: 0;
-  background: var(--bg-tertiary);
+  color: var(--color-text-muted);
+  background: transparent;
   border: none;
-  border-radius: 50%;
-  color: var(--text-muted);
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: all 0.15s ease;
-  flex-shrink: 0;
+  transition: 
+    color var(--transition-fast),
+    background-color var(--transition-fast);
 }
 
 .search-bar__clear:hover {
-  background: var(--text-muted);
-  color: var(--bg-primary);
+  color: var(--color-text-primary);
+  background: var(--color-bg-tertiary);
 }
 
-/* Size Variants */
-.search-bar--sm {
-  padding: 0.375rem 0.5rem;
+.search-bar__clear:active {
+  background: var(--color-bg-hover);
 }
 
-.search-bar--sm .search-bar__input {
-  font-size: 0.8125rem;
+.search-bar__clear:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
 }
 
-.search-bar--lg {
-  padding: 0.75rem 1rem;
+/* Animations */
+@keyframes searchPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
 }
 
-.search-bar--lg .search-bar__input {
-  font-size: 1rem;
-}
-
-.search-bar--lg .search-bar__icon svg {
-  width: 20px;
-  height: 20px;
-}
-
-/* Full Width */
-.search-bar--full {
-  width: 100%;
-}
-
-/* Compact (no border) */
-.search-bar--compact {
-  background: transparent;
-  border: none;
-  padding: 0;
-}
-
-.search-bar--compact:focus-within {
-  box-shadow: none;
+.search-bar--loading .search-bar__icon {
+  animation: searchPulse 1.5s ease-in-out infinite;
 }
