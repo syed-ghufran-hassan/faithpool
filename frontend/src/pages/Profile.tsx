@@ -1,121 +1,172 @@
+import { memo, useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import { 
+  User, 
+  Settings, 
+  Award, 
+  Coins, 
+  Users, 
+  CheckCircle, 
+  Gift, 
+  Star,
+  ArrowRight 
+} from 'lucide-react';
+import clsx from 'clsx';
+import { Avatar } from '../components/Avatar';
+import { Button } from '../components/Button';
+import { Badge } from '../components/Badge';
+import { Card } from '../components/Card';
 import './Profile.css';
 
-interface ProfileProps {
+export interface ProfileProps {
   address?: string;
 }
 
-function Profile({ address }: ProfileProps) {
-  // Mock user data
-  const user = {
-    address: address || 'SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N',
-    joinedAt: '2024-01-15',
-    totalSaved: 1250,
-    circlesJoined: 5,
-    circlesCreated: 2,
-    circlesCompleted: 3,
-    payoutsReceived: 8,
-    reputation: 98,
-  };
+interface StatItem {
+  label: string;
+  value: string | number;
+  icon: React.ReactNode;
+}
 
-  const nftBadges = [
-    { id: 1, name: 'Circle Founder', emoji: '🏅', earned: '2024-01-20' },
-    { id: 2, name: 'Perfect Contributor', emoji: '💯', earned: '2024-02-15' },
-    { id: 3, name: 'Circle Completer', emoji: '🎖️', earned: '2024-03-10' },
-    { id: 4, name: 'Trusted Member', emoji: '⭐', earned: '2024-04-05' },
-  ];
+interface NFTBadge {
+  id: number;
+  name: string;
+  emoji: string;
+  earned: string;
+}
 
-  const recentCircles = [
-    { id: 1, name: 'Tech Builders', role: 'Member', status: 'active' },
-    { id: 2, name: 'Stacks Savers', role: 'Creator', status: 'active' },
-    { id: 3, name: 'Genesis Circle', role: 'Member', status: 'completed' },
-  ];
+interface CircleItem {
+  id: number;
+  name: string;
+  role: 'Member' | 'Creator';
+  status: 'active' | 'completed';
+}
+
+// Mock data - in production would come from API
+const MOCK_USER = {
+  address: 'SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N',
+  joinedAt: '2024-01-15',
+  totalSaved: 1250,
+  circlesJoined: 5,
+  circlesCreated: 2,
+  circlesCompleted: 3,
+  payoutsReceived: 8,
+  reputation: 98,
+};
+
+const MOCK_NFT_BADGES: NFTBadge[] = [
+  { id: 1, name: 'Circle Founder', emoji: '🏅', earned: '2024-01-20' },
+  { id: 2, name: 'Perfect Contributor', emoji: '💯', earned: '2024-02-15' },
+  { id: 3, name: 'Circle Completer', emoji: '🎖️', earned: '2024-03-10' },
+  { id: 4, name: 'Trusted Member', emoji: '⭐', earned: '2024-04-05' },
+];
+
+const MOCK_CIRCLES: CircleItem[] = [
+  { id: 1, name: 'Tech Builders', role: 'Member', status: 'active' },
+  { id: 2, name: 'Stacks Savers', role: 'Creator', status: 'active' },
+  { id: 3, name: 'Genesis Circle', role: 'Member', status: 'completed' },
+];
+
+const Profile = memo(function Profile({ address }: ProfileProps) {
+  const user = useMemo(() => ({
+    ...MOCK_USER,
+    address: address || MOCK_USER.address,
+  }), [address]);
+
+  const stats: StatItem[] = useMemo(() => [
+    { label: 'Total Saved', value: `${user.totalSaved} STX`, icon: <Coins size={20} /> },
+    { label: 'Circles Joined', value: user.circlesJoined, icon: <Users size={20} /> },
+    { label: 'Circles Created', value: user.circlesCreated, icon: <Users size={20} /> },
+    { label: 'Completed', value: user.circlesCompleted, icon: <CheckCircle size={20} /> },
+    { label: 'Payouts Received', value: user.payoutsReceived, icon: <Gift size={20} /> },
+    { label: 'Reputation', value: `${user.reputation}%`, icon: <Star size={20} /> },
+  ], [user]);
 
   return (
-    <div className="profile-page">
-      <div className="profile-header">
-        <div className="profile-avatar">
-          <span>👤</span>
+    <div className="profile">
+      <Card className="profile__header">
+        <Avatar address={user.address} size="xl" />
+        <div className="profile__info">
+          <h1 className="profile__title">My Profile</h1>
+          <p className="profile__address">{user.address}</p>
+          <p className="profile__joined">Member since {user.joinedAt}</p>
         </div>
-        <div className="profile-info">
-          <h1>My Profile</h1>
-          <p className="profile-address">{user.address}</p>
-          <p className="profile-joined">Member since {user.joinedAt}</p>
-        </div>
-        <Link to="/settings" className="btn btn-outline">
+        <Button
+          as={Link}
+          to="/settings"
+          variant="secondary"
+          leftIcon={<Settings size={18} />}
+        >
           Edit Profile
-        </Link>
-      </div>
+        </Button>
+      </Card>
 
-      <div className="profile-grid">
+      <div className="profile__grid">
         {/* Stats */}
-        <div className="profile-section">
-          <h2>Statistics</h2>
-          <div className="stats-grid">
-            <div className="stat-item">
-              <span className="stat-value">{user.totalSaved} STX</span>
-              <span className="stat-label">Total Saved</span>
-            </div>
-            <div className="stat-item">
-              <span className="stat-value">{user.circlesJoined}</span>
-              <span className="stat-label">Circles Joined</span>
-            </div>
-            <div className="stat-item">
-              <span className="stat-value">{user.circlesCreated}</span>
-              <span className="stat-label">Circles Created</span>
-            </div>
-            <div className="stat-item">
-              <span className="stat-value">{user.circlesCompleted}</span>
-              <span className="stat-label">Completed</span>
-            </div>
-            <div className="stat-item">
-              <span className="stat-value">{user.payoutsReceived}</span>
-              <span className="stat-label">Payouts Received</span>
-            </div>
-            <div className="stat-item">
-              <span className="stat-value">{user.reputation}%</span>
-              <span className="stat-label">Reputation</span>
-            </div>
+        <Card className="profile__section">
+          <h2 className="profile__section-title">Statistics</h2>
+          <div className="profile__stats">
+            {stats.map((stat) => (
+              <div key={stat.label} className="profile__stat">
+                <div className="profile__stat-icon">{stat.icon}</div>
+                <span className="profile__stat-value">{stat.value}</span>
+                <span className="profile__stat-label">{stat.label}</span>
+              </div>
+            ))}
           </div>
-        </div>
+        </Card>
 
         {/* NFT Badges */}
-        <div className="profile-section">
-          <h2>NFT Badges ({nftBadges.length})</h2>
-          <div className="badges-grid">
-            {nftBadges.map((badge) => (
-              <div key={badge.id} className="badge-card">
-                <span className="badge-emoji">{badge.emoji}</span>
-                <div className="badge-info">
-                  <span className="badge-name">{badge.name}</span>
-                  <span className="badge-date">Earned {badge.earned}</span>
+        <Card className="profile__section">
+          <h2 className="profile__section-title">
+            <Award size={20} />
+            NFT Badges ({MOCK_NFT_BADGES.length})
+          </h2>
+          <div className="profile__badges">
+            {MOCK_NFT_BADGES.map((badge) => (
+              <div key={badge.id} className="profile__badge">
+                <span className="profile__badge-emoji">{badge.emoji}</span>
+                <div className="profile__badge-info">
+                  <span className="profile__badge-name">{badge.name}</span>
+                  <span className="profile__badge-date">Earned {badge.earned}</span>
                 </div>
               </div>
             ))}
           </div>
-        </div>
+        </Card>
 
         {/* Recent Circles */}
-        <div className="profile-section full-width">
-          <div className="section-header">
-            <h2>My Circles</h2>
-            <Link to="/circles" className="link">View All →</Link>
+        <Card className="profile__section profile__section--full">
+          <div className="profile__section-header">
+            <h2 className="profile__section-title">My Circles</h2>
+            <Link to="/circles" className="profile__link">
+              View All <ArrowRight size={16} />
+            </Link>
           </div>
-          <div className="circles-list">
-            {recentCircles.map((circle) => (
-              <Link key={circle.id} to={`/circle/${circle.id}`} className="circle-row">
-                <div className="circle-info">
-                  <span className="circle-name">{circle.name}</span>
-                  <span className="circle-role">{circle.role}</span>
+          <div className="profile__circles">
+            {MOCK_CIRCLES.map((circle) => (
+              <Link 
+                key={circle.id} 
+                to={`/circle/${circle.id}`} 
+                className="profile__circle"
+              >
+                <div className="profile__circle-info">
+                  <span className="profile__circle-name">{circle.name}</span>
+                  <Badge variant="secondary" size="sm">{circle.role}</Badge>
                 </div>
-                <span className={`circle-status ${circle.status}`}>{circle.status}</span>
+                <Badge 
+                  variant={circle.status === 'active' ? 'success' : 'info'}
+                  size="sm"
+                >
+                  {circle.status}
+                </Badge>
               </Link>
             ))}
           </div>
-        </div>
+        </Card>
       </div>
     </div>
   );
-}
+});
 
-export default Profile;
+export { Profile as default };
