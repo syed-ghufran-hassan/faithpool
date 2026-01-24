@@ -1,25 +1,77 @@
+/**
+ * MemberList Component
+ * 
+ * Displays a list of circle members with their contribution
+ * status, payout position, and payment progress.
+ * 
+ * @module features/circles/MemberList
+ */
+import { useCallback } from 'react';
 import './MemberList.css';
 
+// ============================================================================
+// Types
+// ============================================================================
+
+/** Circle member data structure */
 interface Member {
+  /** Member's wallet address */
   address: string;
+  /** Position in payout order (1-indexed) */
   position: number;
+  /** Whether member has received their payout */
   hasReceived: boolean;
+  /** Number of contributions made */
   contributionsPaid: number;
+  /** Total contributions required */
   totalContributions: number;
+  /** Formatted join date */
   joinedAt: string;
 }
 
+/** Props for the MemberList component */
 interface MemberListProps {
+  /** Array of circle members */
   members: Member[];
+  /** Current user's wallet address for highlighting */
   currentUserAddress?: string;
+  /** Callback when a member row is clicked */
   onMemberClick?: (address: string) => void;
 }
 
+// ============================================================================
+// Helpers
+// ============================================================================
+
+/** Truncate wallet address for display */
+const truncateAddress = (address: string): string => {
+  if (address.length <= 12) return address;
+  return `${address.slice(0, 6)}...${address.slice(-4)}`;
+};
+
+/** Calculate contribution progress percentage */
+const calculateProgress = (paid: number, total: number): number => {
+  if (total === 0) return 0;
+  return (paid / total) * 100;
+};
+
+// ============================================================================
+// Component
+// ============================================================================
+
+/**
+ * Member list component with contribution progress
+ * 
+ * @param props - MemberListProps
+ * @returns Table-style list of circle members
+ */
 function MemberList({ members, currentUserAddress, onMemberClick }: MemberListProps) {
-  const truncateAddress = (address: string) => {
-    if (address.length <= 12) return address;
-    return `${address.slice(0, 6)}...${address.slice(-4)}`;
-  };
+  const handleRowClick = useCallback(
+    (address: string) => {
+      onMemberClick?.(address);
+    },
+    [onMemberClick]
+  );
 
   return (
     <div className="member-list">
@@ -35,7 +87,7 @@ function MemberList({ members, currentUserAddress, onMemberClick }: MemberListPr
           <div
             key={member.address}
             className={`member-row ${member.address === currentUserAddress ? 'is-current' : ''}`}
-            onClick={() => onMemberClick?.(member.address)}
+            onClick={() => handleRowClick(member.address)}
           >
             <span className="member-position">{member.position}</span>
             <div className="member-info">
@@ -55,7 +107,7 @@ function MemberList({ members, currentUserAddress, onMemberClick }: MemberListPr
                 <div 
                   className="contribution-fill" 
                   style={{ 
-                    width: `${(member.contributionsPaid / member.totalContributions) * 100}%` 
+                    width: `${calculateProgress(member.contributionsPaid, member.totalContributions)}%` 
                   }} 
                 />
               </div>
