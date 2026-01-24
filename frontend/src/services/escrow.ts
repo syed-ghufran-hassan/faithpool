@@ -1,14 +1,31 @@
-// Escrow Service - Handles escrow operations and balance queries
+/**
+ * Escrow Service
+ * 
+ * Handles escrow operations and balance queries for:
+ * - Circle escrow balances
+ * - User deposits
+ * - Total escrow statistics
+ * 
+ * @module services/escrow
+ */
 
 import { CONTRACTS, NETWORK_CONFIG } from '../config/constants';
 import { stacksApi, callReadOnlyFunction } from './stacks';
 import type { EscrowBalance, EscrowStats } from '../types/blockchain';
 
-// Parse Clarity uint response
-function parseUint(response: any): number {
+// ============================================================
+// Clarity Value Parsers
+// ============================================================
+
+/**
+ * Parse Clarity uint response to number
+ * @param response - Clarity response object
+ */
+function parseUint(response: unknown): number {
   if (!response) return 0;
-  if (response.type === 'uint' || response.type === 1) {
-    return parseInt(response.value, 10);
+  const resp = response as Record<string, unknown>;
+  if (resp.type === 'uint' || resp.type === 1) {
+    return parseInt(resp.value as string, 10);
   }
   if (typeof response === 'string' && response.startsWith('(ok u')) {
     const match = response.match(/\(ok u(\d+)\)/);
@@ -17,17 +34,30 @@ function parseUint(response: any): number {
   return 0;
 }
 
-// Parse Clarity optional response
-function parseOptional<T>(response: any, parser: (v: any) => T): T | null {
+/**
+ * Parse Clarity optional response
+ * @param response - Clarity response object
+ * @param parser - Parser function for the inner value
+ */
+function parseOptional<T>(response: unknown, parser: (v: unknown) => T): T | null {
   if (!response) return null;
-  if (response.type === 'none' || response.type === 9) return null;
-  if (response.type === 'some' || response.type === 10) {
-    return parser(response.value);
+  const resp = response as Record<string, unknown>;
+  if (resp.type === 'none' || resp.type === 9) return null;
+  if (resp.type === 'some' || resp.type === 10) {
+    return parser(resp.value);
   }
   return null;
 }
 
-// Get circle escrow balance
+// ============================================================
+// Escrow Balance Queries
+// ============================================================
+
+/**
+ * Get total escrow balance for a circle
+ * @param circleId - Circle ID
+ * @returns Balance in STX
+ */
 export async function getCircleEscrowBalance(circleId: number): Promise<number> {
   try {
     const response = await callReadOnlyFunction(
@@ -43,7 +73,12 @@ export async function getCircleEscrowBalance(circleId: number): Promise<number> 
   }
 }
 
-// Get user deposit in escrow for a circle
+/**
+ * Get user's deposit amount in escrow for a circle
+ * @param circleId - Circle ID
+ * @param userAddress - User's Stacks address
+ * @returns Deposit amount in STX
+ */
 export async function getUserDeposit(circleId: number, userAddress: string): Promise<number> {
   try {
     const response = await callReadOnlyFunction(
