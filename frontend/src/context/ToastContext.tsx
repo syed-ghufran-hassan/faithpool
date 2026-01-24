@@ -1,47 +1,99 @@
+/**
+ * Toast Context Provider
+ * 
+ * Manages toast notifications state and provides toast actions
+ * throughout the application via React Context.
+ * 
+ * @module context/ToastContext
+ */
+
 import { createContext, useContext, useState, useCallback, useRef } from 'react';
 import type { ReactNode } from 'react';
 
+// ============================================================
+// Types
+// ============================================================
+
+/** Toast notification type */
 export type ToastType = 'success' | 'error' | 'warning' | 'info';
+
+/** Toast position on screen */
 export type ToastPosition = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' | 'top-center' | 'bottom-center';
 
+/** Toast notification data */
 export interface Toast {
+  /** Unique identifier */
   id: string;
+  /** Toast type for styling */
   type: ToastType;
+  /** Toast title */
   title: string;
+  /** Optional message body */
   message?: string;
+  /** Auto-dismiss duration in ms */
   duration?: number;
+  /** Optional action button */
   action?: {
     label: string;
     onClick: () => void;
   };
+  /** Whether toast can be manually dismissed */
   dismissible?: boolean;
+  /** Custom icon element */
   icon?: ReactNode;
 }
 
+/** Toast context value type */
 interface ToastContextType {
+  /** Current active toasts */
   toasts: Toast[];
+  /** Add a toast notification */
   addToast: (toast: Omit<Toast, 'id'>) => string;
+  /** Remove a specific toast */
   removeToast: (id: string) => void;
+  /** Clear all toasts */
   clearAllToasts: () => void;
+  /** Convenience: show success toast */
   success: (title: string, message?: string) => string;
+  /** Convenience: show error toast */
   error: (title: string, message?: string) => string;
+  /** Convenience: show warning toast */
   warning: (title: string, message?: string) => string;
+  /** Convenience: show info toast */
   info: (title: string, message?: string) => string;
+  /** Current toast position */
   position: ToastPosition;
+  /** Update toast position */
   setPosition: (position: ToastPosition) => void;
 }
 
+// ============================================================
+// Context & Constants
+// ============================================================
+
 const ToastContext = createContext<ToastContextType | null>(null);
 
+/** Default auto-dismiss duration in ms */
 const DEFAULT_DURATION = 5000;
+
+/** Maximum number of toasts shown at once */
 const MAX_TOASTS = 5;
 
+/** Props for ToastProvider component */
 interface ToastProviderProps {
   children: ReactNode;
   defaultPosition?: ToastPosition;
   maxToasts?: number;
 }
 
+// ============================================================
+// Provider Component
+// ============================================================
+
+/**
+ * Toast context provider component
+ * Wrap your app with this to enable toast notifications
+ */
 export function ToastProvider({ 
   children, 
   defaultPosition = 'top-right',
