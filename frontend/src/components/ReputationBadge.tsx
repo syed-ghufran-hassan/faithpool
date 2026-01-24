@@ -72,7 +72,7 @@ export const ReputationBadge = memo(forwardRef<HTMLDivElement, ReputationBadgePr
   function ReputationBadge(
     {
       score,
-      maxScore = 1000,
+      maxScore: _maxScore = 1000,
       showLabel = true,
       size = 'md',
       className,
@@ -81,6 +81,9 @@ export const ReputationBadge = memo(forwardRef<HTMLDivElement, ReputationBadgePr
     },
     ref
   ) {
+    // _maxScore available for percentage calculations
+    void _maxScore;
+    
     const { tier, nextTier, progress } = useMemo(() => {
       const t = getTier(score);
       const nt = getNextTier(score);
@@ -90,7 +93,9 @@ export const ReputationBadge = memo(forwardRef<HTMLDivElement, ReputationBadgePr
       return { tier: t, nextTier: nt, progress: p };
     }, [score]);
 
-    const iconSize = size === 'lg' ? 32 : size === 'md' ? 24 : 16;
+    // iconSize available for future custom icon sizing
+    const _iconSize = size === 'lg' ? 32 : size === 'md' ? 24 : 16;
+    void _iconSize;
 
     return (
       <div 

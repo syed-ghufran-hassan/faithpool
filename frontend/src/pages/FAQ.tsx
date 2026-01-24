@@ -1,7 +1,7 @@
 import { memo, useState, useCallback, useMemo } from 'react';
 import { ChevronDown, ChevronUp, MessageCircle, Twitter, HelpCircle } from 'lucide-react';
 import clsx from 'clsx';
-import { Button } from '../components/Button';
+// Button functionality provided through anchor styled as button
 import './FAQ.css';
 
 export interface FAQItem {
@@ -134,26 +134,24 @@ const FAQ = memo(function FAQ() {
           Can't find the answer you're looking for? Reach out to our community.
         </p>
         <div className="faq__contact-links">
-          <Button
-            as="a"
+          <a
             href="https://discord.gg/stacksusu"
             target="_blank"
             rel="noopener noreferrer"
-            variant="secondary"
-            leftIcon={<MessageCircle size={18} />}
+            className="button button--secondary"
           >
+            <MessageCircle size={18} />
             Join Discord
-          </Button>
-          <Button
-            as="a"
+          </a>
+          <a
             href="https://twitter.com/stacksusu"
             target="_blank"
             rel="noopener noreferrer"
-            variant="secondary"
-            leftIcon={<Twitter size={18} />}
+            className="button button--secondary"
           >
+            <Twitter size={18} />
             Follow on X
-          </Button>
+          </a>
         </div>
       </div>
     </div>

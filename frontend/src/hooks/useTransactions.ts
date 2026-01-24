@@ -15,7 +15,6 @@ import {
   listNFTForSale,
   unlistNFT,
   buyNFT,
-  getErrorMessage,
 } from '../services/wallet';
 import type { 
   CreateCircleParams, 
@@ -78,7 +77,7 @@ interface UseTransactionsResult {
 let txCounter = 0;
 
 export function useTransactions(): UseTransactionsResult {
-  const { isConnected, address } = useWallet();
+  const { isConnected } = useWallet();
   const toast = useToast();
   
   const [pendingTxs, setPendingTxs] = useState<PendingTransaction[]>([]);

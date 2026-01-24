@@ -15,7 +15,7 @@ import type {
   ClaimPayoutParams,
   EmergencyWithdrawParams,
 } from '../types';
-import type { TransactionResult, BroadcastResult } from '../types/blockchain';
+import type { TransactionResult } from '../types/blockchain';
 
 // ============================================================
 // Types
@@ -145,15 +145,15 @@ async function callContract(
   functionName: string,
   functionArgs: unknown[],
   postConditions: unknown[] = [],
-  fee: number = TX_DEFAULTS.DEFAULT_FEE
+  _fee: number = TX_DEFAULTS.DEFAULT_FEE  // Reserved for future use with custom fees
 ): Promise<TransactionResult> {
+  void _fee;
   if (!walletState.isConnected || !walletState.address) {
     throw new Error('Wallet not connected');
   }
 
   try {
     const { openContractCall } = await import('@stacks/connect');
-    const { uintCV, stringAsciiCV, boolCV, principalCV } = await import('@stacks/transactions');
     
     const [address, name] = contractId.split('.');
     
@@ -162,15 +162,13 @@ async function callContract(
         contractAddress: address,
         contractName: name,
         functionName,
-        functionArgs: functionArgs as any[],
-        postConditions: postConditions as any[],
+        functionArgs: functionArgs,
+        postConditions: postConditions,
         network: 'mainnet',
-        fee,
-        onFinish: (data) => {
+        onFinish: (data: { txId: string; txRaw: string }) => {
           resolve({
             txId: data.txId,
             txRaw: data.txRaw,
-            stacksTransaction: data.stacksTransaction,
           });
         },
         onCancel: () => {

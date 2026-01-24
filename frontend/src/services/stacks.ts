@@ -165,19 +165,49 @@ export async function getBlockInfo(heightOrHash: number | string): Promise<Block
   };
 }
 
+// Clarity argument type for structured args
+export interface ClarityArg {
+  type: string;
+  value: string;
+}
+
+// Serialize Clarity arguments to hex strings
+function serializeClarityArg(arg: ClarityArg): string {
+  // For now, return the value directly - the API handles serialization
+  // In production, you'd use @stacks/transactions to serialize properly
+  switch (arg.type) {
+    case 'uint':
+      // Serialize uint to Clarity representation
+      const num = BigInt(arg.value);
+      const hex = num.toString(16).padStart(32, '0');
+      return `0x01${hex}`;
+    case 'principal':
+      // For principal, we need proper serialization
+      // Return as-is for now, API may accept string representation
+      return arg.value;
+    default:
+      return arg.value;
+  }
+}
+
 // Contract read-only call
 export async function callReadOnly(
   contractAddress: string,
   contractName: string,
   functionName: string,
-  args: string[] = [],
+  args: (string | ClarityArg)[] = [],
   senderAddress: string = CONTRACT_DEPLOYER
 ): Promise<ContractCallResponse> {
+  // Serialize args if they're objects
+  const serializedArgs = args.map(arg => 
+    typeof arg === 'string' ? arg : serializeClarityArg(arg)
+  );
+  
   return fetchApi(`/v2/contracts/call-read/${contractAddress}/${contractName}/${functionName}`, {
     method: 'POST',
     body: JSON.stringify({
       sender: senderAddress,
-      arguments: args,
+      arguments: serializedArgs,
     }),
   });
 }
@@ -186,7 +216,7 @@ export async function callReadOnly(
 export async function callContractReadOnly(
   contractId: string,
   functionName: string,
-  args: string[] = [],
+  args: (string | ClarityArg)[] = [],
   senderAddress?: string
 ): Promise<ContractCallResponse> {
   const [address, name] = contractId.split('.');
@@ -253,3 +283,31 @@ export function getExplorerAddressUrl(address: string): string {
 export function getExplorerContractUrl(contractId: string): string {
   return `${CURRENT_NETWORK.explorerUrl}/txid/${contractId}`;
 }
+
+/** Alias for getExplorerTxUrl for backward compatibility */
+export const getExplorerUrl = getExplorerTxUrl;
+
+/** Direct API fetch helper - exported for custom endpoints */
+export const stacksFetchApi = fetchApi;
+
+/** Stacks API utilities object for convenience */
+export const stacksApi = {
+  getAccountBalance,
+  getAccountBalanceSTX,
+  getAccountNonce,
+  getAccountTransactions,
+  getAccountMempoolTransactions,
+  getTransaction,
+  getTransactionStatus,
+  broadcastTransaction,
+  getCurrentBlockHeight,
+  getBlockInfo,
+  callReadOnly,
+  callContractReadOnly,
+  getContractSource,
+  getContractInterface,
+  fetchApi,
+};
+
+/** Alias for callContractReadOnly */
+export const callReadOnlyFunction = callContractReadOnly;

@@ -1,4 +1,4 @@
-import React, { useState, useMemo, forwardRef, useCallback } from 'react';
+import { useState, useMemo, forwardRef, useCallback } from 'react';
 import {
   Search,
   ArrowUpCircle,
@@ -136,15 +136,6 @@ export const TransactionHistory = forwardRef<HTMLDivElement, TransactionHistoryP
       return stx.toFixed(2);
     }, []);
 
-    const formatDate = useCallback((date: Date): string => {
-      return date.toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-      });
-    }, []);
-
     const truncateTxId = useCallback((txId: string): string => {
       if (txId.length <= 16) return txId;
       return `${txId.slice(0, 8)}...${txId.slice(-6)}`;
@@ -257,7 +248,7 @@ export const TransactionHistory = forwardRef<HTMLDivElement, TransactionHistoryP
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               leftIcon={<Search size={16} />}
-              size="sm"
+              inputSize="sm"
             />
             <Select
               value={filterType}
@@ -270,7 +261,7 @@ export const TransactionHistory = forwardRef<HTMLDivElement, TransactionHistoryP
                 { value: 'contribution', label: 'Contributions' },
                 { value: 'nft', label: 'NFT Activity' },
               ]}
-              size="sm"
+              selectSize="sm"
             />
             <Select
               value={sortBy}
@@ -281,7 +272,7 @@ export const TransactionHistory = forwardRef<HTMLDivElement, TransactionHistoryP
                 { value: 'amount_high', label: 'Highest' },
                 { value: 'amount_low', label: 'Lowest' },
               ]}
-              size="sm"
+              selectSize="sm"
             />
           </div>
         )}
@@ -357,7 +348,7 @@ export const TransactionHistory = forwardRef<HTMLDivElement, TransactionHistoryP
                 <Button
                   variant="ghost"
                   onClick={onLoadMore}
-                  isLoading={isLoading}
+                  loading={isLoading}
                   size="sm"
                 >
                   <ChevronDown size={16} />

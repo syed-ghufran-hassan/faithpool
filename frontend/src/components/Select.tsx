@@ -16,11 +16,12 @@ interface SelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'siz
   label?: string;
   error?: string;
   hint?: string;
-  options: SelectOption[];
+  options: readonly SelectOption[] | SelectOption[];
   selectSize?: SelectSize;
   fullWidth?: boolean;
   leftIcon?: ReactNode;
   loading?: boolean;
+  placeholder?: string;
 }
 
 const Select = forwardRef<HTMLSelectElement, SelectProps>(

@@ -9,8 +9,8 @@
  * @module services/nft
  */
 
-import { CONTRACTS, NETWORK_CONFIG } from '../config/constants';
-import { stacksApi, callReadOnlyFunction, getExplorerUrl } from './stacks';
+import { CONTRACTS } from '../config/constants';
+import { stacksFetchApi, callReadOnlyFunction } from './stacks';
 import type { NFTToken, NFTListing, NFTMetadata } from '../types/blockchain';
 
 // ============================================================
@@ -23,23 +23,24 @@ import type { NFTToken, NFTListing, NFTMetadata } from '../types/blockchain';
 function parseUint(response: unknown): number {
   if (!response) return 0;
   const resp = response as Record<string, unknown>;
-  if (resp.type === 'uint' || resp.type === 1) {
-    return parseInt(resp.value as string, 10);
+  if (resp['type'] === 'uint' || resp['type'] === 1) {
+    return parseInt(resp['value'] as string, 10);
   }
   return 0;
 }
 
 /**
- * Parse Clarity bool response
+ * Parse Clarity bool response (kept for potential future use)
  */
-function parseBool(response: unknown): boolean {
+function _parseBool(response: unknown): boolean {
   if (!response) return false;
   const resp = response as Record<string, unknown>;
-  if (resp.type === 'bool' || resp.type === 3) {
-    return resp.value === true || resp.value === 'true';
+  if (resp['type'] === 'bool' || resp['type'] === 3) {
+    return resp['value'] === true || resp['value'] === 'true';
   }
   return false;
 }
+void _parseBool;
 
 /**
  * Parse Clarity principal response
@@ -47,8 +48,8 @@ function parseBool(response: unknown): boolean {
 function parsePrincipal(response: unknown): string | null {
   if (!response) return null;
   const resp = response as Record<string, unknown>;
-  if (resp.type === 'principal' || resp.type === 5) {
-    return resp.value as string;
+  if (resp['type'] === 'principal' || resp['type'] === 5) {
+    return resp['value'] as string;
   }
   return null;
 }
@@ -59,9 +60,9 @@ function parsePrincipal(response: unknown): string | null {
 function parseOptional<T>(response: unknown, parser: (v: unknown) => T): T | null {
   if (!response) return null;
   const resp = response as Record<string, unknown>;
-  if (resp.type === 'none' || resp.type === 9) return null;
-  if (resp.type === 'some' || resp.type === 10) {
-    return parser(resp.value);
+  if (resp['type'] === 'none' || resp['type'] === 9) return null;
+  if (resp['type'] === 'some' || resp['type'] === 10) {
+    return parser(resp['value']);
   }
   return null;
 }
@@ -103,7 +104,10 @@ export async function getNFTTokenUri(tokenId: number): Promise<string | null> {
       [{ type: 'uint', value: tokenId.toString() }]
     );
     
-    return parseOptional(response, (v) => v?.value || v);
+    return parseOptional(response, (v) => {
+      const val = v as Record<string, unknown>;
+      return (val['value'] as string) || String(v);
+    });
   } catch (error) {
     console.error('Failed to get NFT token URI:', error);
     return null;
@@ -117,16 +121,18 @@ export async function getNFTMetadata(tokenId: number): Promise<NFTMetadata | nul
       CONTRACTS.NFT,
       'get-nft-metadata',
       [{ type: 'uint', value: tokenId.toString() }]
-    );
+    ) as unknown as Record<string, unknown>;
     
-    if (!response || response.type === 'none') return null;
+    if (!response || response['type'] === 'none') return null;
     
-    const data = response.type === 'some' ? response.value : response;
+    const data = (response['type'] === 'some' ? response['value'] : response) as Record<string, unknown>;
+    const slotNumber = parseUint(data['slot-number']);
     
     return {
       tokenId,
       circleId: parseUint(data['circle-id']),
-      slotNumber: parseUint(data['slot-number']),
+      slot: slotNumber,
+      slotNumber,
       mintedAt: parseUint(data['minted-at']),
       mintedBy: parsePrincipal(data['minted-by']) || '',
       completedRounds: parseUint(data['completed-rounds']),
@@ -144,16 +150,16 @@ export async function getNFTListing(tokenId: number): Promise<NFTListing | null>
       CONTRACTS.NFT,
       'get-listing',
       [{ type: 'uint', value: tokenId.toString() }]
-    );
+    ) as unknown as Record<string, unknown>;
     
-    if (!response || response.type === 'none') return null;
+    if (!response || response['type'] === 'none') return null;
     
-    const data = response.type === 'some' ? response.value : response;
+    const data = (response['type'] === 'some' ? response['value'] : response) as Record<string, unknown>;
     
     return {
       tokenId,
-      seller: parsePrincipal(data.seller) || '',
-      price: parseUint(data.price) / 1_000_000,
+      seller: parsePrincipal(data['seller']) || '',
+      price: parseUint(data['price']) / 1_000_000,
       listedAt: parseUint(data['listed-at']),
     };
   } catch (error) {
@@ -199,7 +205,7 @@ export async function getUserNFTs(userAddress: string): Promise<NFTToken[]> {
   try {
     // Fetch from Hiro API for SIP-009 tokens
     const [address, name] = CONTRACTS.NFT.split('.');
-    const response = await stacksApi(
+    const response = await stacksFetchApi<{ results: Array<{ value?: { repr?: string } }> }>(
       `/extended/v1/tokens/nft/holdings?principal=${userAddress}&asset_identifiers=${address}.${name}::stacksusu-slot`
     );
     
@@ -298,6 +304,8 @@ export function generateNFTImage(metadata: NFTMetadata | null): string {
   
   // Generate a deterministic color based on circle ID
   const hue = (metadata.circleId * 137) % 360;
+  const slotNum = metadata['slotNumber'] ?? metadata.slot ?? 0;
+  const rounds = metadata['completedRounds'] ?? 0;
   const svg = `
     <svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
       <defs>
@@ -309,13 +317,13 @@ export function generateNFTImage(metadata: NFTMetadata | null): string {
       <rect width="400" height="400" fill="url(#grad)" />
       <circle cx="200" cy="160" r="80" fill="rgba(255,255,255,0.2)" />
       <text x="200" y="170" text-anchor="middle" fill="white" font-size="48" font-weight="bold">
-        #${metadata.slotNumber}
+        #${slotNum}
       </text>
       <text x="200" y="280" text-anchor="middle" fill="white" font-size="24">
         Circle ${metadata.circleId}
       </text>
       <text x="200" y="320" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="16">
-        ${metadata.completedRounds} rounds completed
+        ${rounds} rounds completed
       </text>
     </svg>
   `;
@@ -330,16 +338,17 @@ export function formatNFTDisplay(token: NFTToken): {
   image: string;
   attributes: { trait: string; value: string }[];
 } {
+  const meta = token.metadata ?? null;
   return {
     title: `StackSUSU Slot #${token.tokenId}`,
-    description: token.metadata 
-      ? `Slot ${token.metadata.slotNumber} in Circle ${token.metadata.circleId}`
+    description: meta 
+      ? `Slot ${meta['slotNumber']} in Circle ${meta.circleId}`
       : 'StackSUSU Membership Slot',
-    image: generateNFTImage(token.metadata),
+    image: generateNFTImage(meta),
     attributes: [
-      { trait: 'Circle ID', value: token.metadata?.circleId?.toString() || 'Unknown' },
-      { trait: 'Slot Number', value: token.metadata?.slotNumber?.toString() || 'Unknown' },
-      { trait: 'Completed Rounds', value: token.metadata?.completedRounds?.toString() || '0' },
+      { trait: 'Circle ID', value: meta?.circleId?.toString() || 'Unknown' },
+      { trait: 'Slot Number', value: meta?.['slotNumber']?.toString() || 'Unknown' },
+      { trait: 'Completed Rounds', value: meta?.['completedRounds']?.toString() || '0' },
     ],
   };
 }

@@ -9,9 +9,9 @@
  * @module services/circles
  */
 
-import { CONTRACTS, CIRCLE_STATUS, TIME } from '../config/constants';
+import { CONTRACTS, TIME } from '../config/constants';
 import { callContractReadOnly, getCurrentBlockHeight } from './stacks';
-import type { Circle, CircleInfo } from '../types';
+import type { Circle, CircleInfo, CircleStatus } from '../types';
 
 // ============================================================
 // Clarity Value Parsers
@@ -38,7 +38,7 @@ function parseBool(hex: string): boolean {
  * Parse ASCII string from Clarity hex
  * @param hex - Clarity hex-encoded string-ascii
  */
-function parseString(hex: string): string {
+function _parseString(hex: string): string {
   if (!hex || !hex.startsWith('0x0d')) return '';
   const lengthHex = hex.slice(4, 12);
   const length = parseInt(lengthHex, 16);
@@ -50,6 +50,8 @@ function parseString(hex: string): string {
   }
   return result;
 }
+// Reserved for full contract parsing
+void _parseString;
 
 /**
  * Parse principal from Clarity hex (simplified)
@@ -65,9 +67,9 @@ function parsePrincipal(hex: string): string {
 
 /**
  * Parse circle info tuple from contract response
- * @param resultHex - Clarity hex-encoded tuple
+ * @param _resultHex - Clarity hex-encoded tuple (unused in simplified version)
  */
-function parseCircleInfo(resultHex: string): CircleInfo | null {
+function parseCircleInfo(_resultHex: string): CircleInfo | null {
   try {
     // Simplified parser - production would use @stacks/transactions cvToJSON
     return null;
@@ -191,7 +193,8 @@ export async function getTimeUntilNextPayout(circleId: number): Promise<string> 
     
     const currentBlock = await getCurrentBlockHeight();
     // Next payout block would come from circle info
-    // For now return placeholder
+    // For now return placeholder - calculation uses currentBlock and circleInfo.payoutInterval
+    void currentBlock;
     return 'Calculating...';
   } catch (error) {
     return 'Unknown';
@@ -210,22 +213,24 @@ export async function getAllCircles(page = 1, pageSize = 10): Promise<Circle[]> 
     for (let id = startId; id <= endId; id++) {
       const info = await getCircleInfo(id);
       if (info) {
+        // Map status string to CircleStatus
+        let statusValue: CircleStatus = 'forming';
+        if (info.status === 'active' || info.status === '1') statusValue = 'active';
+        else if (info.status === 'completed' || info.status === '2') statusValue = 'completed';
+        else if (info.status === 'cancelled') statusValue = 'cancelled';
+        
         circles.push({
           id,
           name: info.name,
           creator: info.creator,
           contribution: info.contribution,
+          frequency: 'monthly', // Default - would calculate from payoutInterval
           maxMembers: info.maxMembers,
-          memberCount: info.memberCount,
+          currentMembers: info.memberCount,
           currentRound: info.currentRound,
-          payoutInterval: info.payoutInterval,
-          startBlock: info.startBlock,
-          nextPayoutBlock: 0, // Would calculate from info
-          status: info.status as unknown as number,
-          contributionMode: 0,
-          minReputation: 0,
-          tradingEnabled: false,
-          createdAt: Date.now(),
+          totalRounds: info.maxMembers,
+          status: statusValue,
+          createdAt: new Date().toISOString(),
         });
       }
     }
@@ -249,22 +254,24 @@ export async function getUserCircles(address: string): Promise<Circle[]> {
       if (member) {
         const info = await getCircleInfo(id);
         if (info) {
+          // Map status string to CircleStatus
+          let statusValue: CircleStatus = 'forming';
+          if (info.status === 'active' || info.status === '1') statusValue = 'active';
+          else if (info.status === 'completed' || info.status === '2') statusValue = 'completed';
+          else if (info.status === 'cancelled') statusValue = 'cancelled';
+          
           userCircles.push({
             id,
             name: info.name,
             creator: info.creator,
             contribution: info.contribution,
+            frequency: 'monthly', // Default
             maxMembers: info.maxMembers,
-            memberCount: info.memberCount,
+            currentMembers: info.memberCount,
             currentRound: info.currentRound,
-            payoutInterval: info.payoutInterval,
-            startBlock: info.startBlock,
-            nextPayoutBlock: 0,
-            status: info.status as unknown as number,
-            contributionMode: 0,
-            minReputation: 0,
-            tradingEnabled: false,
-            createdAt: Date.now(),
+            totalRounds: info.maxMembers,
+            status: statusValue,
+            createdAt: new Date().toISOString(),
           });
         }
       }
@@ -282,8 +289,8 @@ export async function getOpenCircles(): Promise<Circle[]> {
   try {
     const allCircles = await getAllCircles(1, 100);
     return allCircles.filter(
-      circle => circle.status === CIRCLE_STATUS.FORMING && 
-                circle.memberCount < circle.maxMembers
+      circle => circle.status === 'forming' && 
+                circle.currentMembers < circle.maxMembers
     );
   } catch (error) {
     console.error('Failed to get open circles:', error);
@@ -295,7 +302,7 @@ export async function getOpenCircles(): Promise<Circle[]> {
 export async function getActiveCircles(): Promise<Circle[]> {
   try {
     const allCircles = await getAllCircles(1, 100);
-    return allCircles.filter(circle => circle.status === CIRCLE_STATUS.ACTIVE);
+    return allCircles.filter(circle => circle.status === 'active');
   } catch (error) {
     console.error('Failed to get active circles:', error);
     return [];

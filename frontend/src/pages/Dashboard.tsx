@@ -5,7 +5,6 @@ import {
   RefreshCw, 
   CheckCircle, 
   Star, 
-  Clock,
   Award,
   ArrowRight,
   Plus,
@@ -56,12 +55,14 @@ interface Activity {
   date: string;
 }
 
-const STAT_ICONS = {
+// Icon mappings for stat cards and activity items
+const _STAT_ICONS = {
   totalSaved: Coins,
   activeCircles: RefreshCw,
   completedCircles: CheckCircle,
   reputation: Star,
 };
+void _STAT_ICONS; // Reserved for future dynamic stats
 
 const ACTIVITY_ICONS = {
   contribution: PiggyBank,
@@ -288,84 +289,5 @@ const Dashboard = memo(function Dashboard({ address, className }: DashboardProps
     </div>
   );
 });
-
-export default Dashboard;
-        </div>
-      </div>
-
-      <div className="dashboard-content">
-        {/* My Circles */}
-        <div className="dashboard-section">
-          <div className="section-header">
-            <h2>My Circles</h2>
-            <Link to="/circles" className="link">View All →</Link>
-          </div>
-          
-          <div className="my-circles">
-            {myCircles.map(circle => (
-              <div key={circle.id} className="circle-row">
-                <div className="circle-info">
-                  <h3>{circle.name}</h3>
-                  <span className={`role-badge ${circle.role}`}>{circle.role}</span>
-                </div>
-                <div className="circle-details">
-                  <div className="detail">
-                    <span className="label">Contribution</span>
-                    <span className="value">{circle.contribution} STX</span>
-                  </div>
-                  <div className="detail">
-                    <span className="label">Your Payout</span>
-                    <span className="value">Position #{circle.nextPayoutPosition}</span>
-                  </div>
-                  <div className="detail">
-                    <span className="label">Progress</span>
-                    <span className="value">{circle.currentRound}/{circle.totalRounds}</span>
-                  </div>
-                </div>
-                <div className="circle-actions">
-                  <button className="btn btn-secondary btn-small">Contribute</button>
-                  <Link to={`/circle/${circle.id}`} className="btn btn-outline btn-small">View</Link>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Recent Activity & NFT Badges */}
-        <div className="dashboard-sidebar">
-          <div className="sidebar-card">
-            <h2>Recent Activity</h2>
-            <div className="activity-list">
-              {recentActivity.map((activity, index) => (
-                <div key={index} className="activity-item">
-                  <span className="activity-icon">{getActivityIcon(activity.type)}</span>
-                  <div className="activity-content">
-                    <p>
-                      {activity.type === 'contribution' && `Contributed ${activity.amount} STX`}
-                      {activity.type === 'payout' && `Received ${activity.amount} STX payout`}
-                      {activity.type === 'joined' && `Joined circle`}
-                      {activity.type === 'badge' && `Earned completion badge`}
-                    </p>
-                    <span className="activity-meta">{activity.circle} • {activity.date}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="sidebar-card nft-card">
-            <h2>NFT Badges</h2>
-            <div className="nft-grid">
-              <div className="nft-badge" title="Circle Founder">🏅</div>
-              <div className="nft-badge" title="Perfect Contributor">💯</div>
-              <div className="nft-badge" title="Circle Completer">🎖️</div>
-            </div>
-            <p className="nft-count">{userStats.nftBadges} badges earned</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 export default Dashboard;

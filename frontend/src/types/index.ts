@@ -22,6 +22,19 @@ export interface Circle {
   nextPayout?: string;
 }
 
+/** On-chain circle info from contract read */
+export interface CircleInfo {
+  name: string;
+  creator: string;
+  contribution: number;
+  maxMembers: number;
+  memberCount: number;
+  currentRound: number;
+  payoutInterval: number;
+  startBlock: number;
+  status: string;
+}
+
 export type CircleStatus = 'forming' | 'active' | 'completed' | 'cancelled';
 
 export type CircleFrequency = 'weekly' | 'biweekly' | 'monthly';

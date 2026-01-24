@@ -555,7 +555,8 @@ describe("StackSUSU Reputation System V5", () => {
   it("new members start with base reputation score", async () => {
     const accounts = simnet.getAccounts();
     const deployer = accounts.get("deployer")!;
-    const wallet4 = accounts.get("wallet_4")!;
+    // wallet4 reserved for future test expansion
+    void accounts.get("wallet_4");
     
     // Initialize member reputation
     const coreContract = `${deployer}.${CORE_CONTRACT}`;

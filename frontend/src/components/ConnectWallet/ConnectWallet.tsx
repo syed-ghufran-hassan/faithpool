@@ -1,7 +1,7 @@
 import { useState, useCallback, memo } from 'react';
 import { Wallet, Copy, LogOut, ExternalLink } from 'lucide-react';
 import clsx from 'clsx';
-import { useStacks } from '../../hooks';
+import { useWallet } from '../../context';
 import { Button } from '../Button';
 import { Modal } from '../Modal';
 import { Avatar } from '../Avatar';
@@ -17,7 +17,7 @@ export const ConnectWallet = memo<ConnectWalletProps>(function ConnectWallet({
   className = '',
   variant = 'full',
 }) {
-  const { address, isConnected, connect, disconnect } = useStacks();
+  const { address, isConnected, connect, disconnect } = useWallet();
   const [showModal, setShowModal] = useState(false);
 
   const handleConnect = useCallback(async () => {

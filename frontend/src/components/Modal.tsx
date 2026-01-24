@@ -85,6 +85,7 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
           }
         };
       }
+      return undefined;
     }, [isOpen, handleEscape]);
 
     if (!isOpen) return null;

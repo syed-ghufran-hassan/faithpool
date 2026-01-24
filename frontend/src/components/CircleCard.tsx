@@ -58,7 +58,7 @@ export const CircleCard = memo(forwardRef<HTMLDivElement, CircleCardProps>(
       escrowBalance,
       creator,
       creatorAvatar,
-      nextPayoutBlock,
+      nextPayoutBlock: _nextPayoutBlock,
       memberAvatars = [],
       featured = false,
       compact = false,
@@ -67,6 +67,9 @@ export const CircleCard = memo(forwardRef<HTMLDivElement, CircleCardProps>(
     },
     ref
   ) {
+    // _nextPayoutBlock available for future use
+    void _nextPayoutBlock;
+    
     const memberProgress = useMemo(() => 
       Math.round((currentMembers / maxMembers) * 100), 
       [currentMembers, maxMembers]

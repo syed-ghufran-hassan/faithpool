@@ -13,11 +13,24 @@ import clsx from 'clsx';
 import { useWallet } from '../context/WalletContext';
 import { useTransactions } from '../hooks/useTransactions';
 import { formatSTX, microSTXToSTX, stxToMicroSTX } from '../utils/helpers';
-import { validateDepositAmount } from '../utils/validation';
 import { Button } from './Button';
 import { Input } from './Input';
 import { Alert } from './Alert';
 import './DepositForm.css';
+
+/** Validate deposit amount against requirements */
+function validateDepositAmount(amount: number, required: number, balance: number): { isValid: boolean; error?: string } {
+  if (amount <= 0) {
+    return { isValid: false, error: 'Amount must be greater than 0' };
+  }
+  if (amount < required) {
+    return { isValid: false, error: `Amount must be at least ${formatSTX(required)}` };
+  }
+  if (amount > balance) {
+    return { isValid: false, error: 'Insufficient balance' };
+  }
+  return { isValid: true };
+}
 
 export interface DepositFormProps {
   /** Circle ID */
@@ -53,10 +66,10 @@ export const DepositForm = memo(forwardRef<HTMLDivElement, DepositFormProps>(
     ref
   ) {
     const { balance } = useWallet();
-    const { submitDeposit, isLoading, error: txError } = useTransactions();
+    const { submitDeposit, isSubmitting, lastError } = useTransactions();
     
     const [amount, setAmount] = useState<string>(microSTXToSTX(requiredAmount).toString());
-    const [error, setError] = useState<string | null>(null);
+    const [error, setError] = useState<string | null>(lastError);
     const [showConfirm, setShowConfirm] = useState(false);
     
     const amountInMicroSTX = useMemo(() => {
@@ -93,19 +106,17 @@ export const DepositForm = memo(forwardRef<HTMLDivElement, DepositFormProps>(
       try {
         const result = await submitDeposit({
           circleId,
-          amount: amountInMicroSTX,
-          round: currentRound
         });
         
-        if (result.success) {
+        if (result?.txId) {
           onSuccess?.();
         } else {
-          setError(result.error || 'Deposit failed');
+          setError('Deposit failed - no transaction ID');
         }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Unknown error');
       }
-    }, [validation, submitDeposit, circleId, amountInMicroSTX, currentRound, onSuccess]);
+    }, [validation, submitDeposit, circleId, onSuccess]);
     
     const balanceAfterDeposit = balance - amountInMicroSTX;
     const isOverpayment = amountInMicroSTX > requiredAmount;
@@ -149,7 +160,7 @@ export const DepositForm = memo(forwardRef<HTMLDivElement, DepositFormProps>(
           </div>
           
           {isOverpayment && (
-            <Alert type="warning" className="deposit-form__alert">
+            <Alert variant="warning" className="deposit-form__alert">
               <AlertTriangle size={16} />
               You're depositing more than required. Extra amount will be held in escrow.
             </Alert>
@@ -159,7 +170,7 @@ export const DepositForm = memo(forwardRef<HTMLDivElement, DepositFormProps>(
             <Button
               variant="secondary"
               onClick={() => setShowConfirm(false)}
-              disabled={isLoading}
+              disabled={isSubmitting}
               leftIcon={<ArrowLeft size={16} />}
             >
               Back
@@ -167,7 +178,7 @@ export const DepositForm = memo(forwardRef<HTMLDivElement, DepositFormProps>(
             <Button
               variant="primary"
               onClick={handleSubmit}
-              loading={isLoading}
+              loading={isSubmitting}
               leftIcon={<CheckCircle size={16} />}
             >
               Confirm Deposit
@@ -214,17 +225,15 @@ export const DepositForm = memo(forwardRef<HTMLDivElement, DepositFormProps>(
             onChange={handleAmountChange}
             placeholder="0.000000"
             label="Deposit Amount (STX)"
-            error={error || (txError ?? undefined)}
-            rightElement={
-              <button className="deposit-form__exact-btn" onClick={handleSetExact}>
-                Exact
-              </button>
-            }
+            error={error || (lastError ?? undefined)}
           />
+          <button className="deposit-form__exact-btn" onClick={handleSetExact}>
+            Exact
+          </button>
         </div>
         
         {underpaymentAmount > 0 && amount && (
-          <Alert type="info" className="deposit-form__alert">
+          <Alert variant="info" className="deposit-form__alert">
             <Info size={16} />
             Depositing {formatSTX(underpaymentAmount)} less than required.
           </Alert>

@@ -13,7 +13,6 @@ import {
   BellOff
 } from 'lucide-react';
 import clsx from 'clsx';
-import { Badge } from './Badge';
 import { Button } from './Button';
 import { EmptyState } from './EmptyState';
 import './NotificationCenter.css';

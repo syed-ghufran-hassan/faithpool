@@ -9,7 +9,6 @@ import {
   Copy, 
   Share2, 
   Check,
-  ExternalLink,
   Gift
 } from 'lucide-react';
 import clsx from 'clsx';

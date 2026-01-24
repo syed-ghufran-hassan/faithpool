@@ -4,7 +4,6 @@ import { forwardRef, useState, useCallback, useMemo, memo } from 'react';
 import type { FormHTMLAttributes } from 'react';
 import { 
   Users, 
-  Calendar, 
   Coins,
   FileText,
   Info,
@@ -197,7 +196,7 @@ export const CreateCircleForm = memo(forwardRef<HTMLFormElement, CreateCircleFor
             value={formData.name}
             onChange={(e) => handleChange('name', e.target.value)}
             onBlur={() => handleBlur('name')}
-            error={touched.name ? errors.name : undefined}
+            error={touched['name'] ? errors['name'] : undefined}
             maxLength={50}
             leftIcon={<FileText size={18} />}
           />
@@ -209,7 +208,7 @@ export const CreateCircleForm = memo(forwardRef<HTMLFormElement, CreateCircleFor
             value={formData.contribution}
             onChange={(e) => handleChange('contribution', e.target.value)}
             onBlur={() => handleBlur('contribution')}
-            error={touched.contribution ? errors.contribution : undefined}
+            error={touched['contribution'] ? errors['contribution'] : undefined}
             min={0.1}
             step={0.1}
             leftIcon={<Coins size={18} />}
@@ -262,10 +261,10 @@ export const CreateCircleForm = memo(forwardRef<HTMLFormElement, CreateCircleFor
           </div>
         </div>
 
-        {errors.submit && (
+        {errors['submit'] && (
           <div className="create-circle-form__error">
             <AlertCircle size={16} />
-            {errors.submit}
+            {errors['submit']}
           </div>
         )}
 

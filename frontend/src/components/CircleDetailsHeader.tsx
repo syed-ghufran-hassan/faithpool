@@ -133,7 +133,7 @@ export const CircleDetailsHeader = memo(forwardRef<HTMLDivElement, CircleDetails
                 {currentMembers} / {maxMembers}
               </span>
             </div>
-            <ProgressBar value={memberProgress} variant="primary" />
+            <ProgressBar value={memberProgress} variant="default" />
           </div>
 
           {status === 'active' && (

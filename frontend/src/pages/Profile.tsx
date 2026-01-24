@@ -1,7 +1,6 @@
 import { memo, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { 
-  User, 
   Settings, 
   Award, 
   Coins, 
@@ -11,9 +10,7 @@ import {
   Star,
   ArrowRight 
 } from 'lucide-react';
-import clsx from 'clsx';
 import { Avatar } from '../components/Avatar';
-import { Button } from '../components/Button';
 import { Badge } from '../components/Badge';
 import { Card } from '../components/Card';
 import './Profile.css';
@@ -91,14 +88,13 @@ const Profile = memo(function Profile({ address }: ProfileProps) {
           <p className="profile__address">{user.address}</p>
           <p className="profile__joined">Member since {user.joinedAt}</p>
         </div>
-        <Button
-          as={Link}
+        <Link
           to="/settings"
-          variant="secondary"
-          leftIcon={<Settings size={18} />}
+          className="button button--secondary"
         >
+          <Settings size={18} />
           Edit Profile
-        </Button>
+        </Link>
       </Card>
 
       <div className="profile__grid">

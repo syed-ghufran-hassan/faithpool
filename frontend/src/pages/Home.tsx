@@ -13,8 +13,6 @@ import {
   Gift,
   CheckCircle
 } from 'lucide-react';
-import clsx from 'clsx';
-import { Button } from '../components/Button';
 import './Home.css';
 
 const STATS = [
@@ -96,12 +94,12 @@ const Home = memo(function Home() {
             Join trusted groups, contribute regularly, and take turns receiving the pool.
           </p>
           <div className="home__hero-buttons">
-            <Button as={Link} to="/circles" variant="primary" size="lg">
+            <Link to="/circles" className="button button--primary button--lg">
               Explore Circles
-            </Button>
-            <Button as={Link} to="/create" variant="secondary" size="lg">
+            </Link>
+            <Link to="/create" className="button button--secondary button--lg">
               Create Circle
-            </Button>
+            </Link>
           </div>
         </div>
         <div className="home__hero-visual">
@@ -176,15 +174,9 @@ const Home = memo(function Home() {
         <p className="home__cta-description">
           Join thousands of members building their financial future together
         </p>
-        <Button 
-          as={Link} 
-          to="/circles" 
-          variant="primary" 
-          size="lg"
-          rightIcon={<ArrowRight size={20} />}
-        >
-          Get Started
-        </Button>
+        <Link to="/circles" className="button button--primary button--lg">
+          Get Started <ArrowRight size={20} />
+        </Link>
       </section>
     </div>
   );

@@ -43,16 +43,17 @@ function Navbar() {
 
   // Close dropdown when clicking outside
   useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      const target = e.target as Element;
-      if (!target.closest('.wallet-dropdown')) {
-        setIsWalletDropdownOpen(false);
-      }
-    };
     if (isWalletDropdownOpen) {
+      const handleClickOutside = (e: MouseEvent) => {
+        const target = e.target as Element;
+        if (!target.closest('.wallet-dropdown')) {
+          setIsWalletDropdownOpen(false);
+        }
+      };
       document.addEventListener('click', handleClickOutside);
       return () => document.removeEventListener('click', handleClickOutside);
     }
+    return undefined;
   }, [isWalletDropdownOpen]);
 
   const toggleMobileMenu = useCallback(() => {

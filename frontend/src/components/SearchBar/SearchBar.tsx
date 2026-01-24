@@ -41,7 +41,7 @@ export const SearchBar = memo(forwardRef<HTMLDivElement, SearchBarProps>(
     const inputRef = useRef<HTMLInputElement>(null);
 
     const value = controlledValue !== undefined ? controlledValue : internalValue;
-    const debouncedValue = useDebounce(value, debounceMs);
+    const { debouncedValue } = useDebounce(value, debounceMs);
 
     useEffect(() => {
       if (onSearch && debouncedValue !== undefined) {

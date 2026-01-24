@@ -9,9 +9,16 @@
  * @module services/escrow
  */
 
-import { CONTRACTS, NETWORK_CONFIG } from '../config/constants';
-import { stacksApi, callReadOnlyFunction } from './stacks';
-import type { EscrowBalance, EscrowStats } from '../types/blockchain';
+import { CONTRACTS } from '../config/constants';
+import { stacksFetchApi, callReadOnlyFunction } from './stacks';
+
+/** Circle escrow statistics */
+export interface CircleEscrowStats {
+  circleId: number;
+  currentBalance: number;
+  totalDeposits: number;
+  lastUpdated: number;
+}
 
 // ============================================================
 // Clarity Value Parsers
@@ -24,8 +31,8 @@ import type { EscrowBalance, EscrowStats } from '../types/blockchain';
 function parseUint(response: unknown): number {
   if (!response) return 0;
   const resp = response as Record<string, unknown>;
-  if (resp.type === 'uint' || resp.type === 1) {
-    return parseInt(resp.value as string, 10);
+  if (resp['type'] === 'uint' || resp['type'] === 1) {
+    return parseInt(resp['value'] as string, 10);
   }
   if (typeof response === 'string' && response.startsWith('(ok u')) {
     const match = response.match(/\(ok u(\d+)\)/);
@@ -39,15 +46,17 @@ function parseUint(response: unknown): number {
  * @param response - Clarity response object
  * @param parser - Parser function for the inner value
  */
-function parseOptional<T>(response: unknown, parser: (v: unknown) => T): T | null {
+function _parseOptional<T>(response: unknown, parser: (v: unknown) => T): T | null {
   if (!response) return null;
   const resp = response as Record<string, unknown>;
-  if (resp.type === 'none' || resp.type === 9) return null;
-  if (resp.type === 'some' || resp.type === 10) {
-    return parser(resp.value);
+  if (resp['type'] === 'none' || resp['type'] === 9) return null;
+  if (resp['type'] === 'some' || resp['type'] === 10) {
+    return parser(resp['value']);
   }
   return null;
 }
+// Reserved for optional value parsing
+void _parseOptional;
 
 // ============================================================
 // Escrow Balance Queries
@@ -117,7 +126,7 @@ export async function getTotalEscrowBalance(): Promise<number> {
 export async function getEscrowContractBalance(): Promise<number> {
   try {
     const [address, name] = CONTRACTS.ESCROW.split('.');
-    const response = await stacksApi(`/v2/accounts/${address}.${name}`);
+    const response = await stacksFetchApi<{ balance: string }>(`/v2/accounts/${address}.${name}`);
     return parseInt(response.balance, 10) / 1_000_000;
   } catch (error) {
     console.error('Failed to get escrow contract balance:', error);
@@ -138,10 +147,10 @@ export async function hasUserDepositedThisRound(
         { type: 'uint', value: circleId.toString() },
         { type: 'principal', value: userAddress }
       ]
-    );
+    ) as unknown as Record<string, unknown>;
     
-    if (response?.type === 'bool') {
-      return response.value === true || response.value === 'true';
+    if (response?.['type'] === 'bool') {
+      return response['value'] === true || response['value'] === 'true';
     }
     return false;
   } catch (error) {
@@ -151,7 +160,7 @@ export async function hasUserDepositedThisRound(
 }
 
 // Get escrow statistics for a circle
-export async function getCircleEscrowStats(circleId: number): Promise<EscrowStats> {
+export async function getCircleEscrowStats(circleId: number): Promise<CircleEscrowStats> {
   try {
     const [balance, totalDeposits] = await Promise.all([
       getCircleEscrowBalance(circleId),
@@ -159,7 +168,7 @@ export async function getCircleEscrowStats(circleId: number): Promise<EscrowStat
         CONTRACTS.ESCROW,
         'get-total-deposits',
         [{ type: 'uint', value: circleId.toString() }]
-      ).then(parseUint).then(v => v / 1_000_000).catch(() => 0),
+      ).then(parseUint).then((v: number) => v / 1_000_000).catch(() => 0),
     ]);
     
     return {
@@ -180,7 +189,7 @@ export async function getCircleEscrowStats(circleId: number): Promise<EscrowStat
 }
 
 // Get all pending withdrawals for a user
-export async function getPendingWithdrawals(userAddress: string): Promise<{
+export async function getPendingWithdrawals(_userAddress: string): Promise<{
   circleId: number;
   amount: number;
   requestedAt: number;
@@ -201,7 +210,7 @@ export function formatEscrowBalance(balance: number): string {
 
 // Calculate expected payout for a member
 export async function calculateExpectedPayout(
-  circleId: number,
+  _circleId: number,
   contribution: number,
   memberCount: number
 ): Promise<{

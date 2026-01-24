@@ -130,7 +130,7 @@ export const CreateCircleModal = memo<CreateCircleModalProps>(function CreateCir
       isOpen={isOpen}
       onClose={onClose}
       title="Create New Circle"
-      size="medium"
+      size="md"
     >
       <div className="create-circle-modal">
         <div className="create-circle-modal__form">

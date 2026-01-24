@@ -12,7 +12,7 @@ import {
   CheckCircle
 } from 'lucide-react';
 import clsx from 'clsx';
-import { Button } from '../components/Button';
+// Button functionality provided through Link styled as button
 import { Input } from '../components/Input';
 import { Badge } from '../components/Badge';
 import { ProgressBar } from '../components/ProgressBar';
@@ -153,14 +153,10 @@ const Circles = memo(function Circles() {
           <h1 className="circles-page__title">Explore Circles</h1>
           <p className="circles-page__subtitle">Find a savings circle that fits your goals</p>
         </div>
-        <Button 
-          as={Link} 
-          to="/create" 
-          variant="primary"
-          leftIcon={<Plus size={18} />}
-        >
+        <Link to="/create" className="button button--primary">
+          <Plus size={18} />
           Create Circle
-        </Button>
+        </Link>
       </div>
 
       <div className="circles-page__filters">
@@ -231,15 +227,13 @@ const Circles = memo(function Circles() {
 
               <div className="circles-page__card-footer">
                 <span className="circles-page__creator">by {circle.creator}</span>
-                <Button 
-                  as={Link} 
+                <Link 
                   to={`/circle/${circle.id}`} 
-                  variant="secondary" 
-                  size="sm"
-                  leftIcon={<Eye size={16} />}
+                  className="button button--secondary button--sm"
                 >
+                  <Eye size={16} />
                   View
-                </Button>
+                </Link>
               </div>
             </Card>
           ))}
@@ -249,11 +243,11 @@ const Circles = memo(function Circles() {
           icon="search"
           title="No circles found"
           description="No circles found matching your criteria"
-          action={{
-            label: "Create One",
-            onClick: () => {},
-            href: "/create"
-          }}
+          action={
+            <Link to="/create" className="button button--primary">
+              Create One
+            </Link>
+          }
         />
       )}
     </div>

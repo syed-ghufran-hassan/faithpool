@@ -1,5 +1,7 @@
 import { useState, useCallback } from 'react';
-import { CONTRACTS, CORE_FUNCTIONS, CIRCLE_STATUS } from '../lib/contracts';
+import { CIRCLE_STATUS } from '../lib/contracts';
+
+// Note: CONTRACTS and CORE_FUNCTIONS are available in ../lib/contracts for future contract calls
 
 interface Circle {
   id: number;
@@ -80,7 +82,8 @@ export function useContracts(): UseContractsReturn {
   }, []);
 
   // Read function: Get member details
-  const getMember = useCallback(async (circleId: number, address: string): Promise<Member | null> => {
+  const getMember = useCallback(async (_circleId: number, address: string): Promise<Member | null> => {
+    // _circleId available for future contract calls
     setLoading(true);
     setError(null);
     

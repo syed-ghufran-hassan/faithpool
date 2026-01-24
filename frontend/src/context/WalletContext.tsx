@@ -16,7 +16,7 @@ import {
   subscribeToWallet,
   isWalletAvailable,
 } from '../services/wallet';
-import { getAccountBalance, getAccountNonce } from '../services/stacks';
+import { getAccountBalanceSTX, getAccountNonce } from '../services/stacks';
 
 // ============================================================
 // Types
@@ -79,7 +79,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
     
     try {
       const [newBalance, newNonce] = await Promise.all([
-        getAccountBalance(address),
+        getAccountBalanceSTX(address),
         getAccountNonce(address),
       ]);
       
@@ -109,7 +109,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
       // Fetch balance after connection
       if (wallet.address) {
         const [newBalance, newNonce] = await Promise.all([
-          getAccountBalance(wallet.address),
+          getAccountBalanceSTX(wallet.address),
           getAccountNonce(wallet.address),
         ]);
         

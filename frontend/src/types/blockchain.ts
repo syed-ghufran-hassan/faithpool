@@ -97,15 +97,15 @@ export interface NFTToken {
   /** Token ID */
   tokenId: number;
   /** Circle ID this slot belongs to */
-  circleId: number;
+  circleId?: number;
   /** Slot position in the circle */
-  slot: number;
+  slot?: number;
   /** Current owner address */
   owner: string;
   /** Listing price in microSTX (if listed) */
   price?: number;
   /** Whether token is listed for sale */
-  isListed: boolean;
+  isListed?: boolean;
   /** Seller address (if listed) */
   seller?: string;
   /** Circle name for display */
@@ -114,6 +114,46 @@ export interface NFTToken {
   contributionAmount?: number;
   /** Payout position in queue */
   payoutPosition?: number;
+  /** Listing information (if listed for sale) */
+  listing?: NFTListing | null;
+  /** Metadata for the token */
+  metadata?: NFTMetadata | null;
+}
+
+/** NFT listing information */
+export interface NFTListing {
+  tokenId: number;
+  seller: string;
+  price: number;
+  listedAt: number;
+}
+
+/** NFT metadata structure */
+export interface NFTMetadata {
+  tokenId?: number;
+  circleId: number;
+  slot: number;
+  slotNumber?: number;  // Alias for slot for backward compatibility
+  mintedAt: number;
+  mintedBy?: string;
+  completedRounds?: number;
+  circleName?: string;
+  [key: string]: unknown;
+}
+
+/** Escrow balance information */
+export interface EscrowBalance {
+  total: number;
+  locked: number;
+  available: number;
+}
+
+/** Escrow statistics */
+export interface EscrowStats {
+  totalDeposits: number;
+  totalWithdrawals: number;
+  totalPayouts: number;
+  activeCircles: number;
 }
 
 // ============================================================

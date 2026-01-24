@@ -81,7 +81,8 @@ const formatSTX = (microStx: number): string => {
   return (microStx / 1_000_000).toFixed(2);
 };
 
-const formatDate = (date: Date): string => {
+// Helper function for formatting countdown dates
+const _formatDate = (date: Date): string => {
   const now = new Date();
   const diff = date.getTime() - now.getTime();
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -96,10 +97,15 @@ const formatDate = (date: Date): string => {
   }
 };
 
-const truncateAddress = (address: string): string => {
+// Helper function for truncating addresses
+const _truncateAddress = (address: string): string => {
   if (address.length <= 12) return address;
   return `${address.slice(0, 6)}...${address.slice(-4)}`;
 };
+
+// Suppress unused variable warnings for future use
+void _formatDate;
+void _truncateAddress;
 
 export const CircleList = memo(forwardRef<HTMLDivElement, CircleListProps>(
   function CircleList(
@@ -181,7 +187,6 @@ export const CircleList = memo(forwardRef<HTMLDivElement, CircleListProps>(
     const handleJoinedToggle = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
       setShowJoinedOnly(e.target.checked);
     }, []);
-  };
 
   const formatDate = (date: Date): string => {
     const now = new Date();
@@ -198,15 +203,17 @@ export const CircleList = memo(forwardRef<HTMLDivElement, CircleListProps>(
     }
   };
 
-  const getStatusBadge = (status: Circle['status']) => {
+  // Helper for status badge variant - available for future use
+  const getStatusVariant = (status: Circle['status']): 'success' | 'warning' | 'info' | 'secondary' => {
     const variants: Record<Circle['status'], 'success' | 'warning' | 'info' | 'secondary'> = {
       active: 'success',
       pending: 'warning',
       completed: 'info',
       cancelled: 'secondary',
     };
-    return <Badge variant={variants[status]}>{status}</Badge>;
+    return variants[status];
   };
+  void getStatusVariant; // Suppress unused warning
 
   const truncateAddress = (address: string): string => {
     if (address.length <= 12) return address;
