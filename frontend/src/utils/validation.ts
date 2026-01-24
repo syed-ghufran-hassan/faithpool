@@ -1,7 +1,11 @@
-// Form validation utilities
+/**
+ * Form validation utilities
+ * 
+ * @module utils/validation
+ */
 
 export interface ValidationRule {
-  validate: (value: any) => boolean;
+  validate: (value: unknown) => boolean;
   message: string;
 }
 
@@ -15,7 +19,7 @@ export interface ValidationResult {
  */
 export function required(message: string = 'This field is required'): ValidationRule {
   return {
-    validate: (value: any) => {
+    validate: (value: unknown) => {
       if (value === null || value === undefined) return false;
       if (typeof value === 'string') return value.trim().length > 0;
       if (Array.isArray(value)) return value.length > 0;
@@ -30,7 +34,7 @@ export function required(message: string = 'This field is required'): Validation
  */
 export function minLength(min: number, message?: string): ValidationRule {
   return {
-    validate: (value: any) => {
+    validate: (value: unknown) => {
       if (!value) return true; // Let required handle empty
       return String(value).length >= min;
     },
@@ -43,7 +47,7 @@ export function minLength(min: number, message?: string): ValidationRule {
  */
 export function maxLength(max: number, message?: string): ValidationRule {
   return {
-    validate: (value: any) => {
+    validate: (value: unknown) => {
       if (!value) return true;
       return String(value).length <= max;
     },
@@ -56,7 +60,7 @@ export function maxLength(max: number, message?: string): ValidationRule {
  */
 export function min(minValue: number, message?: string): ValidationRule {
   return {
-    validate: (value: any) => {
+    validate: (value: unknown) => {
       if (value === null || value === undefined || value === '') return true;
       return Number(value) >= minValue;
     },
@@ -69,7 +73,7 @@ export function min(minValue: number, message?: string): ValidationRule {
  */
 export function max(maxValue: number, message?: string): ValidationRule {
   return {
-    validate: (value: any) => {
+    validate: (value: unknown) => {
       if (value === null || value === undefined || value === '') return true;
       return Number(value) <= maxValue;
     },
