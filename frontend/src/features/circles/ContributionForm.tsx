@@ -1,33 +1,99 @@
-import { useState } from 'react';
+/**
+ * ContributionForm Component
+ * 
+ * Form for making contributions to a savings circle with
+ * validation, balance checking, and transaction feedback.
+ * 
+ * @module features/circles/ContributionForm
+ */
+import { useState, useCallback, useMemo } from 'react';
 import './ContributionForm.css';
 
+// ============================================================================
+// Types
+// ============================================================================
+
+/** Props for the ContributionForm component */
 interface ContributionFormProps {
+  /** Circle identifier */
   circleId: number;
+  /** Required contribution amount in STX */
   contributionAmount: number;
+  /** User's current STX balance */
   userBalance: number;
+  /** External loading state */
   isLoading?: boolean;
+  /** Callback when contribution is submitted */
   onSubmit: (amount: number) => Promise<void>;
 }
 
+// ============================================================================
+// Constants
+// ============================================================================
+
+/** Estimated network fee for contribution transaction */
+const ESTIMATED_NETWORK_FEE = 0.01;
+
+/** Minimum step for STX amount input */
+const STX_INPUT_STEP = 0.000001;
+
+// ============================================================================
+// Helpers
+// ============================================================================
+
+/** Format number with locale-specific thousands separators */
+const formatAmount = (num: number): string => {
+  return new Intl.NumberFormat('en-US').format(num);
+};
+
+// ============================================================================
+// Component
+// ============================================================================
+
+/**
+ * Contribution form component with validation
+ * 
+ * @param props - ContributionFormProps
+ * @returns Form with amount input and submit button
+ */
 function ContributionForm({
-  circleId,
   contributionAmount,
   userBalance,
   isLoading = false,
   onSubmit,
 }: ContributionFormProps) {
+  // Form state
   const [amount, setAmount] = useState(contributionAmount);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const formatAmount = (num: number) => {
-    return new Intl.NumberFormat('en-US').format(num);
-  };
+  // Derived state
+  const hasInsufficientBalance = useMemo(
+    () => userBalance < contributionAmount,
+    [userBalance, contributionAmount]
+  );
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const totalAmount = useMemo(
+    () => amount + ESTIMATED_NETWORK_FEE,
+    [amount]
+  );
+
+  const isDisabled = isLoading || isSubmitting || hasInsufficientBalance;
+
+  // Handlers
+  const handleAmountChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setAmount(Number(e.target.value));
+  }, []);
+
+  const handleSetRequired = useCallback(() => {
+    setAmount(contributionAmount);
+  }, [contributionAmount]);
+
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
+    // Validation
     if (amount < contributionAmount) {
       setError(`Minimum contribution is ${formatAmount(contributionAmount)} STX`);
       return;
@@ -38,6 +104,7 @@ function ContributionForm({
       return;
     }
 
+    // Submit
     setIsSubmitting(true);
     try {
       await onSubmit(amount);
@@ -46,9 +113,7 @@ function ContributionForm({
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const hasInsufficientBalance = userBalance < contributionAmount;
+  }, [amount, contributionAmount, userBalance, onSubmit]);
 
   return (
     <form className="contribution-form" onSubmit={handleSubmit}>
@@ -66,15 +131,15 @@ function ContributionForm({
             type="number"
             id="contribution-amount"
             value={amount}
-            onChange={(e) => setAmount(Number(e.target.value))}
+            onChange={handleAmountChange}
             min={contributionAmount}
-            step={0.000001}
-            disabled={isLoading || isSubmitting || hasInsufficientBalance}
+            step={STX_INPUT_STEP}
+            disabled={isDisabled}
           />
           <button
             type="button"
             className="max-btn"
-            onClick={() => setAmount(contributionAmount)}
+            onClick={handleSetRequired}
             disabled={isLoading || isSubmitting}
           >
             Required
@@ -101,11 +166,11 @@ function ContributionForm({
         </div>
         <div className="summary-row">
           <span>Network Fee (est.)</span>
-          <span>~0.01 STX</span>
+          <span>~{ESTIMATED_NETWORK_FEE} STX</span>
         </div>
         <div className="summary-row total">
           <span>Total</span>
-          <span>{formatAmount(amount + 0.01)} STX</span>
+          <span>{formatAmount(totalAmount)} STX</span>
         </div>
       </div>
 
