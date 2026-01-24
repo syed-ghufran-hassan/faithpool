@@ -1,4 +1,11 @@
-// Wallet Service - Handles wallet connection and transactions
+/**
+ * Wallet Service
+ * 
+ * Handles Hiro Wallet connection and transaction signing for
+ * interacting with StackSUSU smart contracts.
+ * 
+ * @module services/wallet
+ */
 
 import { CONTRACTS, TX_DEFAULTS, ERROR_CODES } from '../config/constants';
 import type { 
@@ -10,23 +17,39 @@ import type {
 } from '../types';
 import type { TransactionResult, BroadcastResult } from '../types/blockchain';
 
-// Wallet connection state
+// ============================================================
+// Types
+// ============================================================
+
+/** Wallet connection state */
 interface WalletConnection {
   isConnected: boolean;
   address: string | null;
   publicKey: string | null;
 }
 
+/** Wallet state change listener */
+type WalletListener = (state: WalletConnection) => void;
+
+// ============================================================
+// State Management
+// ============================================================
+
+/** Current wallet connection state */
 let walletState: WalletConnection = {
   isConnected: false,
   address: null,
   publicKey: null,
 };
 
-// Event emitter for wallet state changes
-type WalletListener = (state: WalletConnection) => void;
+/** Registered state change listeners */
 const listeners: WalletListener[] = [];
 
+/**
+ * Subscribe to wallet state changes
+ * @param listener - Callback for state changes
+ * @returns Unsubscribe function
+ */
 export function subscribeToWallet(listener: WalletListener): () => void {
   listeners.push(listener);
   return () => {
@@ -35,21 +58,36 @@ export function subscribeToWallet(listener: WalletListener): () => void {
   };
 }
 
+/** Notify all listeners of state change */
 function notifyListeners() {
   listeners.forEach(listener => listener(walletState));
 }
 
-// Check if Hiro Wallet is available
+// ============================================================
+// Wallet Connection
+// ============================================================
+
+/**
+ * Check if Hiro Wallet extension is installed
+ * @returns true if wallet is available
+ */
 export function isWalletAvailable(): boolean {
   return typeof window !== 'undefined' && 'StacksProvider' in window;
 }
 
-// Get current wallet state
+/**
+ * Get current wallet state (copy to prevent mutation)
+ * @returns Current wallet connection state
+ */
 export function getWalletState(): WalletConnection {
   return { ...walletState };
 }
 
-// Connect wallet using Hiro Wallet
+/**
+ * Connect to Hiro Wallet
+ * @returns Connected wallet state
+ * @throws Error if wallet not installed or user cancels
+ */
 export async function connectWallet(): Promise<WalletConnection> {
   if (!isWalletAvailable()) {
     throw new Error('Hiro Wallet is not installed. Please install it from wallet.hiro.so');
