@@ -1,4 +1,11 @@
-// Service barrel export
+/**
+ * Service layer exports
+ * 
+ * Provides API and blockchain interaction services
+ * @module services
+ */
+
+// HTTP API client
 export * from './api';
 export { default as api } from './api';
 
