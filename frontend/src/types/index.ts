@@ -1,3 +1,9 @@
+/**
+ * Type definitions for StackSUSU
+ * 
+ * @module types
+ */
+
 // Circle types
 export interface Circle {
   id: number;
