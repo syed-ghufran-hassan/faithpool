@@ -1,59 +1,81 @@
-// Blockchain-specific types for Stacks integration
+/**
+ * Blockchain-specific types for Stacks integration
+ * 
+ * This module contains type definitions for:
+ * - Clarity value representations
+ * - Contract call responses
+ * - On-chain data structures
+ * - Transaction types
+ * 
+ * @module types/blockchain
+ */
 
-import { CircleStatus } from './index';
+// ============================================================
+// Clarity Value Types
+// ============================================================
 
-// Clarity value representations
+/** Clarity unsigned integer value */
 export interface ClarityUint {
   type: 'uint';
   value: string;
 }
 
+/** Clarity signed integer value */
 export interface ClarityInt {
   type: 'int';
   value: string;
 }
 
+/** Clarity boolean value */
 export interface ClarityBool {
   type: 'bool';
   value: boolean;
 }
 
+/** Clarity principal (address) value */
 export interface ClarityPrincipal {
   type: 'principal';
   value: string;
 }
 
+/** Clarity string value (ASCII or UTF-8) */
 export interface ClarityString {
   type: 'string-ascii' | 'string-utf8';
   value: string;
 }
 
+/** Clarity buffer value */
 export interface ClarityBuffer {
   type: 'buffer';
   value: string;
 }
 
+/** Clarity list value */
 export interface ClarityList {
   type: 'list';
   value: ClarityValue[];
 }
 
+/** Clarity tuple value */
 export interface ClarityTuple {
   type: 'tuple';
   value: Record<string, ClarityValue>;
 }
 
+/** Clarity optional value */
 export interface ClarityOptional {
   type: 'optional';
   value: ClarityValue | null;
 }
 
+/** Clarity response value (ok/err) */
 export interface ClarityResponse {
   type: 'response';
   success: boolean;
   value: ClarityValue;
 }
 
+/** Union type of all Clarity values */
 export type ClarityValue =
   | ClarityUint
   | ClarityInt
@@ -66,14 +88,22 @@ export type ClarityValue =
   | ClarityOptional
   | ClarityResponse;
 
-// Contract call response
+// ============================================================
+// Contract Response Types
+// ============================================================
+
+/** Response from a read-only contract call */
 export interface ContractCallResponse {
   okay: boolean;
   result: string;
   cause?: string;
 }
 
-// Circle info from blockchain
+// ============================================================
+// On-Chain Data Structures
+// ============================================================
+
+/** Circle info as stored on blockchain */
 export interface OnChainCircleInfo {
   name: string;
   creator: string;
