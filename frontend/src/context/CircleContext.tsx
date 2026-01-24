@@ -1,8 +1,22 @@
+/**
+ * Circle Context Provider
+ * 
+ * Manages circle data state and provides circle operations
+ * throughout the application via React Context.
+ * 
+ * @module context/CircleContext
+ */
+
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import type { ReactNode } from 'react';
 import { getAllCircles, getCircleById as fetchCircleById, getUserMemberships, formatCircleForDisplay } from '../services/circles';
 import type { OnChainCircle } from '../types/blockchain';
 
+// ============================================================
+// Types
+// ============================================================
+
+/** UI-friendly circle representation */
 interface Circle {
   id: number;
   name: string;
@@ -17,21 +31,42 @@ interface Circle {
   escrowBalance?: number;
 }
 
+/** Circle context value type */
 interface CircleContextType {
+  /** All available circles */
   circles: Circle[];
+  /** Circles user is a member of */
   userCircles: Circle[];
+  /** Loading state */
   isLoading: boolean;
+  /** Error message if any */
   error: string | null;
+  /** Fetch all circles */
   fetchCircles: () => Promise<void>;
+  /** Fetch circles for a specific user */
   fetchUserCircles: (address: string) => Promise<void>;
+  /** Get circle by ID from cache */
   getCircleById: (id: number) => Circle | undefined;
+  /** Refresh a specific circle */
   refreshCircle: (id: number) => Promise<void>;
+  /** Total number of circles */
   totalCircleCount: number;
 }
 
+// ============================================================
+// Context
+// ============================================================
+
 const CircleContext = createContext<CircleContextType | null>(null);
 
-// Transform on-chain circle to UI circle
+// ============================================================
+// Helpers
+// ============================================================
+
+/**
+ * Transform on-chain circle data to UI-friendly format
+ * @param onChain - Raw on-chain circle data
+ */
 function transformCircle(onChain: OnChainCircle): Circle {
   const display = formatCircleForDisplay(onChain);
   
@@ -62,6 +97,14 @@ function transformCircle(onChain: OnChainCircle): Circle {
   };
 }
 
+// ============================================================
+// Provider Component
+// ============================================================
+
+/**
+ * Circle context provider component
+ * Wrap your app with this to enable circle data access
+ */
 export function CircleProvider({ children }: { children: ReactNode }) {
   const [circles, setCircles] = useState<Circle[]>([]);
   const [userCircles, setUserCircles] = useState<Circle[]>([]);
