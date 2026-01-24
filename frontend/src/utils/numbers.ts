@@ -1,8 +1,15 @@
 /**
  * Number and currency formatting utilities
+ * 
+ * @module utils/numbers
  */
 
-// Format number with commas (e.g., 1,234,567)
+/** Microstacks to STX conversion factor */
+const MICROSTX_FACTOR = 1_000_000;
+
+/**
+ * Format number with commas (e.g., 1,234,567)
+ */
 export function formatNumber(num: number, decimals: number = 0): string {
   return new Intl.NumberFormat('en-US', {
     minimumFractionDigits: decimals,
@@ -10,18 +17,38 @@ export function formatNumber(num: number, decimals: number = 0): string {
   }).format(num);
 }
 
-// Format STX amount (e.g., "1,234.56 STX")
+/**
+ * Format STX amount (e.g., "1,234.56 STX")
+ */
 export function formatStx(amount: number, decimals: number = 2): string {
   return `${formatNumber(amount, decimals)} STX`;
 }
 
-// Format STX amount with microstacks conversion
+/**
+ * Format STX amount with microstacks conversion
+ */
 export function formatMicroStx(microStx: number, decimals: number = 6): string {
-  const stx = microStx / 1_000_000;
+  const stx = microStx / MICROSTX_FACTOR;
   return formatStx(stx, decimals);
 }
 
-// Format as compact number (e.g., 1.2K, 3.4M)
+/**
+ * Convert microSTX to STX
+ */
+export function microToStx(microStx: number): number {
+  return microStx / MICROSTX_FACTOR;
+}
+
+/**
+ * Convert STX to microSTX
+ */
+export function stxToMicro(stx: number): number {
+  return stx * MICROSTX_FACTOR;
+}
+
+/**
+ * Format as compact number (e.g., 1.2K, 3.4M)
+ */
 export function formatCompact(num: number): string {
   return new Intl.NumberFormat('en-US', {
     notation: 'compact',
@@ -29,7 +56,9 @@ export function formatCompact(num: number): string {
   }).format(num);
 }
 
-// Format as percentage
+/**
+ * Format as percentage
+ */
 export function formatPercent(value: number, decimals: number = 1): string {
   return new Intl.NumberFormat('en-US', {
     style: 'percent',
@@ -38,7 +67,9 @@ export function formatPercent(value: number, decimals: number = 1): string {
   }).format(value / 100);
 }
 
-// Format as currency (USD)
+/**
+ * Format as currency (USD)
+ */
 export function formatUsd(amount: number): string {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -48,12 +79,16 @@ export function formatUsd(amount: number): string {
   }).format(amount);
 }
 
-// Convert STX to USD (requires price)
+/**
+ * Convert STX to USD (requires price)
+ */
 export function stxToUsd(stxAmount: number, stxPrice: number): string {
   return formatUsd(stxAmount * stxPrice);
 }
 
-// Format file size (bytes to KB, MB, GB)
+/**
+ * Format file size (bytes to KB, MB, GB)
+ */
 export function formatFileSize(bytes: number): string {
   if (bytes === 0) return '0 Bytes';
   
