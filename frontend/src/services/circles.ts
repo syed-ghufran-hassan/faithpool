@@ -1,23 +1,45 @@
-// Circle Service - Handles all circle-related blockchain operations
+/**
+ * Circle Service
+ * 
+ * Handles all circle-related blockchain operations including:
+ * - Fetching circle data from contracts
+ * - Parsing Clarity values
+ * - Circle status calculations
+ * 
+ * @module services/circles
+ */
 
 import { CONTRACTS, CIRCLE_STATUS, TIME } from '../config/constants';
 import { callContractReadOnly, getCurrentBlockHeight } from './stacks';
 import type { Circle, CircleInfo } from '../types';
 
-// Clarity hex parsing utilities
+// ============================================================
+// Clarity Value Parsers
+// ============================================================
+
+/**
+ * Parse unsigned integer from Clarity hex
+ * @param hex - Clarity hex-encoded uint
+ */
 function parseUint(hex: string): number {
   if (!hex || !hex.startsWith('0x01')) return 0;
-  // uint is 0x01 followed by 16 bytes (32 hex chars)
   return parseInt(hex.slice(2 + 32), 16);
 }
 
+/**
+ * Parse boolean from Clarity hex
+ * @param hex - Clarity hex-encoded bool
+ */
 function parseBool(hex: string): boolean {
   return hex === '0x03'; // true = 0x03, false = 0x04
 }
 
+/**
+ * Parse ASCII string from Clarity hex
+ * @param hex - Clarity hex-encoded string-ascii
+ */
 function parseString(hex: string): string {
   if (!hex || !hex.startsWith('0x0d')) return '';
-  // string-ascii: 0x0d + length (4 bytes) + data
   const lengthHex = hex.slice(4, 12);
   const length = parseInt(lengthHex, 16);
   const dataHex = hex.slice(12, 12 + length * 2);
@@ -29,25 +51,25 @@ function parseString(hex: string): string {
   return result;
 }
 
+/**
+ * Parse principal from Clarity hex (simplified)
+ * @param hex - Clarity hex-encoded principal
+ */
 function parsePrincipal(hex: string): string {
   if (!hex || !hex.startsWith('0x05')) return '';
-  // Standard principal: 0x05 + version (1 byte) + hash160 (20 bytes)
   const version = parseInt(hex.slice(4, 6), 16);
   const hash = hex.slice(6, 46);
-  
-  // Convert to Stacks address format (simplified - would need proper c32 encoding)
   const prefix = version === 22 ? 'SP' : 'ST';
   return `${prefix}${hash.slice(0, 30).toUpperCase()}...`;
 }
 
-// Parse circle info from contract response
+/**
+ * Parse circle info tuple from contract response
+ * @param resultHex - Clarity hex-encoded tuple
+ */
 function parseCircleInfo(resultHex: string): CircleInfo | null {
   try {
-    // This is a simplified parser - in production use @stacks/transactions cvToJSON
-    // The response is a tuple with multiple fields
-    
-    // For demo purposes, return null and let caller handle
-    // Real implementation would decode the full tuple structure
+    // Simplified parser - production would use @stacks/transactions cvToJSON
     return null;
   } catch (error) {
     console.error('Failed to parse circle info:', error);
@@ -55,7 +77,13 @@ function parseCircleInfo(resultHex: string): CircleInfo | null {
   }
 }
 
-// Get total number of circles
+// ============================================================
+// Circle Data Fetching
+// ============================================================
+
+/**
+ * Get total number of circles created
+ */
 export async function getCircleCount(): Promise<number> {
   try {
     const result = await callContractReadOnly(CONTRACTS.CORE, 'get-circle-count');
