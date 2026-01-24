@@ -1,20 +1,32 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
-type Theme = 'light' | 'dark' | 'system';
+/** Available theme options */
+export type Theme = 'light' | 'dark' | 'system';
 
-interface UseThemeReturn {
+/** Resolved theme after system preference is applied */
+export type ResolvedTheme = 'light' | 'dark';
+
+export interface UseThemeReturn {
+  /** Current theme setting (may be 'system') */
   theme: Theme;
-  resolvedTheme: 'light' | 'dark';
+  /** Resolved theme after system preference (always 'light' or 'dark') */
+  resolvedTheme: ResolvedTheme;
+  /** Update theme setting */
   setTheme: (theme: Theme) => void;
+  /** Toggle between light and dark */
+  toggleTheme: () => void;
 }
+
+const STORAGE_KEY = 'stacksusu-theme';
 
 export function useTheme(): UseThemeReturn {
   const [theme, setThemeState] = useState<Theme>(() => {
-    const stored = localStorage.getItem('stacksusu-theme');
+    if (typeof window === 'undefined') return 'system';
+    const stored = localStorage.getItem(STORAGE_KEY);
     return (stored as Theme) || 'system';
   });
 
-  const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('light');
+  const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>('light');
 
   useEffect(() => {
     const updateResolvedTheme = () => {
@@ -43,15 +55,20 @@ export function useTheme(): UseThemeReturn {
     document.documentElement.setAttribute('data-theme', resolvedTheme);
   }, [resolvedTheme]);
 
-  const setTheme = (newTheme: Theme) => {
+  const setTheme = useCallback((newTheme: Theme) => {
     setThemeState(newTheme);
-    localStorage.setItem('stacksusu-theme', newTheme);
-  };
+    localStorage.setItem(STORAGE_KEY, newTheme);
+  }, []);
+
+  const toggleTheme = useCallback(() => {
+    setTheme(resolvedTheme === 'light' ? 'dark' : 'light');
+  }, [resolvedTheme, setTheme]);
 
   return {
     theme,
     resolvedTheme,
     setTheme,
+    toggleTheme,
   };
 }
 
