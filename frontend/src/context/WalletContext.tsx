@@ -1,3 +1,12 @@
+/**
+ * Wallet Context Provider
+ * 
+ * Manages wallet connection state and provides wallet actions
+ * throughout the application via React Context.
+ * 
+ * @module context/WalletContext
+ */
+
 import { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { 
@@ -9,25 +18,53 @@ import {
 } from '../services/wallet';
 import { getAccountBalance, getAccountNonce } from '../services/stacks';
 
+// ============================================================
+// Types
+// ============================================================
+
+/** Wallet context value type */
 interface WalletContextType {
+  /** Whether wallet is currently connected */
   isConnected: boolean;
+  /** Whether connection is in progress */
   isConnecting: boolean;
+  /** Connected wallet address */
   address: string | null;
+  /** Account STX balance */
   balance: number;
+  /** Account transaction nonce */
   nonce: number;
+  /** Last error message */
   error: string | null;
+  /** Connect wallet action */
   connect: () => Promise<void>;
+  /** Disconnect wallet action */
   disconnect: () => void;
+  /** Refresh balance action */
   refreshBalance: () => Promise<void>;
+  /** Whether Hiro Wallet extension is available */
   isAvailable: boolean;
 }
 
-const WalletContext = createContext<WalletContextType | null>(null);
-
+/** Props for WalletProvider component */
 interface WalletProviderProps {
   children: ReactNode;
 }
 
+// ============================================================
+// Context
+// ============================================================
+
+const WalletContext = createContext<WalletContextType | null>(null);
+
+// ============================================================
+// Provider Component
+// ============================================================
+
+/**
+ * Wallet context provider component
+ * Wrap your app with this to enable wallet functionality
+ */
 export function WalletProvider({ children }: WalletProviderProps) {
   const [isConnected, setIsConnected] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
