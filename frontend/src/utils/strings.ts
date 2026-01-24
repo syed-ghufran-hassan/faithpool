@@ -4,8 +4,15 @@
  * @module utils/strings
  */
 
+// ============================================================================
+// Address/ID Truncation
+// ============================================================================
+
 /**
  * Truncate address (e.g., "SP3FK...G6N")
+ * @param address - Full address string
+ * @param startChars - Characters to show at start
+ * @param endChars - Characters to show at end
  */
 export function truncateAddress(address: string, startChars: number = 5, endChars: number = 4): string {
   if (!address) return '';
@@ -15,6 +22,8 @@ export function truncateAddress(address: string, startChars: number = 5, endChar
 
 /**
  * Truncate transaction ID
+ * @param txId - Full transaction ID
+ * @param chars - Characters to show on each end
  */
 export function truncateTxId(txId: string, chars: number = 8): string {
   if (!txId) return '';
@@ -22,8 +31,13 @@ export function truncateTxId(txId: string, chars: number = 8): string {
   return `${txId.slice(0, chars)}...${txId.slice(-chars)}`;
 }
 
+// ============================================================================
+// Case Transformations
+// ============================================================================
+
 /**
  * Capitalize first letter
+ * @param str - String to capitalize
  */
 export function capitalize(str: string): string {
   if (!str) return '';
@@ -32,6 +46,7 @@ export function capitalize(str: string): string {
 
 /**
  * Title case (capitalize each word)
+ * @param str - String to convert
  */
 export function titleCase(str: string): string {
   if (!str) return '';
@@ -40,6 +55,7 @@ export function titleCase(str: string): string {
 
 /**
  * Slugify string (for URLs)
+ * @param str - String to slugify
  */
 export function slugify(str: string): string {
   return str
@@ -50,29 +66,65 @@ export function slugify(str: string): string {
     .replace(/^-+|-+$/g, '');
 }
 
-// Generate random ID
+// ============================================================================
+// ID Generation
+// ============================================================================
+
+/**
+ * Generate random ID
+ * @param prefix - Optional prefix for the ID
+ * @param length - Length of random portion
+ */
 export function generateId(prefix: string = '', length: number = 8): string {
   const random = Math.random().toString(36).substring(2, 2 + length);
   return prefix ? `${prefix}-${random}` : random;
 }
 
-// Check if string is empty or whitespace
+// ============================================================================
+// String Validation
+// ============================================================================
+
+/**
+ * Check if string is empty or whitespace
+ * @param str - String to check
+ */
 export function isBlank(str: string | null | undefined): boolean {
   return !str || str.trim().length === 0;
 }
 
-// Pluralize word based on count
+// ============================================================================
+// Pluralization
+// ============================================================================
+
+/**
+ * Pluralize word based on count
+ * @param count - Number to check
+ * @param singular - Singular form
+ * @param plural - Optional plural form (defaults to singular + 's')
+ */
 export function pluralize(count: number, singular: string, plural?: string): string {
   if (count === 1) return singular;
   return plural || `${singular}s`;
 }
 
-// Format count with label (e.g., "5 members", "1 member")
+/**
+ * Format count with label (e.g., "5 members", "1 member")
+ * @param count - Number value
+ * @param singular - Singular label
+ * @param plural - Optional plural label
+ */
 export function formatCount(count: number, singular: string, plural?: string): string {
   return `${count} ${pluralize(count, singular, plural)}`;
 }
 
-// Mask sensitive data (e.g., email)
+// ============================================================================
+// Data Masking
+// ============================================================================
+
+/**
+ * Mask sensitive data (e.g., email)
+ * @param email - Email address to mask
+ */
 export function maskEmail(email: string): string {
   const [local, domain] = email.split('@');
   if (!domain) return email;
@@ -80,7 +132,11 @@ export function maskEmail(email: string): string {
   return `${maskedLocal}@${domain}`;
 }
 
-// Extract initials from name
+/**
+ * Extract initials from name
+ * @param name - Full name
+ * @param max - Maximum initials to return
+ */
 export function getInitials(name: string, max: number = 2): string {
   if (!name) return '';
   return name
@@ -91,19 +147,31 @@ export function getInitials(name: string, max: number = 2): string {
     .slice(0, max);
 }
 
-// Remove HTML tags
+// ============================================================================
+// HTML Handling
+// ============================================================================
+
+/**
+ * Remove HTML tags
+ * @param html - HTML string to strip
+ */
 export function stripHtml(html: string): string {
   return html.replace(/<[^>]*>/g, '');
 }
 
-// Escape HTML special characters
+/** HTML entity map for escaping */
+const HTML_ENTITIES: Record<string, string> = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#39;',
+};
+
+/**
+ * Escape HTML special characters
+ * @param str - String to escape
+ */
 export function escapeHtml(str: string): string {
-  const entities: Record<string, string> = {
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;',
-  };
-  return str.replace(/[&<>"']/g, char => entities[char]);
+  return str.replace(/[&<>"']/g, char => HTML_ENTITIES[char]);
 }
