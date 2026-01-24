@@ -1,34 +1,46 @@
 /**
  * String manipulation utilities
+ * 
+ * @module utils/strings
  */
 
-// Truncate address (e.g., "SP3FK...G6N")
+/**
+ * Truncate address (e.g., "SP3FK...G6N")
+ */
 export function truncateAddress(address: string, startChars: number = 5, endChars: number = 4): string {
   if (!address) return '';
   if (address.length <= startChars + endChars) return address;
   return `${address.slice(0, startChars)}...${address.slice(-endChars)}`;
 }
 
-// Truncate transaction ID
+/**
+ * Truncate transaction ID
+ */
 export function truncateTxId(txId: string, chars: number = 8): string {
   if (!txId) return '';
   if (txId.length <= chars * 2) return txId;
   return `${txId.slice(0, chars)}...${txId.slice(-chars)}`;
 }
 
-// Capitalize first letter
+/**
+ * Capitalize first letter
+ */
 export function capitalize(str: string): string {
   if (!str) return '';
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
 
-// Title case (capitalize each word)
+/**
+ * Title case (capitalize each word)
+ */
 export function titleCase(str: string): string {
   if (!str) return '';
   return str.split(' ').map(word => capitalize(word)).join(' ');
 }
 
-// Slugify string (for URLs)
+/**
+ * Slugify string (for URLs)
+ */
 export function slugify(str: string): string {
   return str
     .toLowerCase()
