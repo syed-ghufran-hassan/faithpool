@@ -1,8 +1,17 @@
 /**
- * Constants for the StackSusu application
+ * Application Constants
+ * 
+ * Centralized constants for the StackSUSU application.
+ * Includes configuration values, UI strings, and limits.
+ * 
+ * @module lib/constants
  */
 
-// Contribution frequencies
+// ============================================================
+// Circle Configuration
+// ============================================================
+
+/** Available contribution frequency options */
 export const CONTRIBUTION_FREQUENCIES = [
   { value: 'daily', label: 'Daily' },
   { value: 'weekly', label: 'Weekly' },
@@ -10,7 +19,7 @@ export const CONTRIBUTION_FREQUENCIES = [
   { value: 'monthly', label: 'Monthly' },
 ] as const;
 
-// Circle statuses
+/** Circle status values */
 export const CIRCLE_STATUSES = {
   OPEN: 'open',
   ACTIVE: 'active',
@@ -19,13 +28,13 @@ export const CIRCLE_STATUSES = {
   CANCELLED: 'cancelled',
 } as const;
 
-// Member roles
+/** Member role values */
 export const MEMBER_ROLES = {
   ADMIN: 'admin',
   MEMBER: 'member',
 } as const;
 
-// Transaction types
+/** Transaction type values */
 export const TRANSACTION_TYPES = {
   DEPOSIT: 'deposit',
   PAYOUT: 'payout',
@@ -33,17 +42,25 @@ export const TRANSACTION_TYPES = {
   FEE: 'fee',
 } as const;
 
-// Min/Max values
+// ============================================================
+// Limits & Validation
+// ============================================================
+
+/** Application limits for validation */
 export const LIMITS = {
   MIN_MEMBERS: 2,
   MAX_MEMBERS: 20,
-  MIN_CONTRIBUTION: 10, // 10 STX
-  MAX_CONTRIBUTION: 100000, // 100,000 STX
+  MIN_CONTRIBUTION: 10,      // 10 STX
+  MAX_CONTRIBUTION: 100000,  // 100,000 STX
   MIN_NAME_LENGTH: 3,
   MAX_NAME_LENGTH: 50,
 } as const;
 
-// Local storage keys
+// ============================================================
+// Storage & API
+// ============================================================
+
+/** Local storage keys */
 export const STORAGE_KEYS = {
   SETTINGS: 'stacksusu-settings',
   THEME: 'stacksusu-theme',
@@ -51,13 +68,17 @@ export const STORAGE_KEYS = {
   RECENT_CIRCLES: 'stacksusu-recent-circles',
 } as const;
 
-// API endpoints
+/** External API endpoints */
 export const API_ENDPOINTS = {
   STACKS_API: 'https://api.mainnet.hiro.so',
   EXPLORER: 'https://explorer.stacks.co',
 } as const;
 
-// Error messages
+// ============================================================
+// UI Strings
+// ============================================================
+
+/** Error messages for user display */
 export const ERROR_MESSAGES = {
   WALLET_NOT_CONNECTED: 'Please connect your wallet to continue',
   INSUFFICIENT_BALANCE: 'Insufficient balance for this transaction',
@@ -69,7 +90,7 @@ export const ERROR_MESSAGES = {
   UNKNOWN_ERROR: 'An unexpected error occurred',
 } as const;
 
-// Success messages
+/** Success messages for user display */
 export const SUCCESS_MESSAGES = {
   WALLET_CONNECTED: 'Wallet connected successfully',
   CONTRIBUTION_MADE: 'Contribution submitted successfully',
@@ -77,3 +98,19 @@ export const SUCCESS_MESSAGES = {
   CIRCLE_JOINED: 'Successfully joined the circle',
   SETTINGS_SAVED: 'Settings saved successfully',
 } as const;
+
+// ============================================================
+// Type Exports
+// ============================================================
+
+/** Type for contribution frequency values */
+export type ContributionFrequency = typeof CONTRIBUTION_FREQUENCIES[number]['value'];
+
+/** Type for circle status values */
+export type CircleStatus = typeof CIRCLE_STATUSES[keyof typeof CIRCLE_STATUSES];
+
+/** Type for member role values */
+export type MemberRole = typeof MEMBER_ROLES[keyof typeof MEMBER_ROLES];
+
+/** Type for transaction type values */
+export type TransactionType = typeof TRANSACTION_TYPES[keyof typeof TRANSACTION_TYPES];
