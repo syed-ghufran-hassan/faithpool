@@ -58,6 +58,8 @@ export function formatCompact(num: number): string {
 
 /**
  * Format as percentage
+ * @param value - Percentage value (0-100)
+ * @param decimals - Decimal places
  */
 export function formatPercent(value: number, decimals: number = 1): string {
   return new Intl.NumberFormat('en-US', {
@@ -67,8 +69,13 @@ export function formatPercent(value: number, decimals: number = 1): string {
   }).format(value / 100);
 }
 
+// ============================================================================
+// Currency Formatting
+// ============================================================================
+
 /**
  * Format as currency (USD)
+ * @param amount - Dollar amount
  */
 export function formatUsd(amount: number): string {
   return new Intl.NumberFormat('en-US', {
@@ -81,41 +88,74 @@ export function formatUsd(amount: number): string {
 
 /**
  * Convert STX to USD (requires price)
+ * @param stxAmount - Amount in STX
+ * @param stxPrice - Current STX price in USD
  */
 export function stxToUsd(stxAmount: number, stxPrice: number): string {
   return formatUsd(stxAmount * stxPrice);
 }
 
+// ============================================================================
+// File Size Formatting
+// ============================================================================
+
+/** File size units */
+const SIZE_UNITS = ['Bytes', 'KB', 'MB', 'GB', 'TB'] as const;
+
+/** Bytes per kilobyte */
+const BYTES_PER_KB = 1024;
+
 /**
  * Format file size (bytes to KB, MB, GB)
+ * @param bytes - Size in bytes
  */
 export function formatFileSize(bytes: number): string {
   if (bytes === 0) return '0 Bytes';
   
-  const k = 1024;
-  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  const i = Math.floor(Math.log(bytes) / Math.log(BYTES_PER_KB));
+  const size = parseFloat((bytes / Math.pow(BYTES_PER_KB, i)).toFixed(2));
   
-  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
+  return `${size} ${SIZE_UNITS[i]}`;
 }
 
-// Parse number from formatted string
+// ============================================================================
+// Number Utilities
+// ============================================================================
+
+/**
+ * Parse number from formatted string
+ * @param str - Formatted number string
+ */
 export function parseFormattedNumber(str: string): number {
   return parseFloat(str.replace(/[^0-9.-]/g, ''));
 }
 
-// Clamp number within range
+/**
+ * Clamp number within range
+ * @param value - Value to clamp
+ * @param min - Minimum value
+ * @param max - Maximum value
+ */
 export function clamp(value: number, min: number, max: number): number {
   return Math.min(Math.max(value, min), max);
 }
 
-// Round to specific decimal places
+/**
+ * Round to specific decimal places
+ * @param value - Value to round
+ * @param decimals - Number of decimal places
+ */
 export function roundTo(value: number, decimals: number): number {
   const multiplier = Math.pow(10, decimals);
   return Math.round(value * multiplier) / multiplier;
 }
 
-// Calculate percentage
+/**
+ * Calculate percentage
+ * @param value - Part value
+ * @param total - Total value
+ * @returns Percentage (0-100)
+ */
 export function calculatePercent(value: number, total: number): number {
   if (total === 0) return 0;
   return (value / total) * 100;
