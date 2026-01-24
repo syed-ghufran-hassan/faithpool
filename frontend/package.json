@@ -1,13 +1,27 @@
 {
-  "name": "frontend",
+  "name": "@stacksusu/frontend",
+  "description": "StackSUSU decentralized savings circle frontend",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "keywords": [
+    "stacks",
+    "blockchain",
+    "defi",
+    "savings",
+    "susu",
+    "react"
+  ],
+  "author": "StackSUSU Team",
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "lint:fix": "eslint . --fix",
+    "preview": "vite preview",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf dist node_modules/.vite"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.20",
