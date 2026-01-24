@@ -1,53 +1,21 @@
 .app {
   min-height: 100vh;
-  background: #f8fafc;
-}
-
-.main-content {
-  padding-top: 70px; /* Account for fixed navbar */
-  min-height: calc(100vh - 70px - 80px);
-}
-
-.footer {
-  background: #1f2937;
-  color: white;
-  padding: 24px 0;
-}
-
-.footer-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  background: var(--color-bg-primary, #f8fafc);
+}
+
+.app__main {
+  flex: 1;
+  padding-top: var(--navbar-height, 70px);
+  min-height: calc(100vh - var(--navbar-height, 70px) - var(--footer-height, 80px));
+}
+
+.app__loader {
+  display: flex;
   align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  width: 100%;
 }
 
-.footer-content p {
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 0.9rem;
-}
-
-.footer-links {
-  display: flex;
-  gap: 24px;
-}
-
-.footer-links a {
-  color: rgba(255, 255, 255, 0.7);
-  text-decoration: none;
-  font-size: 0.9rem;
-  transition: color 0.3s ease;
-}
-
-.footer-links a:hover {
-  color: white;
-}
-
-@media (max-width: 640px) {
-  .footer-content {
-    flex-direction: column;
-    gap: 16px;
-    text-align: center;
-  }
-}
