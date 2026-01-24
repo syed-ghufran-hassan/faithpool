@@ -1,27 +1,79 @@
+/**
+ * PayoutSchedule Component
+ * 
+ * Displays a visual timeline of scheduled payouts for a savings
+ * circle, showing completed, current, and upcoming payouts.
+ * 
+ * @module features/circles/PayoutSchedule
+ */
 import './PayoutSchedule.css';
 
+// ============================================================================
+// Types
+// ============================================================================
+
+/** Payout event status */
+type PayoutStatus = 'completed' | 'current' | 'upcoming';
+
+/** Payout event data structure */
 interface PayoutEvent {
+  /** Payout round number */
   round: number;
+  /** Recipient's wallet address */
   recipientAddress: string;
+  /** Payout amount in STX */
   amount: number;
+  /** Formatted payout date */
   date: string;
-  status: 'completed' | 'current' | 'upcoming';
+  /** Payout status */
+  status: PayoutStatus;
 }
 
+/** Props for the PayoutSchedule component */
 interface PayoutScheduleProps {
+  /** Array of payout events */
   payouts: PayoutEvent[];
+  /** Current round number */
   currentRound: number;
+  /** Current user's wallet address for highlighting */
   currentUserAddress?: string;
 }
 
-function PayoutSchedule({ payouts, currentRound, currentUserAddress }: PayoutScheduleProps) {
-  const truncateAddress = (address: string) => {
-    if (address.length <= 12) return address;
-    return `${address.slice(0, 6)}...${address.slice(-4)}`;
-  };
+// ============================================================================
+// Helpers
+// ============================================================================
 
-  const formatAmount = (amount: number) => {
-    return new Intl.NumberFormat('en-US').format(amount);
+/** Truncate wallet address for display */
+const truncateAddress = (address: string): string => {
+  if (address.length <= 12) return address;
+  return `${address.slice(0, 6)}...${address.slice(-4)}`;
+};
+
+/** Format number with locale-specific thousands separators */
+const formatAmount = (amount: number): string => {
+  return new Intl.NumberFormat('en-US').format(amount);
+};
+
+/** Get timeline dot content based on status */
+const getTimelineDot = (status: PayoutStatus): string => {
+  if (status === 'completed') return '✓';
+  if (status === 'current') return '●';
+  return '';
+};
+
+// ============================================================================
+// Component
+// ============================================================================
+
+/**
+ * Payout schedule timeline component
+ * 
+ * @param props - PayoutScheduleProps
+ * @returns Visual timeline of payout events
+ */
+function PayoutSchedule({ payouts, currentUserAddress }: PayoutScheduleProps) {
+  const isUserPayout = (address: string): boolean => {
+    return address === currentUserAddress;
   };
 
   return (
@@ -30,14 +82,11 @@ function PayoutSchedule({ payouts, currentRound, currentUserAddress }: PayoutSch
         {payouts.map((payout, index) => (
           <div
             key={payout.round}
-            className={`schedule-item ${payout.status} ${
-              payout.recipientAddress === currentUserAddress ? 'is-you' : ''
-            }`}
+            className={`schedule-item ${payout.status} ${isUserPayout(payout.recipientAddress) ? 'is-you' : ''}`}
           >
             <div className="timeline-connector">
               <div className="timeline-dot">
-                {payout.status === 'completed' && '✓'}
-                {payout.status === 'current' && '●'}
+                {getTimelineDot(payout.status)}
               </div>
               {index < payouts.length - 1 && <div className="timeline-line" />}
             </div>
@@ -50,7 +99,7 @@ function PayoutSchedule({ payouts, currentRound, currentUserAddress }: PayoutSch
               <div className="schedule-body">
                 <span className="recipient">
                   {truncateAddress(payout.recipientAddress)}
-                  {payout.recipientAddress === currentUserAddress && (
+                  {isUserPayout(payout.recipientAddress) && (
                     <span className="you-indicator">Your payout!</span>
                   )}
                 </span>
