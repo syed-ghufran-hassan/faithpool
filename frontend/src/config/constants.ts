@@ -1,4 +1,8 @@
-// StackSUSU Configuration Constants
+/**
+ * StackSUSU Configuration Constants
+ * 
+ * @module config/constants
+ */
 
 export const APP_NAME = 'StackSUSU';
 export const APP_VERSION = '1.0.0';
