@@ -1,14 +1,24 @@
 /**
  * StackSUSU Configuration Constants
  * 
+ * Centralized configuration for the StackSUSU application.
+ * All constants are grouped by category and use `as const` for type safety.
+ * 
  * @module config/constants
  */
+
+// ============================================================
+// App Configuration
+// ============================================================
 
 export const APP_NAME = 'StackSUSU';
 export const APP_VERSION = '1.0.0';
 export const APP_DESCRIPTION = 'Decentralized savings circles on Stacks';
 
+// ============================================================
 // Network Configuration
+// ============================================================
+
 export const NETWORK_CONFIG = {
   MAINNET: {
     name: 'mainnet',
@@ -24,12 +34,17 @@ export const NETWORK_CONFIG = {
   },
 } as const;
 
-// Default to mainnet
+/** Current active network */
 export const CURRENT_NETWORK = NETWORK_CONFIG.MAINNET;
 
+// ============================================================
 // Contract Addresses (V4 - Production)
+// ============================================================
+
+/** Contract deployer address */
 export const CONTRACT_DEPLOYER = 'SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N';
 
+/** Smart contract addresses */
 export const CONTRACTS = {
   CORE: `${CONTRACT_DEPLOYER}.stacksusu-core-v4`,
   ADMIN: `${CONTRACT_DEPLOYER}.stacksusu-admin-v4`,
@@ -39,7 +54,10 @@ export const CONTRACTS = {
   TRAITS: `${CONTRACT_DEPLOYER}.stacksusu-traits-v2`,
 } as const;
 
+// ============================================================
 // Circle Configuration
+// ============================================================
+
 export const CIRCLE_CONFIG = {
   MIN_MEMBERS: 3,
   MAX_MEMBERS: 50,
@@ -49,7 +67,11 @@ export const CIRCLE_CONFIG = {
   MAX_PAYOUT_INTERVAL_DAYS: 90,
 } as const;
 
+// ============================================================
 // Circle Status
+// ============================================================
+
+/** Circle status codes */
 export const CIRCLE_STATUS = {
   FORMING: 0,
   ACTIVE: 1,
@@ -57,6 +79,7 @@ export const CIRCLE_STATUS = {
   CANCELLED: 3,
 } as const;
 
+/** Human-readable status labels */
 export const CIRCLE_STATUS_LABELS: Record<number, string> = {
   0: 'Forming',
   1: 'Active',
@@ -64,6 +87,7 @@ export const CIRCLE_STATUS_LABELS: Record<number, string> = {
   3: 'Cancelled',
 };
 
+/** Status to color variant mapping */
 export const CIRCLE_STATUS_COLORS: Record<number, string> = {
   0: 'warning',
   1: 'success',
@@ -71,7 +95,11 @@ export const CIRCLE_STATUS_COLORS: Record<number, string> = {
   3: 'error',
 };
 
-// Fee Configuration (in basis points)
+// ============================================================
+// Fee Configuration
+// ============================================================
+
+/** Fees in basis points (1 bps = 0.01%) */
 export const FEES = {
   ADMIN_FEE_BPS: 50, // 0.5%
   EMERGENCY_FEE_BPS: 200, // 2%
@@ -79,13 +107,21 @@ export const FEES = {
   LATE_FEE_BPS: 100, // 1%
 } as const;
 
+// ============================================================
 // Contribution Modes
+// ============================================================
+
+/** Available contribution modes */
 export const CONTRIBUTION_MODES = {
   UPFRONT: 0,
   ROUND_BY_ROUND: 1,
 } as const;
 
+// ============================================================
 // Error Codes
+// ============================================================
+
+/** Human-readable error messages by code */
 export const ERROR_CODES: Record<number, string> = {
   1000: 'Not authorized',
   1001: 'Circle not found',
@@ -120,20 +156,32 @@ export const ERROR_CODES: Record<number, string> = {
   1030: 'Insufficient reputation',
 };
 
-// Transaction defaults
+// ============================================================
+// Transaction Defaults
+// ============================================================
+
+/** Default transaction fee amounts in microSTX */
 export const TX_DEFAULTS = {
   DEFAULT_FEE: 2000, // 0.002 STX
   HIGH_FEE: 5000, // 0.005 STX
   LOW_FEE: 1000, // 0.001 STX
 } as const;
 
+// ============================================================
 // Pagination
+// ============================================================
+
+/** Pagination configuration */
 export const PAGINATION = {
   DEFAULT_PAGE_SIZE: 10,
   MAX_PAGE_SIZE: 50,
 } as const;
 
-// Time intervals
+// ============================================================
+// Time Intervals
+// ============================================================
+
+/** Time-related constants */
 export const TIME = {
   BLOCK_TIME_SECONDS: 10,
   BLOCKS_PER_DAY: 144,
