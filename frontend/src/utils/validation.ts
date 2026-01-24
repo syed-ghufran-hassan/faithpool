@@ -1,21 +1,47 @@
 /**
  * Form validation utilities
  * 
+ * Provides composable validation rules for form fields.
+ * 
  * @module utils/validation
+ * 
+ * @example
+ * ```typescript
+ * const rules = [required(), minLength(3), maxLength(50)];
+ * const result = validate('my value', rules);
+ * if (!result.isValid) {
+ *   console.log(result.errors);
+ * }
+ * ```
  */
 
+// ============================================================================
+// Types
+// ============================================================================
+
+/** Validation rule with validator function and error message */
 export interface ValidationRule {
+  /** Validation function that returns true if valid */
   validate: (value: unknown) => boolean;
+  /** Error message to display if validation fails */
   message: string;
 }
 
+/** Result of running validation rules */
 export interface ValidationResult {
+  /** Whether all validations passed */
   isValid: boolean;
+  /** Array of error messages from failed validations */
   errors: string[];
 }
 
+// ============================================================================
+// Required Validation
+// ============================================================================
+
 /**
  * Required field validation
+ * @param message - Custom error message
  */
 export function required(message: string = 'This field is required'): ValidationRule {
   return {
@@ -29,8 +55,14 @@ export function required(message: string = 'This field is required'): Validation
   };
 }
 
+// ============================================================================
+// Length Validations
+// ============================================================================
+
 /**
  * Minimum length validation
+ * @param min - Minimum character count
+ * @param message - Custom error message
  */
 export function minLength(min: number, message?: string): ValidationRule {
   return {
@@ -44,6 +76,8 @@ export function minLength(min: number, message?: string): ValidationRule {
 
 /**
  * Maximum length validation
+ * @param max - Maximum character count
+ * @param message - Custom error message
  */
 export function maxLength(max: number, message?: string): ValidationRule {
   return {
@@ -55,8 +89,14 @@ export function maxLength(max: number, message?: string): ValidationRule {
   };
 }
 
+// ============================================================================
+// Numeric Validations
+// ============================================================================
+
 /**
  * Minimum value validation
+ * @param minValue - Minimum allowed value
+ * @param message - Custom error message
  */
 export function min(minValue: number, message?: string): ValidationRule {
   return {
@@ -94,32 +134,39 @@ export function pattern(regex: RegExp, message: string): ValidationRule {
   };
 }
 
+// ============================================================================
+// Common Format Validations
+// ============================================================================
+
+/** Email regex pattern */
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/** Stacks address regex pattern (SP for mainnet, ST for testnet) */
+const STACKS_ADDRESS_PATTERN = /^(SP|ST)[0-9A-HJ-NP-Z]{38,40}$/;
+
 /**
  * Email validation
+ * @param message - Custom error message
  */
 export function email(message: string = 'Invalid email address'): ValidationRule {
-  return pattern(
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-    message
-  );
+  return pattern(EMAIL_PATTERN, message);
 }
 
 /**
  * Stacks address validation
+ * @param message - Custom error message
  */
 export function stacksAddress(message: string = 'Invalid Stacks address'): ValidationRule {
-  return pattern(
-    /^(SP|ST)[0-9A-HJ-NP-Z]{38,40}$/,
-    message
-  );
+  return pattern(STACKS_ADDRESS_PATTERN, message);
 }
 
 /**
  * Positive number validation
+ * @param message - Custom error message
  */
 export function positive(message: string = 'Must be a positive number'): ValidationRule {
   return {
-    validate: (value: any) => {
+    validate: (value: unknown) => {
       if (value === null || value === undefined || value === '') return true;
       return Number(value) > 0;
     },
@@ -129,10 +176,11 @@ export function positive(message: string = 'Must be a positive number'): Validat
 
 /**
  * Integer validation
+ * @param message - Custom error message
  */
 export function integer(message: string = 'Must be a whole number'): ValidationRule {
   return {
-    validate: (value: any) => {
+    validate: (value: unknown) => {
       if (value === null || value === undefined || value === '') return true;
       return Number.isInteger(Number(value));
     },
@@ -140,20 +188,29 @@ export function integer(message: string = 'Must be a whole number'): ValidationR
   };
 }
 
+// ============================================================================
+// Composite Validation Rules (for specific fields)
+// ============================================================================
+
+/** Circle name allowed characters pattern */
+const CIRCLE_NAME_PATTERN = /^[a-zA-Z0-9\s\-_]+$/;
+
 /**
- * Circle name validation
+ * Circle name validation rules
+ * @returns Array of validation rules for circle names
  */
 export function circleName(): ValidationRule[] {
   return [
     required('Circle name is required'),
     minLength(3, 'Circle name must be at least 3 characters'),
     maxLength(50, 'Circle name must be at most 50 characters'),
-    pattern(/^[a-zA-Z0-9\s\-_]+$/, 'Circle name can only contain letters, numbers, spaces, hyphens, and underscores'),
+    pattern(CIRCLE_NAME_PATTERN, 'Circle name can only contain letters, numbers, spaces, hyphens, and underscores'),
   ];
 }
 
 /**
- * Contribution amount validation
+ * Contribution amount validation rules
+ * @returns Array of validation rules for contribution amounts
  */
 export function contributionAmount(): ValidationRule[] {
   return [
