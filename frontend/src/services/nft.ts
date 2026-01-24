@@ -1,44 +1,80 @@
-// NFT Service - Handles NFT queries and marketplace operations
+/**
+ * NFT Service
+ * 
+ * Handles NFT badge queries and marketplace operations:
+ * - Token ownership and metadata
+ * - Marketplace listings
+ * - Minting and transfers
+ * 
+ * @module services/nft
+ */
 
 import { CONTRACTS, NETWORK_CONFIG } from '../config/constants';
 import { stacksApi, callReadOnlyFunction, getExplorerUrl } from './stacks';
 import type { NFTToken, NFTListing, NFTMetadata } from '../types/blockchain';
 
-// Parse Clarity responses
-function parseUint(response: any): number {
+// ============================================================
+// Clarity Value Parsers
+// ============================================================
+
+/**
+ * Parse Clarity uint response to number
+ */
+function parseUint(response: unknown): number {
   if (!response) return 0;
-  if (response.type === 'uint' || response.type === 1) {
-    return parseInt(response.value, 10);
+  const resp = response as Record<string, unknown>;
+  if (resp.type === 'uint' || resp.type === 1) {
+    return parseInt(resp.value as string, 10);
   }
   return 0;
 }
 
-function parseBool(response: any): boolean {
+/**
+ * Parse Clarity bool response
+ */
+function parseBool(response: unknown): boolean {
   if (!response) return false;
-  if (response.type === 'bool' || response.type === 3) {
-    return response.value === true || response.value === 'true';
+  const resp = response as Record<string, unknown>;
+  if (resp.type === 'bool' || resp.type === 3) {
+    return resp.value === true || resp.value === 'true';
   }
   return false;
 }
 
-function parsePrincipal(response: any): string | null {
+/**
+ * Parse Clarity principal response
+ */
+function parsePrincipal(response: unknown): string | null {
   if (!response) return null;
-  if (response.type === 'principal' || response.type === 5) {
-    return response.value;
+  const resp = response as Record<string, unknown>;
+  if (resp.type === 'principal' || resp.type === 5) {
+    return resp.value as string;
   }
   return null;
 }
 
-function parseOptional<T>(response: any, parser: (v: any) => T): T | null {
+/**
+ * Parse Clarity optional response
+ */
+function parseOptional<T>(response: unknown, parser: (v: unknown) => T): T | null {
   if (!response) return null;
-  if (response.type === 'none' || response.type === 9) return null;
-  if (response.type === 'some' || response.type === 10) {
-    return parser(response.value);
+  const resp = response as Record<string, unknown>;
+  if (resp.type === 'none' || resp.type === 9) return null;
+  if (resp.type === 'some' || resp.type === 10) {
+    return parser(resp.value);
   }
   return null;
 }
 
-// Get NFT owner
+// ============================================================
+// NFT Queries
+// ============================================================
+
+/**
+ * Get owner of an NFT token
+ * @param tokenId - Token ID
+ * @returns Owner address or null if not found
+ */
 export async function getNFTOwner(tokenId: number): Promise<string | null> {
   try {
     const response = await callReadOnlyFunction(
@@ -54,7 +90,11 @@ export async function getNFTOwner(tokenId: number): Promise<string | null> {
   }
 }
 
-// Get NFT token URI
+/**
+ * Get token URI for an NFT
+ * @param tokenId - Token ID
+ * @returns Token URI or null if not found
+ */
 export async function getNFTTokenUri(tokenId: number): Promise<string | null> {
   try {
     const response = await callReadOnlyFunction(
