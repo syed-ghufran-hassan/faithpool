@@ -162,7 +162,7 @@ export const ActivityFeed = memo(forwardRef<HTMLDivElement, ActivityFeedProps>(
                   </p>
 
                   <time className="activity-feed__time">
-                    {formatRelativeTime(activity.timestamp)}
+                    {formatRelativeTime(typeof activity.timestamp === 'number' ? new Date(activity.timestamp) : activity.timestamp)}
                   </time>
                 </div>
               </li>

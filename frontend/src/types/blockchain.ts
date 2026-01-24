@@ -89,6 +89,34 @@ export type ClarityValue =
   | ClarityResponse;
 
 // ============================================================
+// NFT Types
+// ============================================================
+
+/** NFT Token representation for marketplace */
+export interface NFTToken {
+  /** Token ID */
+  tokenId: number;
+  /** Circle ID this slot belongs to */
+  circleId: number;
+  /** Slot position in the circle */
+  slot: number;
+  /** Current owner address */
+  owner: string;
+  /** Listing price in microSTX (if listed) */
+  price?: number;
+  /** Whether token is listed for sale */
+  isListed: boolean;
+  /** Seller address (if listed) */
+  seller?: string;
+  /** Circle name for display */
+  circleName?: string;
+  /** Contribution amount for the circle */
+  contributionAmount?: number;
+  /** Payout position in queue */
+  payoutPosition?: number;
+}
+
+// ============================================================
 // Contract Response Types
 // ============================================================
 

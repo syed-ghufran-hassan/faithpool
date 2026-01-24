@@ -3,7 +3,6 @@
 import { forwardRef, useState, useCallback, memo } from 'react';
 import { 
   UserPlus, 
-  Wallet, 
   Gift, 
   LogOut, 
   AlertTriangle,
@@ -62,10 +61,10 @@ export interface CircleActionsProps {
 export const CircleActions = memo(forwardRef<HTMLDivElement, CircleActionsProps>(
   function CircleActions(
     {
-      circleId,
+      circleId: _circleId,
       status,
       isMember,
-      isCreator,
+      isCreator: _isCreator,
       canJoin,
       canDeposit,
       canClaimPayout,
@@ -240,7 +239,7 @@ export const CircleActions = memo(forwardRef<HTMLDivElement, CircleActionsProps>
                 Cancel
               </Button>
               <Button
-                variant="error"
+                variant="danger"
                 onClick={() => {
                   handleAction('leave', onLeave);
                   setShowLeaveModal(false);
@@ -273,7 +272,7 @@ export const CircleActions = memo(forwardRef<HTMLDivElement, CircleActionsProps>
                 Cancel
               </Button>
               <Button
-                variant="error"
+                variant="danger"
                 onClick={() => {
                   handleAction('emergency', onEmergencyWithdraw);
                   setShowEmergencyModal(false);
