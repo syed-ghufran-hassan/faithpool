@@ -1,149 +1,231 @@
-import { useState } from 'react';
+import { memo, useState, useCallback, useMemo } from 'react';
+import { 
+  Bell, 
+  Mail, 
+  Moon, 
+  Globe, 
+  DollarSign, 
+  LogOut, 
+  Save,
+  Shield 
+} from 'lucide-react';
+import { Button } from '../components/Button';
+import { Card } from '../components/Card';
 import './Settings.css';
 
-function Settings() {
-  const [settings, setSettings] = useState({
-    notifications: true,
-    emailAlerts: false,
-    darkMode: false,
-    language: 'en',
-    currency: 'USD',
-  });
+interface SettingsState {
+  notifications: boolean;
+  emailAlerts: boolean;
+  darkMode: boolean;
+  language: string;
+  currency: string;
+}
 
-  const handleToggle = (key: keyof typeof settings) => {
+interface LanguageOption {
+  value: string;
+  label: string;
+}
+
+interface CurrencyOption {
+  value: string;
+  label: string;
+}
+
+const LANGUAGE_OPTIONS: LanguageOption[] = [
+  { value: 'en', label: 'English' },
+  { value: 'es', label: 'Español' },
+  { value: 'fr', label: 'Français' },
+  { value: 'de', label: 'Deutsch' },
+];
+
+const CURRENCY_OPTIONS: CurrencyOption[] = [
+  { value: 'USD', label: 'USD ($)' },
+  { value: 'EUR', label: 'EUR (€)' },
+  { value: 'GBP', label: 'GBP (£)' },
+  { value: 'STX', label: 'STX only' },
+];
+
+const DEFAULT_SETTINGS: SettingsState = {
+  notifications: true,
+  emailAlerts: false,
+  darkMode: false,
+  language: 'en',
+  currency: 'USD',
+};
+
+const Settings = memo(function Settings() {
+  const [settings, setSettings] = useState<SettingsState>(DEFAULT_SETTINGS);
+
+  const handleToggle = useCallback((key: keyof SettingsState) => {
     setSettings((prev) => ({
       ...prev,
       [key]: !prev[key],
     }));
-  };
+  }, []);
 
-  const handleSelect = (key: keyof typeof settings, value: string) => {
+  const handleSelect = useCallback((key: keyof SettingsState, value: string) => {
     setSettings((prev) => ({
       ...prev,
       [key]: value,
     }));
-  };
+  }, []);
 
-  const handleSave = () => {
-    // Save settings to localStorage or backend
+  const handleSave = useCallback(() => {
     localStorage.setItem('stacksusu-settings', JSON.stringify(settings));
     alert('Settings saved!');
-  };
+  }, [settings]);
+
+  const toggleButtons = useMemo(() => ({
+    notifications: (
+      <button
+        className={`settings__toggle ${settings.notifications ? 'settings__toggle--active' : ''}`}
+        onClick={() => handleToggle('notifications')}
+        aria-pressed={settings.notifications}
+      >
+        <span className="settings__toggle-knob" />
+      </button>
+    ),
+    emailAlerts: (
+      <button
+        className={`settings__toggle ${settings.emailAlerts ? 'settings__toggle--active' : ''}`}
+        onClick={() => handleToggle('emailAlerts')}
+        aria-pressed={settings.emailAlerts}
+      >
+        <span className="settings__toggle-knob" />
+      </button>
+    ),
+    darkMode: (
+      <button
+        className={`settings__toggle ${settings.darkMode ? 'settings__toggle--active' : ''}`}
+        onClick={() => handleToggle('darkMode')}
+        aria-pressed={settings.darkMode}
+      >
+        <span className="settings__toggle-knob" />
+      </button>
+    ),
+  }), [settings.notifications, settings.emailAlerts, settings.darkMode, handleToggle]);
 
   return (
-    <div className="settings-page">
-      <h1>Settings</h1>
+    <div className="settings">
+      <h1 className="settings__title">Settings</h1>
 
-      <div className="settings-sections">
-        {/* Notifications */}
-        <div className="settings-section">
-          <h2>Notifications</h2>
+      <div className="settings__sections">
+        <Card className="settings__section">
+          <div className="settings__section-header">
+            <Bell size={20} />
+            <h2 className="settings__section-title">Notifications</h2>
+          </div>
           
-          <div className="setting-row">
-            <div className="setting-info">
-              <span className="setting-name">Push Notifications</span>
-              <span className="setting-desc">Receive notifications about circle activity</span>
+          <div className="settings__row">
+            <div className="settings__info">
+              <span className="settings__name">Push Notifications</span>
+              <span className="settings__desc">Receive notifications about circle activity</span>
             </div>
-            <button
-              className={`toggle ${settings.notifications ? 'active' : ''}`}
-              onClick={() => handleToggle('notifications')}
-            >
-              <span className="toggle-knob" />
-            </button>
+            {toggleButtons.notifications}
           </div>
 
-          <div className="setting-row">
-            <div className="setting-info">
-              <span className="setting-name">Email Alerts</span>
-              <span className="setting-desc">Get email updates for important events</span>
+          <div className="settings__row">
+            <div className="settings__info">
+              <Mail size={16} className="settings__row-icon" />
+              <div>
+                <span className="settings__name">Email Alerts</span>
+                <span className="settings__desc">Get email updates for important events</span>
+              </div>
             </div>
-            <button
-              className={`toggle ${settings.emailAlerts ? 'active' : ''}`}
-              onClick={() => handleToggle('emailAlerts')}
-            >
-              <span className="toggle-knob" />
-            </button>
+            {toggleButtons.emailAlerts}
           </div>
-        </div>
+        </Card>
 
-        {/* Appearance */}
-        <div className="settings-section">
-          <h2>Appearance</h2>
+        <Card className="settings__section">
+          <div className="settings__section-header">
+            <Moon size={20} />
+            <h2 className="settings__section-title">Appearance</h2>
+          </div>
           
-          <div className="setting-row">
-            <div className="setting-info">
-              <span className="setting-name">Dark Mode</span>
-              <span className="setting-desc">Use dark theme for the interface</span>
+          <div className="settings__row">
+            <div className="settings__info">
+              <span className="settings__name">Dark Mode</span>
+              <span className="settings__desc">Use dark theme for the interface</span>
             </div>
-            <button
-              className={`toggle ${settings.darkMode ? 'active' : ''}`}
-              onClick={() => handleToggle('darkMode')}
-            >
-              <span className="toggle-knob" />
-            </button>
+            {toggleButtons.darkMode}
           </div>
 
-          <div className="setting-row">
-            <div className="setting-info">
-              <span className="setting-name">Language</span>
-              <span className="setting-desc">Select your preferred language</span>
+          <div className="settings__row">
+            <div className="settings__info">
+              <Globe size={16} className="settings__row-icon" />
+              <div>
+                <span className="settings__name">Language</span>
+                <span className="settings__desc">Select your preferred language</span>
+              </div>
             </div>
             <select
               value={settings.language}
               onChange={(e) => handleSelect('language', e.target.value)}
-              className="setting-select"
+              className="settings__select"
             >
-              <option value="en">English</option>
-              <option value="es">Español</option>
-              <option value="fr">Français</option>
-              <option value="de">Deutsch</option>
+              {LANGUAGE_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
             </select>
           </div>
-        </div>
+        </Card>
 
-        {/* Preferences */}
-        <div className="settings-section">
-          <h2>Preferences</h2>
+        <Card className="settings__section">
+          <div className="settings__section-header">
+            <DollarSign size={20} />
+            <h2 className="settings__section-title">Preferences</h2>
+          </div>
           
-          <div className="setting-row">
-            <div className="setting-info">
-              <span className="setting-name">Currency Display</span>
-              <span className="setting-desc">Choose how to display currency values</span>
+          <div className="settings__row">
+            <div className="settings__info">
+              <span className="settings__name">Currency Display</span>
+              <span className="settings__desc">Choose how to display currency values</span>
             </div>
             <select
               value={settings.currency}
               onChange={(e) => handleSelect('currency', e.target.value)}
-              className="setting-select"
+              className="settings__select"
             >
-              <option value="USD">USD ($)</option>
-              <option value="EUR">EUR (€)</option>
-              <option value="GBP">GBP (£)</option>
-              <option value="STX">STX only</option>
+              {CURRENCY_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
             </select>
           </div>
-        </div>
+        </Card>
 
-        {/* Danger Zone */}
-        <div className="settings-section danger">
-          <h2>Danger Zone</h2>
-          
-          <div className="setting-row">
-            <div className="setting-info">
-              <span className="setting-name">Disconnect Wallet</span>
-              <span className="setting-desc">Sign out and disconnect your wallet</span>
-            </div>
-            <button className="btn btn-danger">Disconnect</button>
+        <Card className="settings__section settings__section--danger">
+          <div className="settings__section-header">
+            <Shield size={20} />
+            <h2 className="settings__section-title">Danger Zone</h2>
           </div>
-        </div>
+          
+          <div className="settings__row">
+            <div className="settings__info">
+              <span className="settings__name">Disconnect Wallet</span>
+              <span className="settings__desc">Sign out and disconnect your wallet</span>
+            </div>
+            <Button variant="danger" leftIcon={<LogOut size={16} />}>
+              Disconnect
+            </Button>
+          </div>
+        </Card>
       </div>
 
-      <div className="settings-actions">
-        <button className="btn btn-primary" onClick={handleSave}>
+      <div className="settings__actions">
+        <Button 
+          variant="primary" 
+          onClick={handleSave}
+          leftIcon={<Save size={18} />}
+        >
           Save Changes
-        </button>
+        </Button>
       </div>
     </div>
   );
-}
+});
 
-export default Settings;
+export { Settings as default };
