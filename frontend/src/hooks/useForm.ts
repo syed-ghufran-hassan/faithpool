@@ -1,6 +1,12 @@
+/**
+ * useForm - A lightweight form state management hook
+ * 
+ * @module hooks/useForm
+ */
 import { useState, useCallback } from 'react';
 
-interface ValidationRules {
+/** Validation rules for a form field */
+export interface ValidationRules {
   required?: boolean;
   minLength?: number;
   maxLength?: number;
@@ -10,15 +16,18 @@ interface ValidationRules {
   custom?: (value: string) => string | null;
 }
 
-interface FieldConfig {
+/** Field configuration with validation rules */
+export interface FieldConfig {
   [key: string]: ValidationRules;
 }
 
-interface FormErrors {
+/** Form errors by field name */
+export interface FormErrors {
   [key: string]: string | null;
 }
 
-interface UseFormResult<T> {
+/** Result of the useForm hook */
+export interface UseFormResult<T> {
   values: T;
   errors: FormErrors;
   touched: { [key: string]: boolean };
@@ -29,6 +38,7 @@ interface UseFormResult<T> {
   validateForm: () => boolean;
   resetForm: () => void;
   isValid: boolean;
+  isDirty: boolean;
 }
 
 function useForm<T extends Record<string, string | number>>(
@@ -125,6 +135,10 @@ function useForm<T extends Record<string, string | number>>(
   }, [initialValues]);
 
   const isValid = Object.values(errors).every((error) => !error);
+  
+  const isDirty = Object.keys(values).some(
+    (key) => values[key] !== initialValues[key]
+  );
 
   return {
     values,
@@ -137,6 +151,7 @@ function useForm<T extends Record<string, string | number>>(
     validateForm,
     resetForm,
     isValid,
+    isDirty,
   };
 }
 
