@@ -1,7 +1,33 @@
-// Re-export modular utilities
+/**
+ * Utility Functions
+ * 
+ * Centralized utilities for the StackSUSU application.
+ * 
+ * @module utils
+ * 
+ * Modular exports:
+ * - date: Date/time formatting
+ * - numbers: Number/currency formatting  
+ * - strings: String manipulation
+ * - validation: Form validation rules
+ * 
+ * @example
+ * ```typescript
+ * import { truncateAddress, formatStx, formatDate } from '@/utils';
+ * ```
+ */
+
+// ============================================================================
+// Module Re-exports
+// ============================================================================
+
 export * from './date';
 export * from './numbers';
 export * from './strings';
+
+// ============================================================================
+// Address Utilities
+// ============================================================================
 
 /**
  * Truncate a Stacks address for display
@@ -19,13 +45,20 @@ export function truncateAddress(
   return `${address.slice(0, startChars)}...${address.slice(-endChars)}`;
 }
 
+// ============================================================================
+// STX Formatting
+// ============================================================================
+
+/** MicroSTX per STX conversion factor */
+const MICRO_STX_FACTOR = 1_000_000;
+
 /**
  * Format STX amount with proper decimals
  * @param microStx Amount in microSTX
  * @param decimals Number of decimal places
  */
 export function formatStx(microStx: number, decimals: number = 2): string {
-  const stx = microStx / 1_000_000;
+  const stx = microStx / MICRO_STX_FACTOR;
   return stx.toLocaleString('en-US', {
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals,
@@ -37,11 +70,16 @@ export function formatStx(microStx: number, decimals: number = 2): string {
  * @param stx Amount in STX
  */
 export function parseStxToMicro(stx: number): number {
-  return Math.floor(stx * 1_000_000);
+  return Math.floor(stx * MICRO_STX_FACTOR);
 }
+
+// ============================================================================
+// Date Formatting (Legacy - prefer utils/date.ts)
+// ============================================================================
 
 /**
  * Format a date string for display
+ * @deprecated Use formatDate from utils/date instead
  * @param dateString ISO date string or timestamp
  */
 export function formatDate(dateString: string | number): string {
