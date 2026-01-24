@@ -1,14 +1,37 @@
-// StackSUSU Contract Addresses
+/**
+ * StackSUSU Contract Definitions
+ * 
+ * Contains contract addresses, function names, and constants
+ * for interacting with the StackSUSU smart contracts.
+ * 
+ * @module lib/contracts
+ */
+
+// ============================================================
+// Contract Addresses
+// ============================================================
+
+/** StackSUSU contract addresses on mainnet */
 export const CONTRACTS = {
+  /** Core circle management contract */
   CORE: 'SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N.stacksusu-core-v4',
+  /** Admin functions contract */
   ADMIN: 'SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N.stacksusu-admin-v4',
+  /** Escrow balance management contract */
   ESCROW: 'SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N.stacksusu-escrow-v4',
+  /** Emergency payout contract */
   EMERGENCY: 'SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N.stacksusu-emergency-v4',
+  /** NFT badge contract */
   NFT: 'SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N.stacksusu-nft-v4',
+  /** Shared traits contract */
   TRAITS: 'SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N.stacksusu-traits-v2',
 } as const;
 
+// ============================================================
 // Network Configuration
+// ============================================================
+
+/** Network-specific configuration */
 export const NETWORK = {
   MAINNET: {
     url: 'https://stacks-node-api.mainnet.stacks.co',
@@ -20,7 +43,11 @@ export const NETWORK = {
   },
 } as const;
 
-// Contract function names
+// ============================================================
+// Contract Function Names
+// ============================================================
+
+/** Core contract function names */
 export const CORE_FUNCTIONS = {
   // Read-only
   GET_CIRCLE: 'get-circle',
@@ -36,6 +63,7 @@ export const CORE_FUNCTIONS = {
   ADVANCE_ROUND: 'advance-round',
 } as const;
 
+/** Escrow contract function names */
 export const ESCROW_FUNCTIONS = {
   // Read-only
   GET_BALANCE: 'get-balance',
@@ -46,6 +74,7 @@ export const ESCROW_FUNCTIONS = {
   WITHDRAW: 'withdraw',
 } as const;
 
+/** Emergency contract function names */
 export const EMERGENCY_FUNCTIONS = {
   // Public
   REQUEST_PAYOUT: 'request-emergency-payout',
@@ -53,6 +82,7 @@ export const EMERGENCY_FUNCTIONS = {
   CLAIM_PAYOUT: 'claim-emergency-payout',
 } as const;
 
+/** NFT contract function names */
 export const NFT_FUNCTIONS = {
   // Read-only
   GET_OWNER: 'get-owner',
@@ -65,7 +95,11 @@ export const NFT_FUNCTIONS = {
   SET_TOKEN_URI: 'set-token-uri',
 } as const;
 
-// Circle status
+// ============================================================
+// Constants
+// ============================================================
+
+/** Circle status codes */
 export const CIRCLE_STATUS = {
   FORMING: 0,
   ACTIVE: 1,
@@ -73,7 +107,7 @@ export const CIRCLE_STATUS = {
   CANCELLED: 3,
 } as const;
 
-// Error codes
+/** Contract error codes */
 export const ERROR_CODES = {
   ERR_NOT_AUTHORIZED: 100,
   ERR_CIRCLE_NOT_FOUND: 101,
@@ -85,3 +119,9 @@ export const ERROR_CODES = {
   ERR_INSUFFICIENT_BALANCE: 107,
   ERR_INVALID_AMOUNT: 108,
 } as const;
+
+/** Type for circle status values */
+export type CircleStatusCode = typeof CIRCLE_STATUS[keyof typeof CIRCLE_STATUS];
+
+/** Type for error code values */
+export type ErrorCode = typeof ERROR_CODES[keyof typeof ERROR_CODES];
