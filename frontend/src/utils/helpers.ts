@@ -1,7 +1,20 @@
-// Utility functions for StackSUSU
+/**
+ * General Utility Functions for StackSUSU
+ * 
+ * Common helper functions for formatting, validation, and conversions.
+ * 
+ * @module utils/helpers
+ */
+
+// ============================================================================
+// Address Formatting
+// ============================================================================
 
 /**
  * Truncate a Stacks address for display
+ * @param address - Full Stacks address
+ * @param chars - Number of characters to show on each end
+ * @returns Truncated address (e.g., "SP2J6Z...4G5R")
  */
 export function truncateAddress(address: string, chars: number = 4): string {
   if (!address) return '';
@@ -9,8 +22,15 @@ export function truncateAddress(address: string, chars: number = 4): string {
   return `${address.slice(0, chars + 2)}...${address.slice(-chars)}`;
 }
 
+// ============================================================================
+// STX Amount Formatting
+// ============================================================================
+
 /**
- * Format STX amount for display
+ * Format STX amount for display with unit suffix
+ * @param amount - Amount in STX
+ * @param decimals - Decimal places for small amounts
+ * @returns Formatted string (e.g., "1.23M STX", "456.78K STX")
  */
 export function formatSTX(amount: number, decimals: number = 6): string {
   if (amount >= 1_000_000) {
@@ -23,7 +43,9 @@ export function formatSTX(amount: number, decimals: number = 6): string {
 }
 
 /**
- * Format STX with compact notation
+ * Format STX with compact notation (no suffix)
+ * @param amount - Amount in STX
+ * @returns Compact string (e.g., "1.2M", "456.7K")
  */
 export function formatSTXCompact(amount: number): string {
   if (amount >= 1_000_000) {
@@ -35,22 +57,36 @@ export function formatSTXCompact(amount: number): string {
   return amount.toFixed(2);
 }
 
+// ============================================================================
+// STX Unit Conversions
+// ============================================================================
+
+/** microSTX per STX (1 STX = 1,000,000 microSTX) */
+const MICRO_STX_PER_STX = 1_000_000;
+
 /**
  * Convert microSTX to STX
+ * @param microSTX - Amount in microSTX
  */
 export function microSTXToSTX(microSTX: number): number {
-  return microSTX / 1_000_000;
+  return microSTX / MICRO_STX_PER_STX;
 }
 
 /**
  * Convert STX to microSTX
+ * @param stx - Amount in STX
  */
 export function stxToMicroSTX(stx: number): number {
-  return Math.floor(stx * 1_000_000);
+  return Math.floor(stx * MICRO_STX_PER_STX);
 }
+
+// ============================================================================
+// Date Formatting (Legacy - prefer utils/date.ts)
+// ============================================================================
 
 /**
  * Format date for display
+ * @deprecated Use formatDate from utils/date instead
  */
 export function formatDate(date: Date | string | number): string {
   const d = new Date(date);
@@ -94,12 +130,24 @@ export function formatRelativeTime(date: Date | string | number): string {
   return formatDate(d);
 }
 
+// ============================================================================
+// Block Time Conversions
+// ============================================================================
+
+/** Average Stacks block time in minutes */
+const BLOCK_TIME_MINUTES = 10;
+
+/** Approximate blocks per day */
+const BLOCKS_PER_DAY = 144;
+
 /**
  * Calculate blocks to time estimate
  * ~10 minutes per block on Stacks
+ * @param blocks - Number of blocks
+ * @returns Human-readable time estimate
  */
 export function blocksToTime(blocks: number): string {
-  const minutes = blocks * 10;
+  const minutes = blocks * BLOCK_TIME_MINUTES;
   const hours = Math.floor(minutes / 60);
   const days = Math.floor(hours / 24);
 
@@ -113,43 +161,65 @@ export function blocksToTime(blocks: number): string {
 }
 
 /**
- * Calculate time to blocks
+ * Calculate days to blocks
+ * @param days - Number of days
+ * @returns Approximate block count
  */
 export function timeToBlocks(days: number): number {
-  return Math.ceil(days * 144); // ~144 blocks per day
+  return Math.ceil(days * BLOCKS_PER_DAY);
 }
 
 /**
- * Format block height
+ * Format block height with thousands separators
+ * @param height - Block height number
  */
 export function formatBlockHeight(height: number): string {
   return height.toLocaleString();
 }
 
+// ============================================================================
+// Validation Functions
+// ============================================================================
+
+/** Stacks address pattern (SP for mainnet, ST for testnet) */
+const STACKS_ADDRESS_PATTERN = /^(SP|ST)[0-9A-HJ-NP-Z]{38,40}$/;
+
+/** Circle name constraints */
+const CIRCLE_NAME_MIN_LENGTH = 3;
+const CIRCLE_NAME_MAX_LENGTH = 50;
+
 /**
- * Validate Stacks address
+ * Validate Stacks address format
+ * @param address - Address to validate
  */
 export function isValidStacksAddress(address: string): boolean {
   if (!address) return false;
-  // Mainnet addresses start with SP, testnet with ST
-  const pattern = /^(SP|ST)[0-9A-HJ-NP-Z]{38,40}$/;
-  return pattern.test(address);
+  return STACKS_ADDRESS_PATTERN.test(address);
 }
 
 /**
  * Validate circle name
+ * @param name - Circle name to validate
  */
 export function isValidCircleName(name: string): boolean {
   if (!name) return false;
-  // 3-50 characters, alphanumeric and spaces
-  return name.length >= 3 && name.length <= 50;
+  return name.length >= CIRCLE_NAME_MIN_LENGTH && name.length <= CIRCLE_NAME_MAX_LENGTH;
 }
 
+// ============================================================================
+// Color Generation
+// ============================================================================
+
+/** Default fallback color */
+const DEFAULT_COLOR = '#6366f1';
+
 /**
- * Generate a random color from address
+ * Generate a deterministic color from address
+ * @param address - Stacks address
+ * @returns HSL color string
  */
 export function addressToColor(address: string): string {
-  if (!address) return '#6366f1';
+  if (!address) return DEFAULT_COLOR;
   
   let hash = 0;
   for (let i = 0; i < address.length; i++) {
