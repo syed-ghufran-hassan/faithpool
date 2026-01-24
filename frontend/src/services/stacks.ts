@@ -1,5 +1,11 @@
-// Stacks Blockchain API Service
-// Direct interaction with the Stacks blockchain via Hiro API
+/**
+ * Stacks Blockchain API Service
+ * 
+ * Direct interaction with the Stacks blockchain via Hiro API.
+ * Provides account, transaction, contract, and block information.
+ * 
+ * @module services/stacks
+ */
 
 import { CURRENT_NETWORK, CONTRACTS, CONTRACT_DEPLOYER } from '../config/constants';
 import type { 
@@ -10,9 +16,19 @@ import type {
   BlockInfo,
 } from '../types/blockchain';
 
+/** Base URL for Stacks API */
 const API_BASE = CURRENT_NETWORK.url;
 
-// Generic fetch wrapper with error handling
+// ============================================================
+// HTTP Client
+// ============================================================
+
+/**
+ * Generic fetch wrapper with error handling
+ * @param endpoint - API endpoint path
+ * @param options - Fetch options
+ * @returns Parsed JSON response
+ */
 async function fetchApi<T>(endpoint: string, options?: RequestInit): Promise<T> {
   const url = `${API_BASE}${endpoint}`;
   
@@ -37,16 +53,32 @@ async function fetchApi<T>(endpoint: string, options?: RequestInit): Promise<T> 
   }
 }
 
+// ============================================================
 // Account APIs
+// ============================================================
+
+/**
+ * Get account balance details
+ * @param address - Stacks address
+ */
 export async function getAccountBalance(address: string): Promise<AccountBalance> {
   return fetchApi(`/extended/v1/address/${address}/stx`);
 }
 
+/**
+ * Get account STX balance as a number
+ * @param address - Stacks address
+ * @returns Balance in STX (not microSTX)
+ */
 export async function getAccountBalanceSTX(address: string): Promise<number> {
   const data = await getAccountBalance(address);
   return parseInt(data.balance) / 1_000_000;
 }
 
+/**
+ * Get next available nonce for an account
+ * @param address - Stacks address
+ */
 export async function getAccountNonce(address: string): Promise<number> {
   const data = await fetchApi<{ possible_next_nonce: number }>(
     `/extended/v1/address/${address}/nonces`
@@ -54,6 +86,12 @@ export async function getAccountNonce(address: string): Promise<number> {
   return data.possible_next_nonce;
 }
 
+/**
+ * Get confirmed transactions for an account
+ * @param address - Stacks address
+ * @param limit - Max results to return
+ * @param offset - Pagination offset
+ */
 export async function getAccountTransactions(
   address: string, 
   limit = 20,
@@ -62,19 +100,34 @@ export async function getAccountTransactions(
   return fetchApi(`/extended/v1/address/${address}/transactions?limit=${limit}&offset=${offset}`);
 }
 
+/**
+ * Get pending mempool transactions for an account
+ * @param address - Stacks address
+ */
 export async function getAccountMempoolTransactions(
   address: string
 ): Promise<{ results: MempoolTransaction[]; total: number }> {
   return fetchApi(`/extended/v1/address/${address}/mempool`);
 }
 
+// ============================================================
 // Transaction APIs
+// ============================================================
+
+/**
+ * Get transaction details by ID
+ * @param txId - Transaction ID (with or without 0x prefix)
+ */
 export async function getTransaction(txId: string): Promise<AddressTransaction> {
-  // Ensure txId has 0x prefix
   const formattedTxId = txId.startsWith('0x') ? txId : `0x${txId}`;
   return fetchApi(`/extended/v1/tx/${formattedTxId}`);
 }
 
+/**
+ * Get transaction status by ID
+ * @param txId - Transaction ID
+ * @returns Status string (pending, success, failed, etc.)
+ */
 export async function getTransactionStatus(txId: string): Promise<string> {
   const tx = await getTransaction(txId);
   return tx.tx_status;
