@@ -1,18 +1,30 @@
 /**
  * Date and time formatting utilities
+ * 
+ * @module utils/date
  */
 
-// Format date relative to now (e.g., "2 hours ago", "3 days ago")
-export function formatRelativeTime(dateString: string): string {
-  const date = new Date(dateString);
+/** Time unit constants */
+const SECOND = 1000;
+const MINUTE = SECOND * 60;
+const HOUR = MINUTE * 60;
+const DAY = HOUR * 24;
+const WEEK = DAY * 7;
+const MONTH = DAY * 30;
+
+/**
+ * Format date relative to now (e.g., "2 hours ago", "3 days ago")
+ */
+export function formatRelativeTime(dateString: string | Date): string {
+  const date = typeof dateString === 'string' ? new Date(dateString) : dateString;
   const now = new Date();
   const diffMs = now.getTime() - date.getTime();
-  const diffSecs = Math.floor(diffMs / 1000);
-  const diffMins = Math.floor(diffSecs / 60);
-  const diffHours = Math.floor(diffMins / 60);
-  const diffDays = Math.floor(diffHours / 24);
-  const diffWeeks = Math.floor(diffDays / 7);
-  const diffMonths = Math.floor(diffDays / 30);
+  const diffSecs = Math.floor(diffMs / SECOND);
+  const diffMins = Math.floor(diffMs / MINUTE);
+  const diffHours = Math.floor(diffMs / HOUR);
+  const diffDays = Math.floor(diffMs / DAY);
+  const diffWeeks = Math.floor(diffMs / WEEK);
+  const diffMonths = Math.floor(diffMs / MONTH);
 
   if (diffSecs < 60) return 'just now';
   if (diffMins < 60) return `${diffMins} minute${diffMins > 1 ? 's' : ''} ago`;
@@ -21,12 +33,14 @@ export function formatRelativeTime(dateString: string): string {
   if (diffWeeks < 4) return `${diffWeeks} week${diffWeeks > 1 ? 's' : ''} ago`;
   if (diffMonths < 12) return `${diffMonths} month${diffMonths > 1 ? 's' : ''} ago`;
   
-  return formatDate(dateString);
+  return formatDate(date);
 }
 
-// Format date as "Jan 15, 2024"
-export function formatDate(dateString: string): string {
-  const date = new Date(dateString);
+/**
+ * Format date as "Jan 15, 2024"
+ */
+export function formatDate(dateInput: string | Date): string {
+  const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
   return date.toLocaleDateString('en-US', {
     month: 'short',
     day: 'numeric',
