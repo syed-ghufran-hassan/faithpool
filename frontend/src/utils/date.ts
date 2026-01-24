@@ -48,7 +48,14 @@ export function formatDate(dateInput: string | Date): string {
   });
 }
 
-// Format date as "January 15, 2024"
+// ============================================================================
+// Long Date Formatting
+// ============================================================================
+
+/**
+ * Format date as "January 15, 2024"
+ * @param dateString - Date string to format
+ */
 export function formatDateLong(dateString: string): string {
   const date = new Date(dateString);
   return date.toLocaleDateString('en-US', {
@@ -58,7 +65,14 @@ export function formatDateLong(dateString: string): string {
   });
 }
 
-// Format time as "2:30 PM"
+// ============================================================================
+// Time Formatting
+// ============================================================================
+
+/**
+ * Format time as "2:30 PM"
+ * @param dateString - Date string to extract time from
+ */
 export function formatTime(dateString: string): string {
   const date = new Date(dateString);
   return date.toLocaleTimeString('en-US', {
@@ -68,7 +82,10 @@ export function formatTime(dateString: string): string {
   });
 }
 
-// Format date and time as "Jan 15, 2024, 2:30 PM"
+/**
+ * Format date and time as "Jan 15, 2024, 2:30 PM"
+ * @param dateString - Date string to format
+ */
 export function formatDateTime(dateString: string): string {
   const date = new Date(dateString);
   return date.toLocaleDateString('en-US', {
@@ -81,20 +98,49 @@ export function formatDateTime(dateString: string): string {
   });
 }
 
-// Get days until a future date
+// ============================================================================
+// Date Calculations
+// ============================================================================
+
+/**
+ * Get days until a future date
+ * @param dateString - Future date string
+ * @returns Number of days until date (negative if past)
+ */
 export function getDaysUntil(dateString: string): number {
   const date = new Date(dateString);
   const now = new Date();
   const diffMs = date.getTime() - now.getTime();
-  return Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+  return Math.ceil(diffMs / DAY);
 }
 
-// Check if date is in the past
+/**
+ * Add days to a date
+ * @param date - Starting date
+ * @param days - Number of days to add (can be negative)
+ */
+export function addDays(date: Date, days: number): Date {
+  const result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+}
+
+// ============================================================================
+// Date Comparisons
+// ============================================================================
+
+/**
+ * Check if date is in the past
+ * @param dateString - Date string to check
+ */
 export function isPast(dateString: string): boolean {
   return new Date(dateString) < new Date();
 }
 
-// Check if date is today
+/**
+ * Check if date is today
+ * @param dateString - Date string to check
+ */
 export function isToday(dateString: string): boolean {
   const date = new Date(dateString);
   const today = new Date();
@@ -105,23 +151,26 @@ export function isToday(dateString: string): boolean {
   );
 }
 
-// Get start of day
+// ============================================================================
+// Day Boundaries
+// ============================================================================
+
+/**
+ * Get start of day (00:00:00.000)
+ * @param date - Date to get start of (defaults to today)
+ */
 export function startOfDay(date: Date = new Date()): Date {
   const result = new Date(date);
   result.setHours(0, 0, 0, 0);
   return result;
 }
 
-// Get end of day
+/**
+ * Get end of day (23:59:59.999)
+ * @param date - Date to get end of (defaults to today)
+ */
 export function endOfDay(date: Date = new Date()): Date {
   const result = new Date(date);
   result.setHours(23, 59, 59, 999);
-  return result;
-}
-
-// Add days to a date
-export function addDays(date: Date, days: number): Date {
-  const result = new Date(date);
-  result.setDate(result.getDate() + days);
   return result;
 }
