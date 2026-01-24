@@ -1,15 +1,32 @@
-// API Service for StackSUSU
-// Interacts with Stacks blockchain and optional backend
+/**
+ * API Service for StackSUSU
+ * 
+ * Provides HTTP client for:
+ * - Stacks blockchain API interactions
+ * - Optional backend API endpoints
+ * 
+ * @module services/api
+ */
 
+/** Base URL for optional backend API */
 const API_BASE = import.meta.env.VITE_API_URL || '';
+
+/** Stacks blockchain API endpoint */
 const STACKS_API = 'https://stacks-node-api.mainnet.stacks.co';
 
+/** Options for fetch requests */
 interface FetchOptions {
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
   body?: unknown;
   headers?: Record<string, string>;
 }
 
+/**
+ * Generic fetch wrapper with error handling
+ * @param endpoint - API endpoint path
+ * @param options - Fetch options
+ * @returns Parsed JSON response
+ */
 async function fetchApi<T>(endpoint: string, options: FetchOptions = {}): Promise<T> {
   const { method = 'GET', body, headers = {} } = options;
   
@@ -34,7 +51,15 @@ async function fetchApi<T>(endpoint: string, options: FetchOptions = {}): Promis
   return response.json();
 }
 
-// Stacks API helpers
+// ============================================================
+// Stacks Blockchain API
+// ============================================================
+
+/**
+ * Get STX balance for an address
+ * @param address - Stacks address
+ * @returns Balance in STX
+ */
 export async function getAccountBalance(address: string): Promise<number> {
   try {
     const response = await fetch(`${STACKS_API}/extended/v1/address/${address}/stx`);
@@ -46,6 +71,11 @@ export async function getAccountBalance(address: string): Promise<number> {
   }
 }
 
+/**
+ * Get transaction history for an address
+ * @param address - Stacks address
+ * @param limit - Maximum transactions to return
+ */
 export async function getAccountTransactions(address: string, limit = 20) {
   try {
     const response = await fetch(
@@ -58,6 +88,10 @@ export async function getAccountTransactions(address: string, limit = 20) {
   }
 }
 
+/**
+ * Get contract interface/ABI
+ * @param contractId - Contract ID (address.contract-name)
+ */
 export async function getContractInfo(contractId: string) {
   try {
     const [address, name] = contractId.split('.');
@@ -71,6 +105,13 @@ export async function getContractInfo(contractId: string) {
   }
 }
 
+/**
+ * Call a read-only contract function
+ * @param contractId - Contract ID (address.contract-name)
+ * @param functionName - Function to call
+ * @param args - Clarity-encoded arguments
+ * @param senderAddress - Address making the call
+ */
 export async function callReadOnlyFunction(
   contractId: string,
   functionName: string,
@@ -97,6 +138,10 @@ export async function callReadOnlyFunction(
   }
 }
 
+/**
+ * Get transaction status by ID
+ * @param txId - Transaction ID
+ */
 export async function getTransactionStatus(txId: string) {
   try {
     const response = await fetch(`${STACKS_API}/extended/v1/tx/${txId}`);
@@ -107,7 +152,11 @@ export async function getTransactionStatus(txId: string) {
   }
 }
 
-// Circle API endpoints (for optional backend)
+// ============================================================
+// Backend API Endpoints (Optional)
+// ============================================================
+
+/** Circle API endpoints */
 export const circleApi = {
   getAll: () => fetchApi<unknown>('/api/circles'),
   getById: (id: number) => fetchApi<unknown>(`/api/circles/${id}`),
@@ -115,7 +164,7 @@ export const circleApi = {
   getMembers: (id: number) => fetchApi<unknown>(`/api/circles/${id}/members`),
 };
 
-// User API endpoints
+/** User API endpoints */
 export const userApi = {
   getProfile: (address: string) => fetchApi<unknown>(`/api/users/${address}`),
   getCircles: (address: string) => fetchApi<unknown>(`/api/users/${address}/circles`),
@@ -123,12 +172,13 @@ export const userApi = {
   getNFTs: (address: string) => fetchApi<unknown>(`/api/users/${address}/nfts`),
 };
 
-// Stats API endpoints
+/** Statistics API endpoints */
 export const statsApi = {
   getGlobal: () => fetchApi<unknown>('/api/stats'),
   getCircleStats: (id: number) => fetchApi<unknown>(`/api/stats/circles/${id}`),
 };
 
+/** Default export with all API functions */
 export default {
   getAccountBalance,
   getAccountTransactions,
