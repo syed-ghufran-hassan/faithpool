@@ -1,0 +1,108 @@
+{
+  "timestamp": "2026-01-25T21:42:05.962Z",
+  "totalTxs": 100,
+  "success": 100,
+  "failed": 0,
+  "byType": {
+    "mint-badge": {
+      "success": 11,
+      "failed": 0
+    },
+    "create-referral": {
+      "success": 12,
+      "failed": 0
+    },
+    "create-proposal": {
+      "success": 10,
+      "failed": 0
+    },
+    "create-circle": {
+      "success": 14,
+      "failed": 0
+    },
+    "start-circle": {
+      "success": 12,
+      "failed": 0
+    },
+    "mint-reputation-badge": {
+      "success": 14,
+      "failed": 0
+    },
+    "join-circle": {
+      "success": 11,
+      "failed": 0
+    },
+    "vote": {
+      "success": 16,
+      "failed": 0
+    }
+  },
+  "byWallet": {
+    "wallet_13": {
+      "success": 8,
+      "failed": 0
+    },
+    "wallet_14": {
+      "success": 7,
+      "failed": 0
+    },
+    "wallet_8": {
+      "success": 11,
+      "failed": 0
+    },
+    "wallet_10": {
+      "success": 7,
+      "failed": 0
+    },
+    "wallet_12": {
+      "success": 7,
+      "failed": 0
+    },
+    "wallet_7": {
+      "success": 6,
+      "failed": 0
+    },
+    "wallet_4": {
+      "success": 5,
+      "failed": 0
+    },
+    "wallet_2": {
+      "success": 7,
+      "failed": 0
+    },
+    "wallet_15": {
+      "success": 13,
+      "failed": 0
+    },
+    "wallet_3": {
+      "success": 6,
+      "failed": 0
+    },
+    "wallet_11": {
+      "success": 5,
+      "failed": 0
+    },
+    "wallet_9": {
+      "success": 5,
+      "failed": 0
+    },
+    "wallet_5": {
+      "success": 1,
+      "failed": 0
+    },
+    "MASTER": {
+      "success": 7,
+      "failed": 0
+    },
+    "wallet_1": {
+      "success": 2,
+      "failed": 0
+    },
+    "wallet_6": {
+      "success": 3,
+      "failed": 0
+    }
+  },
+  "circlesCreated": 15,
+  "proposalsCreated": 21
+}
