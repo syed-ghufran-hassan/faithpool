@@ -69,6 +69,16 @@ plan:
             path: contracts/stacksusu-admin-v5.clar
             clarity-version: 2
         - emulated-contract-publish:
+            contract-name: stacksusu-admin-v6
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/stacksusu-admin-v6.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: stacksusu-admin-v7
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/stacksusu-admin-v7.clar
+            clarity-version: 2
+        - emulated-contract-publish:
             contract-name: stacksusu-referral-v5
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/stacksusu-referral-v5.clar
@@ -84,6 +94,31 @@ plan:
             path: contracts/stacksusu-core-v5.clar
             clarity-version: 2
         - emulated-contract-publish:
+            contract-name: stacksusu-reputation-v6
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/stacksusu-reputation-v6.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: stacksusu-core-v6
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/stacksusu-core-v6.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: stacksusu-escrow-v7
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/stacksusu-escrow-v7.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: stacksusu-reputation-v7
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/stacksusu-reputation-v7.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: stacksusu-core-v7
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/stacksusu-core-v7.clar
+            clarity-version: 2
+        - emulated-contract-publish:
             contract-name: stacksusu-escrow-v5
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/stacksusu-escrow-v5.clar
@@ -94,9 +129,39 @@ plan:
             path: contracts/stacksusu-emergency-v5.clar
             clarity-version: 2
         - emulated-contract-publish:
+            contract-name: stacksusu-emergency-v6
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/stacksusu-emergency-v6.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: stacksusu-emergency-v7
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/stacksusu-emergency-v7.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: stacksusu-referral-v6
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/stacksusu-referral-v6.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: stacksusu-escrow-v6
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/stacksusu-escrow-v6.clar
+            clarity-version: 2
+        - emulated-contract-publish:
             contract-name: stacksusu-governance-v5
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/stacksusu-governance-v5.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: stacksusu-governance-v6
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/stacksusu-governance-v6.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: stacksusu-governance-v7
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/stacksusu-governance-v7.clar
             clarity-version: 2
         - emulated-contract-publish:
             contract-name: stacksusu-nft-v5
@@ -104,8 +169,36 @@ plan:
             path: contracts/stacksusu-nft-v5.clar
             clarity-version: 2
         - emulated-contract-publish:
+            contract-name: stacksusu-traits-v4
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/stacksusu-traits-v4.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: stacksusu-nft-v6
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/stacksusu-nft-v6.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: stacksusu-nft-v7
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/stacksusu-nft-v7.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: stacksusu-referral-v7
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/stacksusu-referral-v7.clar
+            clarity-version: 2
+      epoch: "3.0"
+    - id: 1
+      transactions:
+        - emulated-contract-publish:
             contract-name: stacksusu-traits-v3
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/stacksusu-traits-v3.clar
+            clarity-version: 2
+        - emulated-contract-publish:
+            contract-name: stacksusu-traits-v5
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/stacksusu-traits-v5.clar
             clarity-version: 2
       epoch: "3.0"
