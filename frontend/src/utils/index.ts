@@ -10,10 +10,13 @@
  * - numbers: Number/currency formatting  
  * - strings: String manipulation
  * - validation: Form validation rules
+ * - transaction: Blockchain transaction utilities
+ * - format: Formatting helpers
  * 
  * @example
  * ```typescript
  * import { truncateAddress, formatStx, formatDate } from '@/utils';
+ * import { getTransactionStatus, waitForTransaction } from '@/utils';
  * ```
  */
 
@@ -24,6 +27,8 @@
 export * from './date';
 export * from './numbers';
 export * from './strings';
+export * from './transaction';
+export * from './format';
 
 // ============================================================================
 // Address Utilities
