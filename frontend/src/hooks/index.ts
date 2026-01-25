@@ -12,6 +12,11 @@ export { useCircleDetails } from './useCircleDetails';
 export { useTransactions } from './useTransactions';
 export { useUserNFTs, useMarketplace, useNFTDetails } from './useNFTs';
 
+// Circle management hooks
+export { useCircle } from './useCircle';
+export { useEscrow } from './useEscrow';
+export { useReputation } from './useReputation';
+
 // UI & state hooks
 export { useTheme } from './useTheme';
 export { useToast } from './useToast';
