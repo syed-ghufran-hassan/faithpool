@@ -1,0 +1,57 @@
+---
+id: 2
+name: StackSusu V6 Remaining Contracts
+network: mainnet
+stacks-node: "https://api.mainnet.hiro.so"
+bitcoin-node: "http://blockstack:blockstacksystem@bitcoin.blockstack.com:8332"
+plan:
+  batches:
+    - id: 0
+      transactions:
+        # Batch 1: Depends on admin, reputation, traits (already deployed)
+        - contract-publish:
+            contract-name: stacksusu-governance-v6
+            expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
+            cost: 100000
+            path: contracts/stacksusu-governance-v6.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: stacksusu-referral-v6
+            expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
+            cost: 100000
+            path: contracts/stacksusu-referral-v6.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: stacksusu-nft-v6
+            expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
+            cost: 100000
+            path: contracts/stacksusu-nft-v6.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: stacksusu-core-v6
+            expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
+            cost: 100000
+            path: contracts/stacksusu-core-v6.clar
+            anchor-block-only: true
+            clarity-version: 2
+    - id: 1
+      transactions:
+        # Batch 2: Depends on core, referral
+        - contract-publish:
+            contract-name: stacksusu-escrow-v6
+            expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
+            cost: 100000
+            path: contracts/stacksusu-escrow-v6.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: stacksusu-emergency-v6
+            expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
+            cost: 100000
+            path: contracts/stacksusu-emergency-v6.clar
+            anchor-block-only: true
+            clarity-version: 2
+      epoch: "3.0"
