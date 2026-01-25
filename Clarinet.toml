@@ -61,6 +61,109 @@ clarity_version = 2
 epoch = 3.0
 depends_on = ["stacksusu-traits-v3", "stacksusu-admin-v5", "stacksusu-reputation-v5", "stacksusu-core-v5"]
 
+# V6 - Enhanced contracts with multi-sig, quadratic voting, NFT composability
+[contracts.stacksusu-traits-v4]
+path = "contracts/stacksusu-traits-v4.clar"
+clarity_version = 2
+epoch = 3.0
+
+[contracts.stacksusu-admin-v6]
+path = "contracts/stacksusu-admin-v6.clar"
+clarity_version = 2
+epoch = 3.0
+depends_on = ["stacksusu-traits-v4"]
+
+[contracts.stacksusu-reputation-v6]
+path = "contracts/stacksusu-reputation-v6.clar"
+clarity_version = 2
+epoch = 3.0
+depends_on = ["stacksusu-traits-v4", "stacksusu-admin-v6"]
+
+[contracts.stacksusu-referral-v6]
+path = "contracts/stacksusu-referral-v6.clar"
+clarity_version = 2
+epoch = 3.0
+depends_on = ["stacksusu-traits-v4", "stacksusu-admin-v6", "stacksusu-reputation-v6"]
+
+[contracts.stacksusu-core-v6]
+path = "contracts/stacksusu-core-v6.clar"
+clarity_version = 2
+epoch = 3.0
+depends_on = ["stacksusu-traits-v4", "stacksusu-admin-v6", "stacksusu-reputation-v6", "stacksusu-referral-v6"]
+
+[contracts.stacksusu-governance-v6]
+path = "contracts/stacksusu-governance-v6.clar"
+clarity_version = 2
+epoch = 3.0
+depends_on = ["stacksusu-traits-v4", "stacksusu-admin-v6"]
+
+[contracts.stacksusu-escrow-v6]
+path = "contracts/stacksusu-escrow-v6.clar"
+clarity_version = 2
+epoch = 3.0
+depends_on = ["stacksusu-traits-v4", "stacksusu-admin-v6", "stacksusu-reputation-v6", "stacksusu-referral-v6", "stacksusu-core-v6"]
+
+[contracts.stacksusu-emergency-v6]
+path = "contracts/stacksusu-emergency-v6.clar"
+clarity_version = 2
+epoch = 3.0
+depends_on = ["stacksusu-traits-v4", "stacksusu-admin-v6", "stacksusu-reputation-v6", "stacksusu-core-v6"]
+
+[contracts.stacksusu-nft-v6]
+path = "contracts/stacksusu-nft-v6.clar"
+clarity_version = 2
+epoch = 3.0
+depends_on = ["stacksusu-traits-v4", "stacksusu-admin-v6", "stacksusu-reputation-v6", "stacksusu-core-v6"]
+
+# V7 - Simplified contracts with NO authorization required
+[contracts.stacksusu-traits-v5]
+path = "contracts/stacksusu-traits-v5.clar"
+clarity_version = 2
+epoch = 3.0
+
+[contracts.stacksusu-admin-v7]
+path = "contracts/stacksusu-admin-v7.clar"
+clarity_version = 2
+epoch = 3.0
+
+[contracts.stacksusu-reputation-v7]
+path = "contracts/stacksusu-reputation-v7.clar"
+clarity_version = 2
+epoch = 3.0
+
+[contracts.stacksusu-escrow-v7]
+path = "contracts/stacksusu-escrow-v7.clar"
+clarity_version = 2
+epoch = 3.0
+depends_on = ["stacksusu-admin-v7"]
+
+[contracts.stacksusu-core-v7]
+path = "contracts/stacksusu-core-v7.clar"
+clarity_version = 2
+epoch = 3.0
+depends_on = ["stacksusu-admin-v7", "stacksusu-reputation-v7", "stacksusu-escrow-v7"]
+
+[contracts.stacksusu-emergency-v7]
+path = "contracts/stacksusu-emergency-v7.clar"
+clarity_version = 2
+epoch = 3.0
+depends_on = ["stacksusu-admin-v7", "stacksusu-escrow-v7"]
+
+[contracts.stacksusu-nft-v7]
+path = "contracts/stacksusu-nft-v7.clar"
+clarity_version = 2
+epoch = 3.0
+
+[contracts.stacksusu-referral-v7]
+path = "contracts/stacksusu-referral-v7.clar"
+clarity_version = 2
+epoch = 3.0
+
+[contracts.stacksusu-governance-v7]
+path = "contracts/stacksusu-governance-v7.clar"
+clarity_version = 2
+epoch = 3.0
+
 [repl.analysis]
 passes = ["check_checker"]
 check_checker = { trusted_sender = false, trusted_caller = false, callee_filter = false }
