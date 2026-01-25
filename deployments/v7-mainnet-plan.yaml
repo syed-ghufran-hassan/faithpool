@@ -1,0 +1,55 @@
+---
+id: 0
+name: Deploy V7 Contracts to Mainnet
+network: mainnet
+stacks-node: "https://api.mainnet.hiro.so"
+bitcoin-node: "http://localhost:18443"
+
+plan:
+  batches:
+    - id: 0
+      transactions:
+        - contract-publish:
+            contract-name: stacksusu-escrow-v7
+            expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
+            cost: 100000
+            path: contracts/stacksusu-escrow-v7.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: stacksusu-nft-v7
+            expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
+            cost: 100000
+            path: contracts/stacksusu-nft-v7.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: stacksusu-referral-v7
+            expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
+            cost: 100000
+            path: contracts/stacksusu-referral-v7.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: stacksusu-governance-v7
+            expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
+            cost: 100000
+            path: contracts/stacksusu-governance-v7.clar
+            anchor-block-only: true
+            clarity-version: 2
+    - id: 1
+      transactions:
+        - contract-publish:
+            contract-name: stacksusu-core-v7
+            expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
+            cost: 100000
+            path: contracts/stacksusu-core-v7.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: stacksusu-emergency-v7
+            expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
+            cost: 100000
+            path: contracts/stacksusu-emergency-v7.clar
+            anchor-block-only: true
+            clarity-version: 2
