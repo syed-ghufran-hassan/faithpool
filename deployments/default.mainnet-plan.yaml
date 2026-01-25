@@ -9,59 +9,128 @@ plan:
     - id: 0
       transactions:
         - contract-publish:
-
+            contract-name: stacksusu-admin-v5
+            expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
+            cost: 737388
+            path: contracts/stacksusu-admin-v5.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: stacksusu-admin-v6
+            expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
+            cost: 738050
+            path: contracts/stacksusu-admin-v6.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
             contract-name: stacksusu-referral-v5
             expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
-            cost: 995962
+            cost: 737478
             path: contracts/stacksusu-referral-v5.clar
             anchor-block-only: true
             clarity-version: 2
         - contract-publish:
             contract-name: stacksusu-reputation-v5
             expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
-            cost: 995840
+            cost: 737388
             path: contracts/stacksusu-reputation-v5.clar
             anchor-block-only: true
             clarity-version: 2
         - contract-publish:
             contract-name: stacksusu-core-v5
             expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
-            cost: 866744
+            cost: 738683
             path: contracts/stacksusu-core-v5.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: stacksusu-reputation-v6
+            expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
+            cost: 738562
+            path: contracts/stacksusu-reputation-v6.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: stacksusu-core-v6
+            expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
+            cost: 738653
+            path: contracts/stacksusu-core-v6.clar
             anchor-block-only: true
             clarity-version: 2
         - contract-publish:
             contract-name: stacksusu-escrow-v5
             expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
-            cost: 866674
+            cost: 738623
             path: contracts/stacksusu-escrow-v5.clar
             anchor-block-only: true
             clarity-version: 2
         - contract-publish:
             contract-name: stacksusu-emergency-v5
             expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
-            cost: 865295
+            cost: 737448
             path: contracts/stacksusu-emergency-v5.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: stacksusu-emergency-v6
+            expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
+            cost: 739255
+            path: contracts/stacksusu-emergency-v6.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: stacksusu-referral-v6
+            expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
+            cost: 738321
+            path: contracts/stacksusu-referral-v6.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: stacksusu-escrow-v6
+            expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
+            cost: 739135
+            path: contracts/stacksusu-escrow-v6.clar
             anchor-block-only: true
             clarity-version: 2
         - contract-publish:
             contract-name: stacksusu-governance-v5
             expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
-            cost: 865613
+            cost: 737719
             path: contracts/stacksusu-governance-v5.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: stacksusu-governance-v6
+            expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
+            cost: 1092389
+            path: contracts/stacksusu-governance-v6.clar
             anchor-block-only: true
             clarity-version: 2
         - contract-publish:
             contract-name: stacksusu-nft-v5
             expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
-            cost: 866250
+            cost: 736870
             path: contracts/stacksusu-nft-v5.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: stacksusu-traits-v4
+            expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
+            cost: 735277
+            path: contracts/stacksusu-traits-v4.clar
+            anchor-block-only: true
+            clarity-version: 2
+        - contract-publish:
+            contract-name: stacksusu-nft-v6
+            expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
+            cost: 737441
+            path: contracts/stacksusu-nft-v6.clar
             anchor-block-only: true
             clarity-version: 2
         - contract-publish:
             contract-name: stacksusu-traits-v3
             expected-sender: SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N
-            cost: 864059
+            cost: 735007
             path: contracts/stacksusu-traits-v3.clar
             anchor-block-only: true
             clarity-version: 2
