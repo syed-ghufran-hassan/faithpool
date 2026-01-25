@@ -1,5 +1,12 @@
 # StackSUSU Frontend
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-18.3-61DAFB.svg)](https://reactjs.org/)
+[![Vite](https://img.shields.io/badge/Vite-5.4-646CFF.svg)](https://vitejs.dev/)
+[![Stacks](https://img.shields.io/badge/Stacks-Mainnet-5546FF.svg)](https://www.stacks.co/)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./CONTRIBUTING.md)
+
 A modern React frontend for the StackSUSU decentralized savings circle platform built on Stacks blockchain.
 
 ## Tech Stack
