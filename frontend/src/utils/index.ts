@@ -2,33 +2,56 @@
  * Utility Functions
  * 
  * Centralized utilities for the StackSUSU application.
+ * Provides formatting, validation, and helper functions for
+ * blockchain operations, UI rendering, and data manipulation.
  * 
  * @module utils
  * 
  * Modular exports:
- * - date: Date/time formatting
- * - numbers: Number/currency formatting  
- * - strings: String manipulation
- * - validation: Form validation rules
+ * - date: Date/time formatting and manipulation
+ * - numbers: Number/currency formatting and calculations
+ * - strings: String manipulation and truncation
+ * - validation: Form validation rules and schema
  * - transaction: Blockchain transaction utilities
- * - format: Formatting helpers
+ * - format: General formatting helpers
+ * - helpers: General utility functions
  * 
  * @example
  * ```typescript
+ * // Import specific utilities
  * import { truncateAddress, formatStx, formatDate } from '@/utils';
+ * 
+ * // Import transaction utilities
  * import { getTransactionStatus, waitForTransaction } from '@/utils';
+ * 
+ * // Import validation utilities
+ * import { isValidStacksAddress, validateAmount } from '@/utils';
  * ```
+ * 
+ * @packageDocumentation
  */
 
 // ============================================================================
 // Module Re-exports
 // ============================================================================
 
+/** Date and time formatting utilities */
 export * from './date';
+
+/** Number formatting and calculation utilities */
 export * from './numbers';
+
+/** String manipulation utilities */
 export * from './strings';
+
+/** Transaction handling utilities */
 export * from './transaction';
+
+/** General formatting utilities */
 export * from './format';
+
+/** General helper functions */
+export * from './helpers';
 
 // ============================================================================
 // Address Utilities
