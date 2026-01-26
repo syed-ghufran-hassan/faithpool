@@ -1,0 +1,233 @@
+/**
+ * CopyButton Component Styles
+ */
+
+.copy-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  border: none;
+  border-radius: 0.375rem;
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.copy-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Sizes */
+.copy-button--sm {
+  padding: 0.25rem;
+  font-size: 0.75rem;
+}
+
+.copy-button--md {
+  padding: 0.375rem;
+  font-size: 0.875rem;
+}
+
+.copy-button--lg {
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+/* With label */
+.copy-button--sm .copy-button__label { padding-right: 0.25rem; }
+.copy-button--md .copy-button__label { padding-right: 0.375rem; }
+.copy-button--lg .copy-button__label { padding-right: 0.5rem; }
+
+/* Variants */
+.copy-button--ghost {
+  background: transparent;
+  color: var(--color-text-secondary, #64748b);
+}
+
+.copy-button--ghost:hover:not(:disabled) {
+  background-color: var(--color-bg-hover, #f1f5f9);
+  color: var(--color-text-primary, #1e293b);
+}
+
+.copy-button--outline {
+  background: transparent;
+  color: var(--color-text-secondary, #64748b);
+  border: 1px solid var(--color-border, #e2e8f0);
+}
+
+.copy-button--outline:hover:not(:disabled) {
+  border-color: var(--color-border-hover, #cbd5e1);
+  background-color: var(--color-bg-hover, #f8fafc);
+}
+
+.copy-button--solid {
+  background-color: var(--color-bg-secondary, #f1f5f9);
+  color: var(--color-text-secondary, #64748b);
+}
+
+.copy-button--solid:hover:not(:disabled) {
+  background-color: var(--color-bg-tertiary, #e2e8f0);
+  color: var(--color-text-primary, #1e293b);
+}
+
+/* States */
+.copy-button--copied {
+  color: var(--color-success, #10b981) !important;
+}
+
+.copy-button--error {
+  color: var(--color-error, #ef4444) !important;
+}
+
+/* Icons */
+.copy-button__icon {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.copy-button:hover:not(:disabled) .copy-button__icon {
+  transform: scale(1.1);
+}
+
+.copy-button__icon--success {
+  animation: copy-success 0.3s ease;
+}
+
+.copy-button__icon--error {
+  animation: copy-error 0.3s ease;
+}
+
+@keyframes copy-success {
+  0% { transform: scale(0.5); opacity: 0; }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes copy-error {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
+}
+
+/* Label */
+.copy-button__label {
+  white-space: nowrap;
+}
+
+/* Focus */
+.copy-button:focus {
+  outline: 2px solid var(--color-primary, #6366f1);
+  outline-offset: 2px;
+}
+
+/* Tooltip */
+.copy-button[data-tooltip] {
+  position: relative;
+}
+
+.copy-button[data-tooltip]::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  padding: 0.375rem 0.625rem;
+  background-color: var(--color-bg-inverse, #1e293b);
+  color: var(--color-text-inverse, #f8fafc);
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 0.375rem;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+  pointer-events: none;
+  z-index: 50;
+}
+
+.copy-button[data-tooltip]:hover::before,
+.copy-button[data-tooltip]:focus::before {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Tooltip Positions */
+.copy-button[data-tooltip-position="top"]::before {
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.copy-button[data-tooltip-position="bottom"]::before {
+  top: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.copy-button[data-tooltip-position="left"]::before {
+  right: calc(100% + 6px);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.copy-button[data-tooltip-position="right"]::before {
+  left: calc(100% + 6px);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* CopyText Component */
+.copy-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.5rem;
+  background-color: var(--color-bg-secondary, #f1f5f9);
+  border-radius: 0.375rem;
+  max-width: 100%;
+}
+
+.copy-text__value {
+  font-family: ui-monospace, 'SF Mono', Monaco, 'Courier New', monospace;
+  font-size: 0.8125rem;
+  color: var(--color-text-primary, #1e293b);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  .copy-button--ghost {
+    color: var(--color-text-secondary-dark, #94a3b8);
+  }
+
+  .copy-button--ghost:hover:not(:disabled) {
+    background-color: var(--color-bg-hover-dark, #334155);
+    color: var(--color-text-primary-dark, #f1f5f9);
+  }
+
+  .copy-button--outline {
+    border-color: var(--color-border-dark, #475569);
+    color: var(--color-text-secondary-dark, #94a3b8);
+  }
+
+  .copy-button--solid {
+    background-color: var(--color-bg-secondary-dark, #334155);
+    color: var(--color-text-secondary-dark, #94a3b8);
+  }
+
+  .copy-text {
+    background-color: var(--color-bg-secondary-dark, #334155);
+  }
+
+  .copy-text__value {
+    color: var(--color-text-primary-dark, #f1f5f9);
+  }
+
+  .copy-button[data-tooltip]::before {
+    background-color: var(--color-bg-primary, #f8fafc);
+    color: var(--color-text-primary, #1e293b);
+  }
+}
