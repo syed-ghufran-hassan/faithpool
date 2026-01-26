@@ -9,6 +9,10 @@ export { default as Navbar } from './Navbar';
 export { default as Footer } from './Footer';
 export { Sidebar } from './Sidebar';
 
+// Navigation components
+export { Breadcrumb } from './Breadcrumb';
+export type { BreadcrumbItem, BreadcrumbProps } from './Breadcrumb';
+
 // Core UI components
 export { default as Button } from './Button';
 export { default as Card, CardHeader, CardBody, CardFooter } from './Card';
