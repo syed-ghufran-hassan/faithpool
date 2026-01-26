@@ -33,6 +33,8 @@ export { default as Skeleton } from './Skeleton';
 export { default as ProgressBar } from './ProgressBar';
 export { ToastContainer } from './ToastContainer';
 export { EmptyState } from './EmptyState';
+export { Stepper } from './Stepper';
+export type { Step, StepStatus, StepperProps } from './Stepper';
 
 // Data display components
 export { Stats } from './Stats';
