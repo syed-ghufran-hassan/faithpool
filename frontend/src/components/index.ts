@@ -46,4 +46,6 @@ export type { Activity } from './ActivityFeed';
 export { ConnectWallet } from './ConnectWallet';
 export { SearchBar } from './SearchBar';
 export { Pagination } from './Pagination';
+export { CopyButton, CopyText } from './CopyButton';
+export type { CopyButtonProps, CopyTextProps } from './CopyButton';
 
