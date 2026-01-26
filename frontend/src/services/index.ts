@@ -12,6 +12,11 @@
  * - wallet: Wallet connection and transaction signing
  * - escrow: Escrow balance queries
  * - nft: NFT badge and marketplace operations
+ * - analytics: Event tracking and product insights
+ * - cache: In-memory and persistent caching
+ * - error: Centralized error handling
+ * - log: Structured logging
+ * - notification: Toast/alert management
  */
 
 // HTTP API client
@@ -24,3 +29,10 @@ export * from './circles';
 export * from './wallet';
 export * from './escrow';
 export * from './nft';
+
+// Application services
+export { analytics } from './analyticsService';
+export { cache, CacheKeys } from './cacheService';
+export { errorService, ErrorCodes } from './errorService';
+export { logger, circleLogger, walletLogger, apiLogger, contractLogger } from './logService';
+export { notifications, NotificationType } from './notificationService';
