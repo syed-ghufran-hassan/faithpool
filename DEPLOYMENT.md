@@ -1,8 +1,8 @@
-# StackSUSU V5 Mainnet Deployment Guide
+# StackSUSU V7 Mainnet Deployment Guide
 
-## 🆕 V5 New Features
+## 🆕 V7 Features
 
-V5 introduces several new contracts and features:
+V7 is the current production version with all features:
 
 | Feature | Description |
 |---------|-------------|
@@ -10,31 +10,31 @@ V5 introduces several new contracts and features:
 | **Governance** | Circle voting for proposals (pause, resume, change intervals) |
 | **Referral Program** | Tiered rewards for member referrals |
 | **Contribution Modes** | Upfront or round-by-round contribution options |
-| **Higher Limits** | Up to 100 STX per contribution (vs 10 STX in v4) |
+| **NFT Badges** | Participation badges for completed circles |
 
 ---
 
-## 💰 Gas Fee Estimates (V5)
+## 💰 Gas Fee Estimates
 
-| Contract | Cost (microSTX) | Cost (STX) |
-|----------|-----------------|------------|
-| stacksusu-traits-v3 | ~25,000 | 0.025 |
-| stacksusu-admin-v5 | ~60,000 | 0.060 |
-| stacksusu-reputation-v5 | ~55,000 | 0.055 |
-| stacksusu-referral-v5 | ~65,000 | 0.065 |
-| stacksusu-core-v5 | ~140,000 | 0.140 |
-| stacksusu-escrow-v5 | ~85,000 | 0.085 |
-| stacksusu-emergency-v5 | ~65,000 | 0.065 |
-| stacksusu-governance-v5 | ~75,000 | 0.075 |
-| stacksusu-nft-v5 | ~85,000 | 0.085 |
-| **TOTAL** | **~655,000** | **~0.66 STX** |
+| Contract | Approximate Cost (STX) |
+|----------|------------------------|
+| stacksusu-traits-v5 | ~0.025 |
+| stacksusu-admin-v7 | ~0.060 |
+| stacksusu-reputation-v7 | ~0.055 |
+| stacksusu-referral-v7 | ~0.065 |
+| stacksusu-core-v7 | ~0.140 |
+| stacksusu-escrow-v7 | ~0.085 |
+| stacksusu-emergency-v7 | ~0.065 |
+| stacksusu-governance-v7 | ~0.075 |
+| stacksusu-nft-v7 | ~0.085 |
+| **TOTAL** | **~0.66 STX** |
 
 ### Recommended Wallet Balance
 - **Minimum:** 1.0 STX
 - **Safe (2x buffer):** 1.5 STX  
 - **Comfortable (3x buffer):** 2.0 STX
 
-*Note: Actual costs vary based on network congestion. During high congestion, fees can be 2-5x higher.*
+*Note: Actual costs vary based on network congestion.*
 
 ---
 
@@ -42,25 +42,15 @@ V5 introduces several new contracts and features:
 
 ### Step 1: Set Up Your Wallet
 
-1. Get a Stacks wallet (Leather, Xverse, or use existing)
+1. Get a Stacks wallet (Leather or Xverse)
 2. Fund it with at least **1.5 STX** for safe deployment
-3. Get your 24-word seed phrase (mnemonic)
+3. Configure your wallet in Clarinet settings
 
 ### Step 2: Configure Mainnet Settings
 
-Edit `settings/Mainnet.toml`:
+Edit `settings/Mainnet.toml` with your deployer account configuration.
 
-```toml
-[network]
-name = "mainnet"
-stacks_node_rpc_address = "https://api.hiro.so"
-deployment_fee_rate = 10
-
-[accounts.deployer]
-mnemonic = "your 24 word seed phrase here"
-```
-
-⚠️ **SECURITY WARNING:** Never share your mnemonic or commit it to git!
+⚠️ **SECURITY WARNING:** Never share credentials or commit them to git!
 
 ### Step 3: Generate Deployment Plan
 
@@ -76,7 +66,7 @@ This creates `deployments/default.mainnet-plan.yaml`
 clarinet deployments apply --mainnet
 ```
 
-### Step 5: Post-Deployment Setup (V5)
+### Step 5: Post-Deployment Setup
 
 After deployment, run these contract calls to set up all authorizations:
 
@@ -84,76 +74,51 @@ After deployment, run these contract calls to set up all authorizations:
 ;; ============================================
 ;; ESCROW AUTHORIZATIONS
 ;; ============================================
-;; Authorize core and emergency to use escrow
-(contract-call? .stacksusu-escrow-v5 authorize-caller .stacksusu-core-v5)
-(contract-call? .stacksusu-escrow-v5 authorize-caller .stacksusu-emergency-v5)
+(contract-call? .stacksusu-escrow-v7 authorize-caller .stacksusu-core-v7)
+(contract-call? .stacksusu-escrow-v7 authorize-caller .stacksusu-emergency-v7)
 
 ;; ============================================
 ;; NFT AUTHORIZATIONS
 ;; ============================================
-;; Authorize core to mint NFTs
-(contract-call? .stacksusu-nft-v5 authorize-minter .stacksusu-core-v5)
-
-;; Authorize NFT contract to update slots
-(contract-call? .stacksusu-core-v5 authorize-slot-updater .stacksusu-nft-v5)
+(contract-call? .stacksusu-nft-v7 authorize-minter .stacksusu-core-v7)
+(contract-call? .stacksusu-core-v7 authorize-slot-updater .stacksusu-nft-v7)
 
 ;; ============================================
-;; REPUTATION AUTHORIZATIONS (NEW IN V5)
+;; REPUTATION AUTHORIZATIONS
 ;; ============================================
-;; Authorize core to update reputation
-(contract-call? .stacksusu-reputation-v5 authorize-updater .stacksusu-core-v5)
-(contract-call? .stacksusu-reputation-v5 authorize-updater .stacksusu-escrow-v5)
-(contract-call? .stacksusu-reputation-v5 authorize-updater .stacksusu-emergency-v5)
+(contract-call? .stacksusu-reputation-v7 authorize-updater .stacksusu-core-v7)
+(contract-call? .stacksusu-reputation-v7 authorize-updater .stacksusu-escrow-v7)
+(contract-call? .stacksusu-reputation-v7 authorize-updater .stacksusu-emergency-v7)
 
 ;; ============================================
-;; REFERRAL AUTHORIZATIONS (NEW IN V5)
+;; REFERRAL AUTHORIZATIONS
 ;; ============================================
-;; Authorize core to record referral activity
-(contract-call? .stacksusu-referral-v5 authorize-caller .stacksusu-core-v5)
-(contract-call? .stacksusu-referral-v5 authorize-caller .stacksusu-escrow-v5)
+(contract-call? .stacksusu-referral-v7 authorize-caller .stacksusu-core-v7)
+(contract-call? .stacksusu-referral-v7 authorize-caller .stacksusu-escrow-v7)
 
 ;; ============================================
-;; GOVERNANCE AUTHORIZATIONS (NEW IN V5)
+;; GOVERNANCE AUTHORIZATIONS
 ;; ============================================
-;; Authorize governance executor
-(contract-call? .stacksusu-governance-v5 authorize-executor .stacksusu-admin-v5)
+(contract-call? .stacksusu-governance-v7 authorize-executor .stacksusu-admin-v7)
 ```
 
 ---
 
-## 📋 Deployed Contract Addresses (V5)
+## 📋 Deployed Contract Addresses
 
 After deployment, your contracts will be at:
 
 ```
-SP<YOUR_ADDRESS>.stacksusu-traits-v3
-SP<YOUR_ADDRESS>.stacksusu-admin-v5
-SP<YOUR_ADDRESS>.stacksusu-reputation-v5
-SP<YOUR_ADDRESS>.stacksusu-referral-v5
-SP<YOUR_ADDRESS>.stacksusu-core-v5
-SP<YOUR_ADDRESS>.stacksusu-escrow-v5
-SP<YOUR_ADDRESS>.stacksusu-emergency-v5
-SP<YOUR_ADDRESS>.stacksusu-governance-v5
-SP<YOUR_ADDRESS>.stacksusu-nft-v5
+SP<YOUR_ADDRESS>.stacksusu-traits-v5
+SP<YOUR_ADDRESS>.stacksusu-admin-v7
+SP<YOUR_ADDRESS>.stacksusu-reputation-v7
+SP<YOUR_ADDRESS>.stacksusu-referral-v7
+SP<YOUR_ADDRESS>.stacksusu-core-v7
+SP<YOUR_ADDRESS>.stacksusu-escrow-v7
+SP<YOUR_ADDRESS>.stacksusu-emergency-v7
+SP<YOUR_ADDRESS>.stacksusu-governance-v7
+SP<YOUR_ADDRESS>.stacksusu-nft-v7
 ```
-
----
-
-## 🔄 Migration from V3/V4
-
-If you have existing circles on V3 or V4:
-
-1. **Data is NOT automatically migrated** - each version is independent
-2. Complete any active circles on the old version before migrating
-3. Users need to rejoin circles on V5 contracts
-4. Reputation starts fresh for all users on V5
-
-### Recommended Migration Path:
-1. Announce migration date to users
-2. Wait for all active circles to complete
-3. Deploy V5 contracts
-4. Update frontend to point to V5 contracts
-5. Disable new circle creation on V3/V4 (via pause-protocol)
 
 ---
 
@@ -162,7 +127,7 @@ If you have existing circles on V3 or V4:
 Before mainnet, test on testnet:
 
 1. Get testnet STX from faucet: https://explorer.stacks.co/sandbox/faucet?chain=testnet
-2. Edit `settings/Testnet.toml` with your mnemonic
+2. Configure `settings/Testnet.toml`
 3. Run:
    ```bash
    clarinet deployments generate --testnet

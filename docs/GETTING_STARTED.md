@@ -100,7 +100,7 @@ stacksusu/
 ├── docs/               # Documentation
 ├── frontend/           # React frontend
 ├── settings/           # Network configs
-└── tests/              # Test scripts
+└── tests/              # Unit tests
 ```
 
 ## Next Steps
