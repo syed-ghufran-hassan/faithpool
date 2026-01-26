@@ -26,3 +26,18 @@ export { default as useLocalStorage } from './useLocalStorage';
 // Utility hooks
 export { useDebounce, useDebouncedCallback } from './useDebounce';
 export { default as useCopyToClipboard } from './useCopyToClipboard';
+export { 
+  useMediaQuery,
+  useIsMobile,
+  useIsSmUp,
+  useIsMdUp,
+  useIsLgUp,
+  useIsXlUp,
+  usePrefersReducedMotion,
+  usePrefersDarkMode,
+  usePrefersLightMode,
+  useHasHover,
+  useIsTouchDevice,
+  useIsPortrait,
+  useIsLandscape,
+} from './useMediaQuery';
