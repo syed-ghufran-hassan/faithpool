@@ -235,3 +235,29 @@ export async function copyToClipboard(text: string): Promise<boolean> {
     return false;
   }
 }
+
+// ============================================================================
+// Additional Utility Re-exports
+// ============================================================================
+
+// STX utilities
+export * from './stx';
+
+// Circle utilities
+export * from './circle';
+
+// Number utilities
+export * from './number';
+
+// String utilities
+export * from './string';
+
+// Array utilities
+export * from './array';
+
+// Storage utilities
+export * from './storage';
+
+// Crypto utilities
+export * from './crypto';
+
