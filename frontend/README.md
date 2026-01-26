@@ -79,6 +79,39 @@ See `src/styles/` for the complete design system.
 | `npm run build` | Build for production |
 | `npm run preview` | Preview production build |
 | `npm run lint` | Run ESLint |
+| `npm run typecheck` | Run TypeScript type checking |
+
+## Available Hooks
+
+The app provides several custom hooks for common functionality:
+
+| Hook | Purpose |
+|------|---------|
+| `useWallet` | Wallet connection and balance |
+| `useCircle` | Circle operations (create, join, contribute) |
+| `useContracts` | Smart contract interactions |
+| `useEscrow` | Escrow deposit and release |
+| `useReputation` | User reputation scores |
+| `useTheme` | Dark/light mode toggle |
+| `useToast` | Toast notifications |
+| `useDebounce` | Debounce values and callbacks |
+| `useLocalStorage` | Persist state to localStorage |
+
+## Available Components
+
+Key reusable components:
+
+| Component | Description |
+|-----------|-------------|
+| `Button` | Versatile button with variants |
+| `Card` | Container with header/body/footer |
+| `Modal` | Dialog with backdrop |
+| `Input` | Form input with validation |
+| `Avatar` | User avatar with fallback |
+| `Badge` | Status indicator labels |
+| `Spinner` | Loading animation |
+| `Alert` | Notification banners |
+| `ConnectWallet` | Wallet connection button |
 
 ## Environment Variables
 
