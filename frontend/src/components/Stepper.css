@@ -1,0 +1,246 @@
+/**
+ * Stepper Component Styles
+ */
+
+.stepper {
+  width: 100%;
+}
+
+.stepper__list {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Horizontal Layout */
+.stepper--horizontal .stepper__list {
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.stepper--horizontal .stepper__step {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+}
+
+.stepper--horizontal .stepper__step-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-width: 80px;
+}
+
+.stepper--horizontal .stepper__connector {
+  flex: 1;
+  height: 2px;
+  margin-top: 16px;
+  background-color: var(--color-border, #e2e8f0);
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+.stepper--horizontal.stepper--sm .stepper__connector {
+  margin-top: 12px;
+}
+
+.stepper--horizontal.stepper--lg .stepper__connector {
+  margin-top: 20px;
+}
+
+/* Vertical Layout */
+.stepper--vertical .stepper__list {
+  flex-direction: column;
+}
+
+.stepper--vertical .stepper__step {
+  display: flex;
+  flex-direction: column;
+}
+
+.stepper--vertical .stepper__step-content {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.stepper--vertical .stepper__connector {
+  width: 2px;
+  height: 2rem;
+  margin-left: 15px;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  background-color: var(--color-border, #e2e8f0);
+}
+
+.stepper--vertical.stepper--sm .stepper__connector {
+  margin-left: 11px;
+}
+
+.stepper--vertical.stepper--lg .stepper__connector {
+  margin-left: 19px;
+}
+
+/* Step Indicator */
+.stepper__indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: 600;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+/* Indicator Sizes */
+.stepper__indicator--sm {
+  width: 24px;
+  height: 24px;
+  font-size: 0.75rem;
+}
+
+.stepper__indicator--md {
+  width: 32px;
+  height: 32px;
+  font-size: 0.875rem;
+}
+
+.stepper__indicator--lg {
+  width: 40px;
+  height: 40px;
+  font-size: 1rem;
+}
+
+/* Indicator States */
+.stepper__indicator--pending {
+  background-color: var(--color-bg-secondary, #f1f5f9);
+  color: var(--color-text-tertiary, #94a3b8);
+  border: 2px solid var(--color-border, #e2e8f0);
+}
+
+.stepper__indicator--current {
+  background-color: var(--color-primary, #6366f1);
+  color: white;
+  border: 2px solid var(--color-primary, #6366f1);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+}
+
+.stepper__indicator--completed {
+  background-color: var(--color-success, #10b981);
+  color: white;
+  border: 2px solid var(--color-success, #10b981);
+}
+
+.stepper__indicator--error {
+  background-color: var(--color-error, #ef4444);
+  color: white;
+  border: 2px solid var(--color-error, #ef4444);
+}
+
+.stepper__indicator--clickable {
+  cursor: pointer;
+}
+
+.stepper__indicator--clickable:hover {
+  transform: scale(1.1);
+}
+
+.stepper__indicator--clickable:focus {
+  outline: 2px solid var(--color-primary, #6366f1);
+  outline-offset: 2px;
+}
+
+/* Step Info */
+.stepper__step-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  margin-top: 0.5rem;
+}
+
+.stepper--vertical .stepper__step-info {
+  margin-top: 0;
+}
+
+.stepper__step-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-primary, #1e293b);
+  line-height: 1.4;
+}
+
+.stepper__step--pending .stepper__step-title {
+  color: var(--color-text-tertiary, #94a3b8);
+}
+
+.stepper__step-description {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary, #64748b);
+  line-height: 1.4;
+}
+
+.stepper__step--pending .stepper__step-description {
+  color: var(--color-text-tertiary, #94a3b8);
+}
+
+/* Connector States */
+.stepper__connector--completed {
+  background-color: var(--color-success, #10b981);
+}
+
+/* Size Adjustments */
+.stepper--sm .stepper__step-title {
+  font-size: 0.8125rem;
+}
+
+.stepper--sm .stepper__step-description {
+  font-size: 0.6875rem;
+}
+
+.stepper--lg .stepper__step-title {
+  font-size: 1rem;
+}
+
+.stepper--lg .stepper__step-description {
+  font-size: 0.875rem;
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  .stepper__indicator--pending {
+    background-color: var(--color-bg-secondary-dark, #334155);
+    border-color: var(--color-border-dark, #475569);
+    color: var(--color-text-tertiary-dark, #64748b);
+  }
+
+  .stepper__step-title {
+    color: var(--color-text-primary-dark, #f1f5f9);
+  }
+
+  .stepper__step--pending .stepper__step-title,
+  .stepper__step--pending .stepper__step-description {
+    color: var(--color-text-tertiary-dark, #64748b);
+  }
+
+  .stepper__connector {
+    background-color: var(--color-border-dark, #475569);
+  }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .stepper--horizontal .stepper__step-content {
+    min-width: 60px;
+  }
+
+  .stepper--horizontal .stepper__step-title {
+    font-size: 0.75rem;
+  }
+
+  .stepper--horizontal .stepper__step-description {
+    display: none;
+  }
+}
