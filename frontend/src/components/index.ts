@@ -24,6 +24,8 @@ export { default as Select } from './Select';
 export { default as Alert } from './Alert';
 export { default as Tabs } from './Tabs';
 export { default as Tooltip } from './Tooltip';
+export { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, DropdownSeparator, DropdownLabel } from './Dropdown';
+export type { DropdownProps, DropdownItemProps, DropdownMenuProps } from './Dropdown';
 
 // Feedback components
 export { default as Spinner } from './Spinner';
