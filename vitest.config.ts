@@ -44,3 +44,14 @@ export default defineConfig({
   },
 });
 
+
+// Updated configuration
+// Todo: optimize step 1
+// Todo: optimize step 2
+// Todo: optimize step 3
+// Todo: optimize step 4
+// Todo: optimize step 5
+// Todo: optimize step 6
+// Todo: optimize step 7
+// Todo: optimize step 8
+// Todo: optimize step 9
