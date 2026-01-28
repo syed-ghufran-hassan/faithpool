@@ -72,3 +72,13 @@ jobs:
 
       - name: Build
         run: npm run build
+name: CI
+New line of content 1
+New line of content 2
+New line of content 3
+New line of content 4
+New line of content 5
+New line of content 6
+New line of content 7
+New line of content 8
+New line of content 9
