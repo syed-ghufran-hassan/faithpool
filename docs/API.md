@@ -161,3 +161,102 @@ Contribute for a specific round (round-by-round mode).
 | 1014 | Not your turn |
 | 1021 | Protocol paused |
 | 1027 | Reputation too low |
+
+---
+
+## API Versioning
+
+### Current Version: v7
+
+All contracts have been upgraded to version 7 with the following improvements:
+
+- **Performance**: Optimized read and write operations
+- **Security**: Enhanced access control mechanisms
+- **Features**: Added new governance and referral features
+- **Gas Optimization**: Reduced transaction costs
+
+### Legacy Versions
+
+- v5: Stable legacy version (maintenance mode)
+- v6: Transitional version (deprecated)
+- v3-v4: Deprecated (not recommended for use)
+
+### Migration Guide
+
+To migrate from v5 to v7:
+
+1. Update contract addresses in your frontend configuration
+2. Review new error codes and handle appropriately
+3. Test all functionality on testnet before mainnet deployment
+4. Update documentation references
+
+---
+
+## Rate Limiting
+
+The Stacks blockchain has the following rate limits:
+
+- **Read-only calls**: No limit (free)
+- **Contract calls**: Block-based, depends on network congestion
+- **Deploys**: Limited by STX balance for transaction fees
+
+---
+
+## WebSocket Events
+
+Subscribe to real-time updates using the Stacks API WebSocket:
+
+```javascript
+const ws = new WebSocket('wss://api.mainnet.hiro.so/');
+
+ws.onmessage = (event) => {
+  const data = JSON.parse(event.data);
+  if (data.type === 'contract-event') {
+    handleCircleEvent(data);
+  }
+};
+```
+
+Events include:
+- `circle-created`: New circle creation
+- `member-joined`: Member joining circle
+- `contribution-made`: New contribution recorded
+- `payout-claimed`: Payout distribution
+
+---
+
+## SDK Integration
+
+### JavaScript/TypeScript
+
+```typescript
+import { StacksMainnet } from '@stacks/network';
+import { callReadOnlyFunction, makeContractCall } from '@stacks/transactions';
+
+const network = new StacksMainnet();
+const contractAddress = 'SP2PAB...';
+const contractName = 'stacksusu-core-v7';
+
+// Read circle info
+const circleInfo = await callReadOnlyFunction({
+  network,
+  contractAddress,
+  contractName,
+  functionName: 'get-circle-info',
+  functionArgs: [uintCV(1)],
+});
+```
+
+### Python
+
+```python
+from stacks_transactions import make_contract_call
+
+# Create circle transaction
+tx = make_contract_call(
+    contract_address="SP2PAB...",
+    contract_name="stacksusu-core-v7",
+    function_name="create-circle",
+    function_args=[...]
+)
+```
