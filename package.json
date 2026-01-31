@@ -6,7 +6,22 @@
   "private": true,
   "scripts": {
     "test": "vitest run",
-    "test:watch": "chokidar \"tests/**/*.ts\" \"contracts/**/*.clar\" -c \"npm run test\""
+    "test:watch": "chokidar \"tests/**/*.ts\" \"contracts/**/*.clar\" -c \"npm run test\"",
+    "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui",
+    "lint": "cd frontend && npm run lint",
+    "lint:fix": "cd frontend && npm run lint:fix",
+    "type-check": "cd frontend && npm run type-check",
+    "format": "prettier --write \"**/*.{ts,tsx,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,json,md}\"",
+    "check": "npm run lint && npm run type-check && clarinet check",
+    "check:all": "npm run check && npm test",
+    "dev": "cd frontend && npm run dev",
+    "build": "cd frontend && npm run build",
+    "clean": "cd frontend && npm run clean && rm -rf node_modules/.cache",
+    "setup": "npm install && cd frontend && npm install",
+    "prepare": "husky install || true",
+    "update-deps": "npm update && cd frontend && npm update"
   },
   "author": "StackSUSU Team",
   "license": "MIT",

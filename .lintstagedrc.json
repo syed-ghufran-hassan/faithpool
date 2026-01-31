@@ -1,0 +1,12 @@
+{
+  "*.{ts,tsx}": [
+    "eslint --fix",
+    "prettier --write"
+  ],
+  "*.clar": [
+    "clarinet check"
+  ],
+  "*.{json,md}": [
+    "prettier --write"
+  ]
+}

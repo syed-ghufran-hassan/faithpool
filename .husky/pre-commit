@@ -1,0 +1,11 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Run linting on staged files
+npx lint-staged
+
+# Run type checking
+cd frontend && npm run type-check || true
+
+# Run contract check
+clarinet check || true
