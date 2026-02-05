@@ -1,7 +1,7 @@
 {
-  "name": "hearthcircle",
+  "name": "stacksusu",
   "version": "1.0.0",
-  "description": "HearthCircle - Decentralized rotating savings circles on Stacks blockchain",
+  "description": "StackSUSU - Decentralized rotating savings circles on Stacks blockchain",
   "type": "module",
   "private": true,
   "scripts": {
@@ -23,7 +23,7 @@
     "prepare": "husky install || true",
     "update-deps": "npm update && cd frontend && npm update"
   },
-  "author": "HearthCircle Team",
+  "author": "StackSUSU Team",
   "license": "MIT",
   "dependencies": {
     "@hirosystems/clarinet-sdk": "^3.8.1",

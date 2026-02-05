@@ -1,5 +1,5 @@
 /**
- * Referral system utility functions for HearthCircle
+ * Referral system utility functions for StackSUSU
  */
 
 import { REFERRAL_CONFIG } from '../constants/contracts';

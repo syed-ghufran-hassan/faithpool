@@ -1,7 +1,7 @@
 /**
  * Cache Utility
  * 
- * Client-side caching system for the HearthCircle application.
+ * Client-side caching system for the StackSUSU application.
  * Provides in-memory caching with TTL support and localStorage persistence.
  * 
  * @module utils/cache

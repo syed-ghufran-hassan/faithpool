@@ -1,7 +1,7 @@
 /**
  * Utility Functions
  * 
- * Centralized utilities for the HearthCircle application.
+ * Centralized utilities for the StackSUSU application.
  * Provides formatting, validation, and helper functions for
  * blockchain operations, UI rendering, and data manipulation.
  * 
@@ -283,3 +283,4 @@ export * from './storage';
 
 // Crypto utilities
 export * from './crypto';
+
