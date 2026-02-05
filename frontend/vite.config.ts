@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
 
 /**
- * Vite configuration for HearthCircle frontend
+ * Vite configuration for StackSUSU frontend
  * @see https://vite.dev/config/
  */
 export default defineConfig({

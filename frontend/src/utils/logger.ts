@@ -1,7 +1,7 @@
 /**
  * Logger Utility
  * 
- * Centralized logging system for the HearthCircle application.
+ * Centralized logging system for the StackSUSU application.
  * Provides structured logging with different log levels and
  * formatting for development and production environments.
  * 

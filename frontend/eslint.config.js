@@ -6,7 +6,7 @@ import tseslint from 'typescript-eslint';
 import { defineConfig, globalIgnores } from 'eslint/config';
 
 /**
- * ESLint configuration for HearthCircle frontend
+ * ESLint configuration for StackSUSU frontend
  * @see https://eslint.org/docs/latest/use/configure/
  */
 export default defineConfig([

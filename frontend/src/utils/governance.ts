@@ -1,5 +1,5 @@
 /**
- * Governance-related utility functions for HearthCircle
+ * Governance-related utility functions for StackSUSU
  */
 
 import { BLOCK_TIMES } from '../constants/contracts';

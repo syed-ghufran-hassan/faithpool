@@ -1,5 +1,5 @@
 /**
- * NFT-related utility functions for HearthCircle
+ * NFT-related utility functions for StackSUSU
  */
 
 import { microStxToStx } from './stx';
@@ -103,7 +103,7 @@ export function formatNFTPrice(microStx: number): string {
  */
 export function generateNFTMetadataUri(nft: NFTMetadata): string {
   const metadata = {
-    name: `HearthCircle Completion #${nft.id}`,
+    name: `StackSUSU Completion #${nft.id}`,
     description: `Proof of completing savings circle "${nft.circleName}"`,
     image: getNFTImageUrl(nft.tier, nft.circleId),
     attributes: [

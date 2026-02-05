@@ -2,7 +2,7 @@
  * Breadcrumb Navigation Component
  * 
  * Provides hierarchical navigation with customizable separators
- * and support for dynamic routes in the HearthCircle application.
+ * and support for dynamic routes in the StackSUSU application.
  * 
  * @module components/Breadcrumb
  */

@@ -1,5 +1,5 @@
 /**
- * HearthCircle Smart Contract Constants
+ * StackSUSU Smart Contract Constants
  * Maps to values in the Clarity v7 contracts
  */
 

@@ -1,6 +1,6 @@
-# HearthCircle Frontend Contributing Guidelines
+# StackSUSU Frontend Contributing Guidelines
 
-Thank you for your interest in contributing to HearthCircle!
+Thank you for your interest in contributing to StackSUSU!
 
 ## Development Setup
 

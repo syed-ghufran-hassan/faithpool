@@ -1,7 +1,7 @@
 [project]
-name = "hearthcircle"
-description = "HearthCircle - Decentralized Rotating Savings (Ajo/Susu) on Stacks"
-authors = ["HearthCircle Team"]
+name = "stacksusu"
+description = "StackSUSU - Decentralized Rotating Savings (Ajo/Susu) on Stacks"
+authors = ["StackSUSU Team"]
 telemetry = true
 cache_dir = "./.cache"
 boot_contracts = ["pox-4"]

@@ -1,5 +1,5 @@
 /**
- * Emergency system utility functions for HearthCircle
+ * Emergency system utility functions for StackSUSU
  * Handles emergency pauses, withdrawals, and circuit breaker functionality
  */
 

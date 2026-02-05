@@ -1,7 +1,7 @@
 /**
  * Debug Utilities
  * 
- * Development and debugging helpers for the HearthCircle application.
+ * Development and debugging helpers for the StackSUSU application.
  * Provides debugging tools, React DevTools integration, and
  * development-time utilities.
  * 

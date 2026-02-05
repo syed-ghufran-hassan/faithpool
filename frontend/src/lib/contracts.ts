@@ -1,8 +1,8 @@
 /**
- * HearthCircle Contract Definitions
+ * StackSUSU Contract Definitions
  * 
  * Contains contract addresses, function names, and constants
- * for interacting with the HearthCircle smart contracts.
+ * for interacting with the StackSUSU smart contracts.
  * 
  * @module lib/contracts
  */
@@ -11,7 +11,7 @@
 // Contract Addresses
 // ============================================================
 
-/** HearthCircle contract addresses on mainnet */
+/** StackSUSU contract addresses on mainnet */
 export const CONTRACTS = {
   /** Core circle management contract */
   CORE: 'SP3FKNEZ86RG5RT7SZ5FBRGH85FZNG94ZH1MCGG6N.stacksusu-core-v4',
