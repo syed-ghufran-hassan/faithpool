@@ -1,4 +1,4 @@
-# StackSUSU V7 Mainnet Deployment Guide
+# HearthCircle V7 Mainnet Deployment Guide
 
 ## 🆕 V7 Features
 

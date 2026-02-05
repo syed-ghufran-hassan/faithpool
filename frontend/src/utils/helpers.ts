@@ -1,5 +1,5 @@
 /**
- * General Utility Functions for StackSUSU
+ * General Utility Functions for HearthCircle
  * 
  * Common helper functions for formatting, validation, and conversions.
  * 

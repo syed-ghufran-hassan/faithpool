@@ -1,16 +1,13 @@
-# savings-circle-net
+# HearthCircle
 
-![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
-![License](https://img.shields.io/badge/license-MIT-blue)
-![Version](https://img.shields.io/badge/version-1.0.0-orange)
+HearthCircle is a community-first savings circle platform built on Stacks. It modernizes rotating savings groups with transparent rules, trusted payouts, and member reputation.
 
-## Overview
+## Why HearthCircle
 
-Savings Circle Net digitizes traditional Rotating Savings and Credit Associations (ROSCAs). It empowers communities to manage collective savings pools securely and transparently using modern web technologies.
-
-## Key Features
-
-- **Group Management**: Easy tools for creating and managing savings circles.\n- **Automated Payouts**: Scheduled and secure fund distribution.\n- **Trust Scoring**: Reputation systems for circle members.\n- **Multi-Currency**: Support for diverse fiat and crypto assets.
+- **Circle management** for creating, joining, and running shared savings pools.
+- **Automated payouts** with predictable schedules and transparent records.
+- **Trust signals** via reputation, participation history, and badges.
+- **Wallet-ready** flows for Stacks-native deposits and withdrawals.
 
 ## Getting Started
 
@@ -19,18 +16,42 @@ Savings Circle Net digitizes traditional Rotating Savings and Credit Association
 - Node.js v18+
 - npm v9+
 
-### Installation
+### Install
 
 ```bash
-git clone https://github.com/harobedjosh-alt/savings-circle-net.git
+git clone https://github.com/floxxih/savings-circle-net.git
 cd savings-circle-net
 npm install
 ```
 
+### Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+### Contracts
+
+```bash
+clarinet check
+```
+
+## Project Layout
+
+```
+savings-circle-net/
+├── contracts/     # Clarity contracts
+├── frontend/      # React + Vite web app
+├── docs/          # Architecture and guides
+└── README.md      # Project documentation
+```
+
 ## Contributing
 
-We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+See `CONTRIBUTING.md` for local setup, testing, and contribution guidelines.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT

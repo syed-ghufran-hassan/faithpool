@@ -2,7 +2,7 @@
  * Crypto Utilities
  * 
  * Cryptographic helper functions for hashing, encoding, and
- * blockchain-related operations in the StackSUSU application.
+ * blockchain-related operations in the HearthCircle application.
  * 
  * @module utils/crypto
  */

@@ -1,7 +1,7 @@
 /**
  * Error Handling Utility
  * 
- * Centralized error handling system for the StackSUSU application.
+ * Centralized error handling system for the HearthCircle application.
  * Provides error classification, user-friendly messages, and error tracking.
  * 
  * @module utils/error

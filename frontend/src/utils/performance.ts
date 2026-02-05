@@ -1,7 +1,7 @@
 /**
  * Performance Monitoring Utility
  * 
- * Performance tracking and monitoring system for the StackSUSU application.
+ * Performance tracking and monitoring system for the HearthCircle application.
  * Provides Core Web Vitals tracking, custom performance metrics, and
  * performance reporting.
  * 

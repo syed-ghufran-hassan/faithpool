@@ -1,5 +1,5 @@
 /**
- * StackSUSU Frontend Type Declarations
+ * HearthCircle Frontend Type Declarations
  * 
  * Global type declarations for Vite environment and custom modules.
  */

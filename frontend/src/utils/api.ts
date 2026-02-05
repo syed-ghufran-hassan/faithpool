@@ -1,5 +1,5 @@
 /**
- * API utility functions for StackSUSU
+ * API utility functions for HearthCircle
  * Handles Stacks blockchain API interactions
  */
 

@@ -1,5 +1,5 @@
 /**
- * Custom React hooks for StackSUSU
+ * Custom React hooks for HearthCircle
  * 
  * @module hooks
  */

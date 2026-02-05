@@ -1,7 +1,7 @@
 /**
  * Application Constants
  * 
- * Centralized constants for the StackSUSU application.
+ * Centralized constants for the HearthCircle application.
  * Includes configuration values, UI strings, and limits.
  * 
  * @module lib/constants

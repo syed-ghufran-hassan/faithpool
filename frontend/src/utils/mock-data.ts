@@ -1,7 +1,7 @@
 /**
  * Mock Data Generators
  * 
- * Comprehensive mock data generators for testing the StackSUSU application.
+ * Comprehensive mock data generators for testing the HearthCircle application.
  * Provides realistic test data for all data types in the system.
  * 
  * @module utils/mock-data

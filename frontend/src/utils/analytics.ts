@@ -1,7 +1,7 @@
 /**
  * Analytics Utility
  * 
- * Analytics tracking system for the StackSUSU application.
+ * Analytics tracking system for the HearthCircle application.
  * Tracks user interactions, page views, and custom events
  * for product insights and optimization.
  * 

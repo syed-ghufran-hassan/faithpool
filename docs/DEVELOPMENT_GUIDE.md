@@ -13,7 +13,7 @@
 
 ```bash
 # Clone the repository
-git clone https://github.com/harobedjosh-alt/savings-circle-net.git
+git clone https://github.com/floxxih/savings-circle-net.git
 cd savings-circle-net
 
 # Install dependencies
@@ -29,7 +29,7 @@ npm test
 ## Project Structure
 
 ```
-stacksusu/
+hearthcircle/
 ├── contracts/          # Clarity smart contracts
 ├── frontend/          # React frontend application
 │   ├── src/
@@ -298,4 +298,4 @@ See [CONTRIBUTING.md](../CONTRIBUTING.md) for contribution guidelines.
 
 - Create an issue on GitHub
 - Join our Discord community
-- Email: dev-team@stacksusu.com
+- Email: dev-team@hearthcircle.com
