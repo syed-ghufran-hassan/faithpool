@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide covers testing practices for the StackSUSU application, including unit tests, integration tests, and contract tests.
+This guide covers testing practices for the HearthCircle application, including unit tests, integration tests, and contract tests.
 
 ## Testing Stack
 
@@ -60,7 +60,7 @@ beforeAll(async () => {
   simnet = await initSimnet();
 }, 60000);
 
-describe("StackSUSU Core Contract", () => {
+describe("HearthCircle Core Contract", () => {
   it("should create a circle", async () => {
     const accounts = simnet.getAccounts();
     const deployer = accounts.get("deployer")!;

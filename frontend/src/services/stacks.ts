@@ -235,7 +235,7 @@ export async function getContractInterface(contractId: string): Promise<unknown>
   return fetchApi(`/v2/contracts/interface/${address}/${name}`);
 }
 
-// StackSUSU specific API calls
+// HearthCircle specific API calls
 export async function getCircleCount(): Promise<number> {
   const result = await callContractReadOnly(
     CONTRACTS.CORE,

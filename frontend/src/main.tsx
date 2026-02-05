@@ -1,5 +1,5 @@
 /**
- * StackSUSU Application Entry Point
+ * HearthCircle Application Entry Point
  * 
  * Initializes the React application with StrictMode for development
  * checks and renders the App component to the DOM.

@@ -1,7 +1,7 @@
 /**
  * Testing Utilities
  * 
- * Testing helpers and utilities for the StackSUSU application.
+ * Testing helpers and utilities for the HearthCircle application.
  * Provides mocking utilities, test data generators, and testing
  * helpers for Vitest.
  * 

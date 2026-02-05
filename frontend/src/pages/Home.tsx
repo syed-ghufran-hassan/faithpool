@@ -90,7 +90,7 @@ const Home = memo(function Home() {
         <div className="home__hero-content">
           <h1 className="home__hero-title">Save Together, Grow Together</h1>
           <p className="home__hero-description">
-            StackSUSU brings the traditional rotating savings circle to the blockchain.
+            HearthCircle brings the traditional rotating savings circle to the blockchain.
             Join trusted groups, contribute regularly, and take turns receiving the pool.
           </p>
           <div className="home__hero-buttons">
@@ -151,7 +151,7 @@ const Home = memo(function Home() {
 
       {/* Features */}
       <section className="home__features">
-        <h2 className="home__section-title">Why Choose StackSUSU?</h2>
+        <h2 className="home__section-title">Why Choose HearthCircle?</h2>
         <div className="home__feature-grid">
           {FEATURES.map((feature, index) => {
             const Icon = feature.icon;

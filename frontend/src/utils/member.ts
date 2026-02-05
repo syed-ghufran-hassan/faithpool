@@ -1,5 +1,5 @@
 /**
- * Member-related utility functions for StackSUSU
+ * Member-related utility functions for HearthCircle
  */
 
 import { MEMBER_STATUS, REPUTATION_TIERS } from '../constants/contracts';

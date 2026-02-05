@@ -231,7 +231,7 @@ export function createNamespacedStorage(namespace: string) {
 }
 
 /**
- * Create a storage instance for the StackSUSU app
+ * Create a storage instance for the HearthCircle app
  */
 export const stacksusuStorage = createNamespacedStorage('stacksusu');
 

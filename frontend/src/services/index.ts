@@ -1,7 +1,7 @@
 /**
  * Service Layer Exports
  * 
- * Provides API and blockchain interaction services for the StackSUSU app.
+ * Provides API and blockchain interaction services for the HearthCircle app.
  * 
  * @module services
  * 
