@@ -150,7 +150,7 @@ const circleStatusMap: Record<CircleStatus, StatusType> = {
 };
 
 /**
- * Circle status badge with StackSUSU-specific labels
+ * Circle status badge with HearthCircle-specific labels
  */
 export function CircleStatusBadge({
   status,

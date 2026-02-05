@@ -1,5 +1,5 @@
 /**
- * API Service for StackSUSU
+ * API Service for HearthCircle
  * 
  * Provides HTTP client for:
  * - Stacks blockchain API interactions

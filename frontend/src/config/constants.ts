@@ -1,7 +1,7 @@
 /**
- * StackSUSU Configuration Constants
+ * HearthCircle Configuration Constants
  * 
- * Centralized configuration for the StackSUSU application.
+ * Centralized configuration for the HearthCircle application.
  * All constants are grouped by category and use `as const` for type safety.
  * 
  * @module config/constants
@@ -11,7 +11,7 @@
 // App Configuration
 // ============================================================
 
-export const APP_NAME = 'StackSUSU';
+export const APP_NAME = 'HearthCircle';
 export const APP_VERSION = '1.0.0';
 export const APP_DESCRIPTION = 'Decentralized savings circles on Stacks';
 

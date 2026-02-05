@@ -340,10 +340,10 @@ export function formatNFTDisplay(token: NFTToken): {
 } {
   const meta = token.metadata ?? null;
   return {
-    title: `StackSUSU Slot #${token.tokenId}`,
+    title: `HearthCircle Slot #${token.tokenId}`,
     description: meta 
       ? `Slot ${meta['slotNumber']} in Circle ${meta.circleId}`
-      : 'StackSUSU Membership Slot',
+      : 'HearthCircle Membership Slot',
     image: generateNFTImage(meta),
     attributes: [
       { trait: 'Circle ID', value: meta?.circleId?.toString() || 'Unknown' },

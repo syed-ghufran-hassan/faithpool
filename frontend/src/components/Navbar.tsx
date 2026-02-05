@@ -81,7 +81,7 @@ function Navbar() {
       <div className="navbar__container">
         <Link to="/" className="navbar__brand">
           <span className="navbar__brand-icon">🔄</span>
-          <span className="navbar__brand-text">StackSUSU</span>
+          <span className="navbar__brand-text">HearthCircle</span>
         </Link>
 
         {/* Desktop Navigation */}

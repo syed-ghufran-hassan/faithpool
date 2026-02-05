@@ -1,5 +1,5 @@
 /**
- * Escrow system utility functions for StackSUSU
+ * Escrow system utility functions for HearthCircle
  */
 
 import { BLOCK_TIMES, ESCROW_CONFIG } from '../constants/contracts';

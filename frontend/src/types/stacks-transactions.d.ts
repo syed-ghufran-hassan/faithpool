@@ -1,6 +1,6 @@
 /**
  * Type declarations for @stacks/transactions
- * Minimal types for what we use in StackSUSU
+ * Minimal types for what we use in HearthCircle
  */
 
 declare module '@stacks/transactions' {

@@ -1,5 +1,5 @@
 /**
- * Type definitions for StackSUSU
+ * Type definitions for HearthCircle
  * 
  * @module types
  */

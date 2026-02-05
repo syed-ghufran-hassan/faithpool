@@ -2,7 +2,7 @@
  * Wallet Service
  * 
  * Handles Hiro Wallet connection and transaction signing for
- * interacting with StackSUSU smart contracts.
+ * interacting with HearthCircle smart contracts.
  * 
  * @module services/wallet
  */
@@ -100,7 +100,7 @@ export async function connectWallet(): Promise<WalletConnection> {
     return new Promise((resolve, reject) => {
       showConnect({
         appDetails: {
-          name: 'StackSUSU',
+          name: 'HearthCircle',
           icon: window.location.origin + '/logo.png',
         },
         onFinish: (data) => {

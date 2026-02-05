@@ -1,5 +1,5 @@
 /**
- * React Context Providers and Hooks for StackSUSU
+ * React Context Providers and Hooks for HearthCircle
  * 
  * This module exports all context providers for application-wide state
  * management. Context providers enable shared state across component trees

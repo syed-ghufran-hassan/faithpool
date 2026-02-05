@@ -1,6 +1,6 @@
 {
-  "name": "@stacksusu/frontend",
-  "description": "StackSUSU decentralized savings circle frontend",
+  "name": "@hearthcircle/frontend",
+  "description": "HearthCircle decentralized savings circle frontend",
   "private": true,
   "version": "1.0.0",
   "type": "module",
@@ -12,7 +12,7 @@
     "susu",
     "react"
   ],
-  "author": "StackSUSU Team",
+  "author": "HearthCircle Team",
   "license": "MIT",
   "scripts": {
     "dev": "vite",
