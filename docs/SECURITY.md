@@ -92,3 +92,48 @@ Please report security issues via email to the development team with:
 3. **Know Your Circle**: Only join circles with trusted members
 4. **Check Reputation**: Review member reputation scores before joining
 5. **Understand Emergency Exit**: Know the penalties before requesting emergency withdrawal
+
+## Frontend Security
+
+### Wallet Integration
+
+- Never store private keys in application
+- Always use official wallet providers
+- Verify all transaction details before signing
+- Implement post-conditions for STX transfers
+
+### Input Validation
+
+All user inputs are validated before processing:
+
+```typescript
+import { validateCircleName, validateContributionAmount } from './utils/validation';
+
+// Validate inputs
+validateCircleName(name); // Check length and characters
+validateContributionAmount(amount); // Verify min/max bounds
+validateStacksAddress(address); // Verify address format
+```
+
+### Error Handling
+
+Parse and display user-friendly errors:
+
+```typescript
+import { parseContractError } from './utils/error-handling';
+
+try {
+  await executeTransaction();
+} catch (error) {
+  const appError = parseContractError(error);
+  showError(appError.message); // Display friendly message
+}
+```
+
+### Transaction Safety
+
+- Always use post-conditions
+- Monitor transaction status
+- Handle failures gracefully
+- Provide clear user feedback
+
