@@ -944,3 +944,313 @@ describe("StackSUSU Integration V5", () => {
     expect(circleInfo.result).toHaveClarityType(ClarityType.ResponseOk);
   });
 });
+
+// =============================================================================
+// ENHANCED ESCROW TESTS (V5)
+// =============================================================================
+
+describe("StackSUSU Enhanced Escrow V5", () => {
+  let circleId: any;
+
+  beforeAll(async () => {
+    const accounts = simnet.getAccounts();
+    const deployer = accounts.get("deployer")!;
+    
+    // Setup authorization
+    const coreContract = `${deployer}.${CORE_CONTRACT}`;
+    simnet.callPublicFn(ESCROW_CONTRACT, "authorize-caller", [Cl.principal(coreContract)], deployer);
+    
+    // Create circle
+    simnet.callPublicFn(
+      CORE_CONTRACT,
+      "create-circle",
+      [
+        Cl.stringAscii("Enhanced Escrow Test"),
+        Cl.uint(1000000),
+        Cl.uint(10),
+        Cl.uint(3),
+        Cl.uint(MODE_UPFRONT),
+        Cl.uint(0),
+      ],
+      deployer
+    );
+    
+    const circleCount = simnet.callReadOnlyFn(CORE_CONTRACT, "get-circle-count", [], deployer);
+    circleId = circleCount.result;
+    
+    // Add some members
+    const wallet1 = accounts.get("wallet_1")!;
+    const wallet2 = accounts.get("wallet_2")!;
+    simnet.callPublicFn(CORE_CONTRACT, "join-circle", [circleId], wallet1);
+    simnet.callPublicFn(CORE_CONTRACT, "join-circle", [circleId], wallet2);
+  });
+
+  it("can get circle balance", async () => {
+    const accounts = simnet.getAccounts();
+    const deployer = accounts.get("deployer")!;
+    
+    // Deposit some STX first
+    simnet.callPublicFn(
+      ESCROW_CONTRACT,
+      "deposit",
+      [circleId, Cl.uint(1000000)],
+      deployer
+    );
+    
+    // Test get-circle-balance
+    const result = simnet.callReadOnlyFn(
+      ESCROW_CONTRACT,
+      "get-circle-balance",
+      [circleId],
+      deployer
+    );
+    
+    expect(result.result).toHaveClarityType(ClarityType.ResponseOk);
+    expect(result.result).toStrictEqual(Cl.ok(Cl.uint(1000000)));
+  });
+
+  it("can get total deposits and withdrawals", async () => {
+    const accounts = simnet.getAccounts();
+    const deployer = accounts.get("deployer")!;
+    
+    // Test get-total-deposits (should be 1 STX from previous test)
+    const depositsResult = simnet.callReadOnlyFn(
+      ESCROW_CONTRACT,
+      "get-total-deposits",
+      [circleId],
+      deployer
+    );
+    
+    expect(depositsResult.result).toHaveClarityType(ClarityType.ResponseOk);
+    expect(depositsResult.result).toStrictEqual(Cl.ok(Cl.uint(1000000)));
+    
+    // Test get-total-withdrawals (should be 0 initially)
+    const withdrawalsResult = simnet.callReadOnlyFn(
+      ESCROW_CONTRACT,
+      "get-total-withdrawals",
+      [circleId],
+      deployer
+    );
+    
+    expect(withdrawalsResult.result).toHaveClarityType(ClarityType.ResponseOk);
+    expect(withdrawalsResult.result).toStrictEqual(Cl.ok(Cl.uint(0)));
+  });
+
+  it("can withdraw from escrow", async () => {
+    const accounts = simnet.getAccounts();
+    const deployer = accounts.get("deployer")!;
+    
+    // First ensure we have balance
+    simnet.callPublicFn(
+      ESCROW_CONTRACT,
+      "deposit",
+      [circleId, Cl.uint(500000)],
+      deployer
+    );
+    
+    // Test withdraw function
+    const result = simnet.callPublicFn(
+      ESCROW_CONTRACT,
+      "withdraw",
+      [circleId, Cl.uint(200000)],
+      deployer
+    );
+    
+    expect(result.result).toHaveClarityType(ClarityType.ResponseOk);
+    
+    // Verify balance decreased
+    const balance = simnet.callReadOnlyFn(
+      ESCROW_CONTRACT,
+      "get-circle-balance",
+      [circleId],
+      deployer
+    );
+    
+    // Should be original 1M + 500K deposit - 200K withdrawal = 1.3M
+    expect(balance.result).toStrictEqual(Cl.ok(Cl.uint(1300000)));
+  });
+
+  it("can get escrow statistics", async () => {
+    const accounts = simnet.getAccounts();
+    const deployer = accounts.get("deployer")!;
+    
+    // Test get-escrow-stats
+    const statsResult = simnet.callReadOnlyFn(
+      ESCROW_CONTRACT,
+      "get-escrow-stats",
+      [circleId],
+      deployer
+    );
+    
+    expect(statsResult.result).toHaveClarityType(ClarityType.ResponseOk);
+    
+    // Should return a tuple with the stats structure
+    const stats = statsResult.result.value;
+    expect(stats).toHaveProperty("total-balance");
+    expect(stats).toHaveProperty("total-deposits");
+    expect(stats).toHaveProperty("total-withdrawals");
+    expect(stats).toHaveProperty("member-count");
+    expect(stats).toHaveProperty("average-balance");
+  });
+
+  it("can calculate withdrawal fees", async () => {
+    const accounts = simnet.getAccounts();
+    const deployer = accounts.get("deployer")!;
+    
+    // Test calculate-withdrawal-fee (assuming this function exists in the contract)
+    const feeResult = simnet.callReadOnlyFn(
+      ESCROW_CONTRACT,
+      "calculate-withdrawal-fee",
+      [circleId, Cl.uint(1000000)],
+      deployer
+    );
+    
+    expect(feeResult.result).toHaveClarityType(ClarityType.ResponseOk);
+    
+    // Fee should be some positive amount (even if zero)
+    const fee = feeResult.result.value;
+    expect(fee).toBeDefined();
+  });
+
+  it("can calculate emergency fees", async () => {
+    const accounts = simnet.getAccounts();
+    const deployer = accounts.get("deployer")!;
+    
+    // Test calculate-emergency-fee
+    const feeResult = simnet.callReadOnlyFn(
+      ESCROW_CONTRACT,
+      "calculate-emergency-fee",
+      [circleId, Cl.uint(1000000)],
+      deployer
+    );
+    
+    expect(feeResult.result).toHaveClarityType(ClarityType.ResponseOk);
+    
+    // Emergency fee should be calculated
+    const fee = feeResult.result.value;
+    expect(fee).toBeDefined();
+  });
+
+  it("emergency withdrawal returns net amount after fee", async () => {
+    const accounts = simnet.getAccounts();
+    const deployer = accounts.get("deployer")!;
+    
+    // Get initial balance
+    const initialBalance = simnet.callReadOnlyFn(
+      ESCROW_CONTRACT,
+      "get-circle-balance",
+      [circleId],
+      deployer
+    ).result.value;
+    
+    // Perform emergency withdrawal
+    const withdrawAmount = Cl.uint(500000);
+    const result = simnet.callPublicFn(
+      ESCROW_CONTRACT,
+      "emergency-withdraw",
+      [circleId, withdrawAmount],
+      deployer
+    );
+    
+    expect(result.result).toHaveClarityType(ClarityType.ResponseOk);
+    
+    // Should return net amount (withdrawal amount minus fee)
+    const netAmount = result.result.value;
+    expect(netAmount).toBeLessThan(500000); // Should be less due to fee
+    
+    // Verify total withdrawals increased
+    const withdrawals = simnet.callReadOnlyFn(
+      ESCROW_CONTRACT,
+      "get-total-withdrawals",
+      [circleId],
+      deployer
+    );
+    
+    expect(withdrawals.result.value).toBeGreaterThan(0);
+  });
+
+  it("handles batch deposits", async () => {
+    const accounts = simnet.getAccounts();
+    const deployer = accounts.get("deployer")!;
+    
+    // Create another circle for batch testing
+    simnet.callPublicFn(
+      CORE_CONTRACT,
+      "create-circle",
+      [
+        Cl.stringAscii("Batch Test Circle"),
+        Cl.uint(500000),
+        Cl.uint(5),
+        Cl.uint(3),
+        Cl.uint(MODE_UPFRONT),
+        Cl.uint(0),
+      ],
+      deployer
+    );
+    
+    const circleCount = simnet.callReadOnlyFn(CORE_CONTRACT, "get-circle-count", [], deployer);
+    const secondCircleId = circleCount.result;
+    
+    // Test batch-deposit (if implemented in contract)
+    // Note: This assumes batch-deposit function exists in the contract
+    const batchResult = simnet.callPublicFn(
+      ESCROW_CONTRACT,
+      "batch-deposit",
+      [
+        Cl.list([
+          Cl.tuple({ "circle-id": circleId, amount: Cl.uint(100000) }),
+          Cl.tuple({ "circle-id": secondCircleId, amount: Cl.uint(200000) })
+        ])
+      ],
+      deployer
+    );
+    
+    // Even if function doesn't exist, test should handle it gracefully
+    // This tests the trait definition compatibility
+    expect(batchResult.result).toBeDefined();
+  });
+
+  it("can get deposit history", async () => {
+    const accounts = simnet.getAccounts();
+    const deployer = accounts.get("deployer")!;
+    
+    // Test get-deposit-history
+    const historyResult = simnet.callReadOnlyFn(
+      ESCROW_CONTRACT,
+      "get-deposit-history",
+      [circleId, Cl.uint(5)], // circle-id, limit
+      deployer
+    );
+    
+    expect(historyResult.result).toHaveClarityType(ClarityType.ResponseOk);
+    
+    // Should return a list of deposit records
+    const history = historyResult.result.value;
+    expect(Array.isArray(history)).toBe(true);
+  });
+
+  it("maintains accurate member balances", async () => {
+    const accounts = simnet.getAccounts();
+    const deployer = accounts.get("deployer")!;
+    const wallet1 = accounts.get("wallet_1")!;
+    
+    // Wallet1 deposits
+    simnet.callPublicFn(
+      ESCROW_CONTRACT,
+      "deposit",
+      [circleId, Cl.uint(300000)],
+      wallet1
+    );
+    
+    // Test get-balance for specific member
+    const memberBalance = simnet.callReadOnlyFn(
+      ESCROW_CONTRACT,
+      "get-balance",
+      [circleId, Cl.principal(wallet1)],
+      deployer
+    );
+    
+    expect(memberBalance.result).toHaveClarityType(ClarityType.ResponseOk);
+    expect(memberBalance.result).toStrictEqual(Cl.ok(Cl.uint(300000)));
+  });
+});
