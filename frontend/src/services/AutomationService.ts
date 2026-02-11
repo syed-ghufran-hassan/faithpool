@@ -17,3 +17,5 @@ class AutomationService {
     return this.items;
   }
 }
+
+export const AutomationServiceInstance = new AutomationService();
