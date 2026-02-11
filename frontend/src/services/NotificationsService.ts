@@ -8,4 +8,8 @@ export interface INotifications {
 
 class NotificationsService {
   private items: INotifications[] = [];
+
+  create(): string {
+    return Math.random().toString(36).substring(7);
+  }
 }
