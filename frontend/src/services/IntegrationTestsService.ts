@@ -17,3 +17,5 @@ class IntegrationTestsService {
     return this.items;
   }
 }
+
+export const IntegrationTestsServiceInstance = new IntegrationTestsService();
