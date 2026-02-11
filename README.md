@@ -87,3 +87,4 @@ See `CONTRIBUTING.md` for local setup, testing, and contribution guidelines.
 ## License
 
 MIT
+- [Circle Discovery](./docs/FEATURE_52.md)
