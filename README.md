@@ -87,3 +87,4 @@ See `CONTRIBUTING.md` for local setup, testing, and contribution guidelines.
 ## License
 
 MIT
+- [Audit Logging](./docs/AUDIT_LOGS.md)
