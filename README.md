@@ -87,6 +87,7 @@ See `CONTRIBUTING.md` for local setup, testing, and contribution guidelines.
 ## License
 
 MIT
+- [Audit Logging](./docs/AUDIT_LOGS.md)
 - [Circle Discovery](./docs/FEATURE_52.md)
 - [Improve Error Messages](./docs/FEATURE_51.md)
 - [API Documentation](./docs/FEATURE_50.md)
