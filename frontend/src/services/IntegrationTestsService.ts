@@ -5,3 +5,7 @@ export interface IIntegrationTests {
   createdAt: number;
   status: 'active' | 'inactive';
 }
+
+class IntegrationTestsService {
+  private items: IIntegrationTests[] = [];
+}
