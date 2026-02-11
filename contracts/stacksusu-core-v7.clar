@@ -45,7 +45,7 @@
 
 ;; Circle data
 (define-map circles
-  uint  ;; circle-id
+  { circle-id: uint }  
   {
     creator: principal,
     name: (string-ascii 50),
@@ -63,6 +63,9 @@
     total-contributed: uint,
     total-paid-out: uint,
     current-pot: uint
+    reputation-decay-rate: uint,  ; decay rate in basis points (100 = 1%)  
+    last-decay-block: uint,       ; block height of last decay application  
+    decay-interval: uint,         ; blocks between decay applications (e.g., monthly) 
   }
 )
 
@@ -100,65 +103,71 @@
 ;; Create Circle
 ;; ============================================
 
-(define-public (create-circle 
-    (name (string-ascii 50))
-    (description (string-ascii 200))
-    (contribution uint)
-    (max-members uint)
-    (payout-interval uint))
-  (let
-    (
-      (creator tx-sender)
-      (circle-id (+ (var-get circle-counter) u1))
-      (current-circles (default-to (list) (map-get? member-circles creator)))
-    )
-    ;; Validations
-    (asserts! (not (contract-call? .stacksusu-admin-v7 is-paused)) ERR-PAUSED)
-    (asserts! (and (>= max-members MIN-MEMBERS) (<= max-members MAX-MEMBERS)) ERR-INVALID-MEMBERS)
-    (asserts! (and (>= contribution MIN-CONTRIBUTION) (<= contribution MAX-CONTRIBUTION)) ERR-INVALID-AMOUNT)
-    (asserts! (>= payout-interval BLOCKS-PER-DAY) ERR-INVALID-INTERVAL)
-    (asserts! (< (len current-circles) MAX-CIRCLES-PER-MEMBER) ERR-MAX-CIRCLES-REACHED)
-    
-    ;; Create circle
-    (map-set circles circle-id {
-      creator: creator,
-      name: name,
-      description: description,
-      contribution: contribution,
-      max-members: max-members,
-      payout-interval: payout-interval,
-      status: STATUS-PENDING,
-      current-round: u1,
-      start-block: u0,
-      member-count: u1,
-      created-at: block-height,
-      contribution-mode: MODE-MANUAL,
-      min-reputation: u0,
-      total-contributed: u0,
-      total-paid-out: u0,
-      current-pot: u0
-    })
-    
-    ;; Add creator as first member
-    (map-set circle-members { circle-id: circle-id, member: creator }
-      { slot: u1, joined-at: block-height, contributions-made: u0, last-contribution-round: u0 })
-    (map-set slot-to-member { circle-id: circle-id, slot: u1 } creator)
-    
-    ;; Track member's circles
-    (map-set member-circles creator 
-      (unwrap! (as-max-len? (append current-circles circle-id) u20) ERR-MAX-CIRCLES-REACHED))
-    
-    ;; Initialize reputation
-    (try! (contract-call? .stacksusu-reputation-v7 initialize-member creator))
-    
-    ;; Update admin stats
-    (try! (contract-call? .stacksusu-admin-v7 increment-circles))
-    
-    (var-set circle-counter circle-id)
-    (ok circle-id)
-  )
+;; Create circle with decay configuration  
+(define-public (create-circle   
+    (name (string-ascii 50))  
+    (description (string-ascii 200))  
+    (contribution uint)  
+    (max-members uint)  
+    (payout-interval uint)   
+    (reputation-decay-rate uint)    
+    (decay-interval uint)  
+)  
+  (let  
+    (  
+      (creator tx-sender)  
+      (circle-id (+ (var-get circle-counter) u1))  
+      (current-circles (default-to (list) (map-get? member-circles creator)))  
+    )  
+    ;; Validations  
+    (asserts! (not (contract-call? .stacksusu-admin-v7 is-paused)) ERR-PAUSED)  
+    (asserts! (and (>= max-members MIN-MEMBERS) (<= max-members MAX-MEMBERS)) ERR-INVALID-MEMBERS)  
+    (asserts! (and (>= contribution MIN-CONTRIBUTION) (<= contribution MAX-CONTRIBUTION)) ERR-INVALID-AMOUNT)  
+    (asserts! (>= payout-interval BLOCKS-PER-DAY) ERR-INVALID-INTERVAL)  
+    (asserts! (< (len current-circles) MAX-CIRCLES-PER-MEMBER) ERR-MAX-CIRCLES-REACHED)  
+      
+    ;; Create circle  
+    (map-set circles circle-id {  
+      creator: creator,  
+      name: name,  
+      description: description,  
+      contribution: contribution,  
+      max-members: max-members,  
+      payout-interval: payout-interval,  
+      status: STATUS-PENDING,  
+      current-round: u1,  
+      start-block: u0,  
+      member-count: u1,  
+      created-at: block-height,  
+      contribution-mode: MODE-MANUAL,  
+      min-reputation: u0,  
+      total-contributed: u0,  
+      total-paid-out: u0,  
+      current-pot: u0,  ; Added comma here  
+      reputation-decay-rate: reputation-decay-rate,    
+      last-decay-block: block-height,    
+      decay-interval: decay-interval,   
+    })  
+      
+    ;; Add creator as first member  
+    (map-set circle-members { circle-id: circle-id, member: creator }  
+      { slot: u1, joined-at: block-height, contributions-made: u0, last-contribution-round: u0 })  
+    (map-set slot-to-member { circle-id: circle-id, slot: u1 } creator)  
+      
+    ;; Track member's circles  
+    (map-set member-circles creator   
+      (unwrap! (as-max-len? (append current-circles circle-id) u20) ERR-MAX-CIRCLES-REACHED))  
+      
+    ;; Initialize reputation  
+    (try! (contract-call? .stacksusu-reputation-v7 initialize-member creator))  
+      
+    ;; Update admin stats  
+    (try! (contract-call? .stacksusu-admin-v7 increment-circles))  
+      
+    (var-set circle-counter circle-id)  
+    (ok circle-id)  
+  )  
 )
-
 
 ;; ============================================
 ;; Join Circle
