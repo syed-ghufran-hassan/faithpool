@@ -37,3 +37,8 @@ export { errorService, ErrorCodes } from './errorService';
 export { logger, circleLogger, walletLogger, apiLogger, contractLogger } from './logService';
 export { notifications, NotificationType } from './notificationService';
 export * from './DiscoveryService';
+export * from './ErrorHandlingService';
+export * from './ApiDocsService';
+export * from './IntegrationTestsService';
+export * from './AutomationService';
+export * from './NotificationsService';
