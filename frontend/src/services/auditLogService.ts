@@ -25,3 +25,5 @@ class AuditService {
     return this.logs;
   }
 }
+
+export const auditLogger = new AuditService();
