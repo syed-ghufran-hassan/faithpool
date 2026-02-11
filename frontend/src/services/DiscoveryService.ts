@@ -8,4 +8,8 @@ export interface IDiscovery {
 
 class DiscoveryService {
   private items: IDiscovery[] = [];
+
+  create(): string {
+    return Math.random().toString(36).substring(7);
+  }
 }
