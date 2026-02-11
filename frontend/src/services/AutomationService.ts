@@ -1,5 +1,8 @@
 /** Service for Automation */
 
+/**
+ * Interface definition
+ */
 export interface IAutomation {
   id: string;
   createdAt: number;
@@ -7,6 +10,7 @@ export interface IAutomation {
 }
 
 class AutomationService {
+  /** Internal storage */
   private items: IAutomation[] = [];
 
   create(): string {
