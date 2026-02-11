@@ -1,5 +1,8 @@
 /** Service for ApiDocs */
 
+/**
+ * Interface definition
+ */
 export interface IApiDocs {
   id: string;
   createdAt: number;
@@ -7,6 +10,7 @@ export interface IApiDocs {
 }
 
 class ApiDocsService {
+  /** Internal storage */
   private items: IApiDocs[] = [];
 
   create(): string {
