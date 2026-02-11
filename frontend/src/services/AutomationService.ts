@@ -5,3 +5,7 @@ export interface IAutomation {
   createdAt: number;
   status: 'active' | 'inactive';
 }
+
+class AutomationService {
+  private items: IAutomation[] = [];
+}
