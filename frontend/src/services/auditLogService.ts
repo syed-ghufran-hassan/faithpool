@@ -9,6 +9,7 @@ export interface AuditEntry {
 }
 
 class AuditService {
+  /** In-memory log storage */
   private logs: AuditEntry[] = [];
 
   log(action: string, userId: string, metadata: Record<string, any> = {}) {
