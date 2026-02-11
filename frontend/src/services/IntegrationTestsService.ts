@@ -1,5 +1,8 @@
 /** Service for IntegrationTests */
 
+/**
+ * Interface definition
+ */
 export interface IIntegrationTests {
   id: string;
   createdAt: number;
@@ -7,6 +10,7 @@ export interface IIntegrationTests {
 }
 
 class IntegrationTestsService {
+  /** Internal storage */
   private items: IIntegrationTests[] = [];
 
   create(): string {
