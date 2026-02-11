@@ -17,3 +17,5 @@ class ErrorHandlingService {
     return this.items;
   }
 }
+
+export const ErrorHandlingServiceInstance = new ErrorHandlingService();
