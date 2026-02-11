@@ -7,3 +7,7 @@ export interface AuditEntry {
   userId: string;
   metadata: Record<string, any>;
 }
+
+class AuditService {
+  private logs: AuditEntry[] = [];
+}
