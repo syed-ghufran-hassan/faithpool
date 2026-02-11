@@ -87,3 +87,4 @@ See `CONTRIBUTING.md` for local setup, testing, and contribution guidelines.
 ## License
 
 MIT
+- [Improve Error Messages](./docs/FEATURE_51.md)
