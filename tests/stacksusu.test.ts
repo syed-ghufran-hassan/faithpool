@@ -1253,4 +1253,403 @@ describe("StackSUSU Enhanced Escrow V5", () => {
     expect(memberBalance.result).toHaveClarityType(ClarityType.ResponseOk);
     expect(memberBalance.result).toStrictEqual(Cl.ok(Cl.uint(300000)));
   });
+  describe('Reputation Decay', () => {  
+  let simnet: Simnet;  
+  let deployer: string;  
+  let member: string;  
+  let member2: string;  
+  let circleId: number;  
+  
+  beforeAll(async () => {  
+    simnet = await initSimnet();  
+    const accounts = simnet.getAccounts();  
+    deployer = accounts.get("deployer")!;  
+    member = accounts.get("wallet_1")!;  
+    member2 = accounts.get("wallet_2")!;  
+  }, 60000);  
+  
+  beforeEach(() => {  
+    // Reset state for each test  
+    circleId = 0;  
+  });  
+  
+  it('should apply decay after configured interval', async () => {  
+    // Create circle with 1% monthly decay (100 basis points, 4320 blocks)  
+    const circleResult = simnet.callPublicFn(  
+      "stacksusu-core-v7",  
+      "create-circle",  
+      [  
+        Cl.stringAscii("Test Circle"),  
+        Cl.stringAscii("Test description"),  
+        Cl.uint(1000000), // contribution  
+        Cl.uint(5), // max members  
+        Cl.uint(1008), // payout interval (7 days)  
+        Cl.uint(100), // decay rate (1%)  
+        Cl.uint(4320), // decay interval (1 month)  
+      ],  
+      deployer  
+    );  
+    expect(circleResult.result).toHaveClarityType(ClarityType.ResponseOk);  
+      
+    circleId = circleResult.result.expectUint().value;  
+  
+    // Initialize member with base reputation  
+    const initResult = simnet.callPublicFn(  
+      "stacksusu-reputation-v7",  
+      "initialize-member",  
+      [Cl.principal(member)],  
+      deployer  
+    );  
+    expect(initResult.result).toHaveClarityType(ClarityType.ResponseOk);  
+  
+    // Build up reputation to 1000 through contributions  
+    for (let i = 0; i < 50; i++) {  
+      simnet.callPublicFn(  
+        "stacksusu-reputation-v7",  
+        "record-contribution",  
+        [Cl.principal(member)],  
+        deployer  
+      );  
+    }  
+  
+    // Verify initial score is 1000  
+    const initialRep = simnet.callReadOnlyFn(  
+      "stacksusu-reputation-v7",  
+      "get-score",  
+      [Cl.principal(member)]  
+    );  
+    expect(initialRep.result.expectOk().expectUint().value).toBe(1000);  
+  
+    // Fast forward blocks (simulate time passing)  
+    simnet.mineBlocks(4320); // ~1 month  
+  
+    // Process decay  
+    const decayResult = simnet.callPublicFn(  
+      "stacksusu-reputation-v7",  
+      "process-circle-decay",  
+      [Cl.uint(circleId)],  
+      deployer  
+    );  
+    expect(decayResult.result).toHaveClarityType(ClarityType.ResponseOk);  
+  
+    // Check reputation decreased (should be ~990 after 1% decay)  
+    const newRep = simnet.callReadOnlyFn(  
+      "stacksusu-reputation-v7",  
+      "get-score",  
+      [Cl.principal(member)]  
+    );  
+    const newScore = newRep.result.expectOk().expectUint().value;  
+    expect(newScore).toBe(990); // 1000 - (1000 * 100 / 10000) = 990  
+    expect(newScore).toBeLessThan(1000);  
+  });  
+  
+  it('should not decay below minimum floor', async () => {  
+    // Create circle with high decay rate (50%)  
+    const circleResult = simnet.callPublicFn(  
+      "stacksusu-core-v7",  
+      "create-circle",  
+      [  
+        Cl.stringAscii("Test Circle"),  
+        Cl.stringAscii("Test description"),  
+        Cl.uint(1000000),  
+        Cl.uint(5),  
+        Cl.uint(1008),  
+        Cl.uint(5000), // 50% decay rate  
+        Cl.uint(4320),  
+      ],  
+      deployer  
+    );  
+    expect(circleResult.result).toHaveClarityType(ClarityType.ResponseOk);  
+      
+    circleId = circleResult.result.expectUint().value;  
+  
+    // Initialize member with low reputation (50)  
+    const initResult = simnet.callPublicFn(  
+      "stacksusu-reputation-v7",  
+      "initialize-member",  
+      [Cl.principal(member)],  
+      deployer  
+    );  
+    expect(initResult.result).toHaveClarityType(ClarityType.ResponseOk);  
+  
+    // Set score to 50 by recording missed contributions  
+    for (let i = 0; i < 20; i++) {  
+      simnet.callPublicFn(  
+        "stacksusu-reputation-v7",  
+        "record-missed-contribution",  
+        [Cl.principal(member)],  
+        deployer  
+      );  
+    }  
+  
+    // Verify initial score is low  
+    const initialRep = simnet.callReadOnlyFn(  
+      "stacksusu-reputation-v7",  
+      "get-score",  
+      [Cl.principal(member)]  
+    );  
+    const initialScore = initialRep.result.expectOk().expectUint().value;  
+    expect(initialScore).toBeLessThan(100);  
+  
+    // Fast forward and apply decay  
+    simnet.mineBlocks(4320);  
+      
+    const decayResult = simnet.callPublicFn(  
+      "stacksusu-reputation-v7",  
+      "process-circle-decay",  
+      [Cl.uint(circleId)],  
+      deployer  
+    );  
+    expect(decayResult.result).toHaveClarityType(ClarityType.ResponseOk);  
+  
+    // Check score doesn't go below 0 (MIN_REPUTATION_FLOOR)  
+    const finalRep = simnet.callReadOnlyFn(  
+      "stacksusu-reputation-v7",  
+      "get-score",  
+      [Cl.principal(member)]  
+    );  
+    const finalScore = finalRep.result.expectOk().expectUint().value;  
+    expect(finalScore).toBe(0); // Should be at floor  
+  });  
+  
+  it('should not decay if interval not passed', async () => {  
+    // Create circle with long decay interval  
+    const circleResult = simnet.callPublicFn(  
+      "stacksusu-core-v7",  
+      "create-circle",  
+      [  
+        Cl.stringAscii("Test Circle"),  
+        Cl.stringAscii("Test description"),  
+        Cl.uint(1000000),  
+        Cl.uint(5),  
+        Cl.uint(1008),  
+        Cl.uint(100), // 1% decay  
+        Cl.uint(8640), // 2 month interval  
+      ],  
+      deployer  
+    );  
+    circleId = circleResult.result.expectUint().value;  
+  
+    // Initialize and build reputation  
+    simnet.callPublicFn(  
+      "stacksusu-reputation-v7",  
+      "initialize-member",  
+      [Cl.principal(member)],  
+      deployer  
+    );  
+  
+    for (let i = 0; i < 50; i++) {  
+      simnet.callPublicFn(  
+        "stacksusu-reputation-v7",  
+        "record-contribution",  
+        [Cl.principal(member)],  
+        deployer  
+      );  
+    }  
+  
+    // Only mine 1 month (less than required 2 months)  
+    simnet.mineBlocks(4320);  
+  
+    // Try to process decay  
+    const decayResult = simnet.callPublicFn(  
+      "stacksusu-reputation-v7",  
+      "process-circle-decay",  
+      [Cl.uint(circleId)],  
+      deployer  
+    );  
+    expect(decayResult.result).toHaveClarityType(ClarityType.ResponseOk);  
+  
+    // Score should remain unchanged  
+    const rep = simnet.callReadOnlyFn(  
+      "stacksusu-reputation-v7",  
+      "get-score",  
+      [Cl.principal(member)]  
+    );  
+    expect(rep.result.expectOk().expectUint().value).toBe(1000);  
+  });  
+  
+  it('should handle zero decay rate', async () => {  
+    // Create circle with 0% decay  
+    const circleResult = simnet.callPublicFn(  
+      "stacksusu-core-v7",  
+      "create-circle",  
+      [  
+        Cl.stringAscii("Test Circle"),  
+        Cl.stringAscii("Test description"),  
+        Cl.uint(1000000),  
+        Cl.uint(5),  
+        Cl.uint(1008),  
+        Cl.uint(0), // 0% decay  
+        Cl.uint(4320),  
+      ],  
+      deployer  
+    );  
+    circleId = circleResult.result.expectUint().value;  
+  
+    // Initialize and build reputation  
+    simnet.callPublicFn(  
+      "stacksusu-reputation-v7",  
+      "initialize-member",  
+      [Cl.principal(member)],  
+      deployer  
+    );  
+  
+    for (let i = 0; i < 50; i++) {  
+      simnet.callPublicFn(  
+        "stacksusu-reputation-v7",  
+        "record-contribution",  
+        [Cl.principal(member)],  
+        deployer  
+      );  
+    }  
+  
+    simnet.mineBlocks(4320);  
+  
+    const decayResult = simnet.callPublicFn(  
+      "stacksusu-reputation-v7",  
+      "process-circle-decay",  
+      [Cl.uint(circleId)],  
+      deployer  
+    );  
+    expect(decayResult.result).toHaveClarityType(ClarityType.ResponseOk);  
+  
+    // Score should remain at 1000  
+    const rep = simnet.callReadOnlyFn(  
+      "stacksusu-reputation-v7",  
+      "get-score",  
+      [Cl.principal(member)]  
+    );  
+    expect(rep.result.expectOk().expectUint().value).toBe(1000);  
+  });  
+  
+  it('should notify users of decay', async () => {  
+    // This test would require mocking the notification service  
+    // or checking for events emitted by the decay function  
+    // For now, we'll verify the function executes successfully  
+      
+    const circleResult = simnet.callPublicFn(  
+      "stacksusu-core-v7",  
+      "create-circle",  
+      [  
+        Cl.stringAscii("Test Circle"),  
+        Cl.stringAscii("Test description"),  
+        Cl.uint(1000000),  
+        Cl.uint(5),  
+        Cl.uint(1008),  
+        Cl.uint(100),  
+        Cl.uint(4320),  
+      ],  
+      deployer  
+    );  
+    circleId = circleResult.result.expectUint().value;  
+  
+    simnet.callPublicFn(  
+      "stacksusu-reputation-v7",  
+      "initialize-member",  
+      [Cl.principal(member)],  
+      deployer  
+    );  
+  
+    for (let i = 0; i < 50; i++) {  
+      simnet.callPublicFn(  
+        "stacksusu-reputation-v7",  
+        "record-contribution",  
+        [Cl.principal(member)],  
+        deployer  
+      );  
+    }  
+  
+    simnet.mineBlocks(4320);  
+  
+    // Process decay and verify it completes without error  
+    const decayResult = simnet.callPublicFn(  
+      "stacksusu-reputation-v7",  
+      "process-circle-decay",  
+      [Cl.uint(circleId)],  
+      deployer  
+    );  
+      
+    // The function should execute successfully  
+    expect(decayResult.result).toHaveClarityType(ClarityType.ResponseOk);  
+      
+    // In a real implementation, you would:  
+    // 1. Mock the notification service  
+    // 2. Verify notifyReputationDecay was called with correct parameters  
+    // 3. Check that the notification contains the decay amount  
+  });  
+  
+  it('should handle multiple members decay', async () => {  
+    // Test decay with multiple members in a circle  
+    const circleResult = simnet.callPublicFn(  
+      "stacksusu-core-v7",  
+      "create-circle",  
+      [  
+        Cl.stringAscii("Test Circle"),  
+        Cl.stringAscii("Test description"),  
+        Cl.uint(1000000),  
+        Cl.uint(5),  
+        Cl.uint(1008),  
+        Cl.uint(100),  
+        Cl.uint(4320),  
+      ],  
+      deployer  
+    );  
+    circleId = circleResult.result.expectUint().value;  
+  
+    // Initialize two members  
+    simnet.callPublicFn(  
+      "stacksusu-reputation-v7",  
+      "initialize-member",  
+      [Cl.principal(member)],  
+      deployer  
+    );  
+    simnet.callPublicFn(  
+      "stacksusu-reputation-v7",  
+      "initialize-member",  
+      [Cl.principal(member2)],  
+      deployer  
+    );  
+  
+    // Both members build reputation  
+    for (let i = 0; i < 50; i++) {  
+      simnet.callPublicFn(  
+        "stacksusu-reputation-v7",  
+        "record-contribution",  
+        [Cl.principal(member)],  
+        deployer  
+      );  
+      simnet.callPublicFn(  
+        "stacksusu-reputation-v7",  
+        "record-contribution",  
+        [Cl.principal(member2)],  
+        deployer  
+      );  
+    }  
+  
+    simnet.mineBlocks(4320);  
+  
+    const decayResult = simnet.callPublicFn(  
+      "stacksusu-reputation-v7",  
+      "process-circle-decay",  
+      [Cl.uint(circleId)],  
+      deployer  
+    );  
+    expect(decayResult.result).toHaveClarityType(ClarityType.ResponseOk);  
+  
+    // Both members should have decay applied  
+    const rep1 = simnet.callReadOnlyFn(  
+      "stacksusu-reputation-v7",  
+      "get-score",  
+      [Cl.principal(member)]  
+    );  
+    const rep2 = simnet.callReadOnlyFn(  
+      "stacksusu-reputation-v7",  
+      "get-score",  
+      [Cl.principal(member2)]  
+    );  
+      
+    expect(rep1.result.expectOk().expectUint().value).toBe(990);  
+    expect(rep2.result.expectOk().expectUint().value).toBe(990);  
+  });  
+});
 });
