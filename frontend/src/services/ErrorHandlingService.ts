@@ -5,3 +5,7 @@ export interface IErrorHandling {
   createdAt: number;
   status: 'active' | 'inactive';
 }
+
+class ErrorHandlingService {
+  private items: IErrorHandling[] = [];
+}
