@@ -8,4 +8,8 @@ export interface IApiDocs {
 
 class ApiDocsService {
   private items: IApiDocs[] = [];
+
+  create(): string {
+    return Math.random().toString(36).substring(7);
+  }
 }
