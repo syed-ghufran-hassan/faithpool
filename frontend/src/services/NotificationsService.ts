@@ -5,3 +5,7 @@ export interface INotifications {
   createdAt: number;
   status: 'active' | 'inactive';
 }
+
+class NotificationsService {
+  private items: INotifications[] = [];
+}
