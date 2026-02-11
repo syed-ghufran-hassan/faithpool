@@ -17,3 +17,5 @@ class DiscoveryService {
     return this.items;
   }
 }
+
+export const DiscoveryServiceInstance = new DiscoveryService();
