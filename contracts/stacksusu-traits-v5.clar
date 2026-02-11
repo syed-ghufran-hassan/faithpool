@@ -35,8 +35,43 @@
 
 (define-trait escrow-trait
   (
+    ;; Balance queries
     (get-balance (uint principal) (response uint uint))
+    (get-circle-balance (uint) (response uint uint))
+    (get-total-deposits (uint) (response uint uint))
+    (get-total-withdrawals (uint) (response uint uint))
+    
+    ;; Operations
     (deposit (uint uint) (response bool uint))
+    (withdraw (uint uint) (response bool uint))
+    (emergency-withdraw (uint uint) (response uint uint)) ;; returns net amount after fee
+    
+    ;; Batch operations
+    (batch-deposit ((list 20 { circle-id: uint, amount: uint })) (response bool uint))
+    
+    ;; History and statistics
+    (get-escrow-stats (uint) (response 
+      {
+        total-balance: uint,
+        total-deposits: uint,
+        total-withdrawals: uint,
+        member-count: uint,
+        average-balance: uint
+      }
+      uint))
+    
+    (get-deposit-history (uint uint) (response 
+      (list 10 {
+        member: principal,
+        amount: uint,
+        timestamp: uint,
+        block-height: uint
+      })
+      uint))
+    
+    ;; Fee calculation
+    (calculate-withdrawal-fee (uint uint) (response uint uint))
+    (calculate-emergency-fee (uint uint) (response uint uint))
   )
 )
 
