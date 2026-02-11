@@ -8,4 +8,8 @@ export interface IIntegrationTests {
 
 class IntegrationTestsService {
   private items: IIntegrationTests[] = [];
+
+  create(): string {
+    return Math.random().toString(36).substring(7);
+  }
 }
