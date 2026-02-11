@@ -36,4 +36,5 @@ export { cache, CacheKeys } from './cacheService';
 export { errorService, ErrorCodes } from './errorService';
 export { logger, circleLogger, walletLogger, apiLogger, contractLogger } from './logService';
 export { notifications, NotificationType } from './notificationService';
+export * from './AutomationService';
 export * from './NotificationsService';
