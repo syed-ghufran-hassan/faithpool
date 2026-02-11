@@ -17,3 +17,5 @@ class ApiDocsService {
     return this.items;
   }
 }
+
+export const ApiDocsServiceInstance = new ApiDocsService();
