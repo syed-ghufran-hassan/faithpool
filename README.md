@@ -87,3 +87,4 @@ See `CONTRIBUTING.md` for local setup, testing, and contribution guidelines.
 ## License
 
 MIT
+- [API Documentation](./docs/FEATURE_50.md)
