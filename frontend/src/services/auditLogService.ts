@@ -20,4 +20,8 @@ class AuditService {
       metadata
     });
   }
+
+  getLogs() {
+    return this.logs;
+  }
 }
