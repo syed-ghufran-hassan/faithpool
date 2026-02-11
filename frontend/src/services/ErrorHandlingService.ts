@@ -1,5 +1,8 @@
 /** Service for ErrorHandling */
 
+/**
+ * Interface definition
+ */
 export interface IErrorHandling {
   id: string;
   createdAt: number;
@@ -7,6 +10,7 @@ export interface IErrorHandling {
 }
 
 class ErrorHandlingService {
+  /** Internal storage */
   private items: IErrorHandling[] = [];
 
   create(): string {
