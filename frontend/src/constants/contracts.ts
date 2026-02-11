@@ -17,6 +17,14 @@ export const CONTRACTS = {
   REPUTATION: 'stacksusu-reputation-v7',
   EMERGENCY: 'stacksusu-emergency-v7',
   TRAITS: 'stacksusu-traits-v5',
+  
+} as const;
+
+export const REPUTATION_DECAY = {  
+  DEFAULT_RATE: 100,      // 1% per month in basis points  
+  DEFAULT_INTERVAL: 4320,  // ~1 month in blocks  
+  MIN_FLOOR: 0,  
+  PRECISION: 10000,  
 } as const;
 
 // Full contract identifiers
