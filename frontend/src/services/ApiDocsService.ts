@@ -5,3 +5,7 @@ export interface IApiDocs {
   createdAt: number;
   status: 'active' | 'inactive';
 }
+
+class ApiDocsService {
+  private items: IApiDocs[] = [];
+}
