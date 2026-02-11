@@ -8,4 +8,8 @@ export interface IErrorHandling {
 
 class ErrorHandlingService {
   private items: IErrorHandling[] = [];
+
+  create(): string {
+    return Math.random().toString(36).substring(7);
+  }
 }
