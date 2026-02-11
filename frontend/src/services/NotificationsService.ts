@@ -1,5 +1,8 @@
 /** Service for Notifications */
 
+/**
+ * Interface definition
+ */
 export interface INotifications {
   id: string;
   createdAt: number;
@@ -7,6 +10,7 @@ export interface INotifications {
 }
 
 class NotificationsService {
+  /** Internal storage */
   private items: INotifications[] = [];
 
   create(): string {
