@@ -5,3 +5,7 @@ export interface IDiscovery {
   createdAt: number;
   status: 'active' | 'inactive';
 }
+
+class DiscoveryService {
+  private items: IDiscovery[] = [];
+}
