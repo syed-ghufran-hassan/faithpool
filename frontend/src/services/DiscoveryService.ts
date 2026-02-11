@@ -1,5 +1,8 @@
 /** Service for Discovery */
 
+/**
+ * Interface definition
+ */
 export interface IDiscovery {
   id: string;
   createdAt: number;
@@ -7,6 +10,7 @@ export interface IDiscovery {
 }
 
 class DiscoveryService {
+  /** Internal storage */
   private items: IDiscovery[] = [];
 
   create(): string {
