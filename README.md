@@ -87,3 +87,4 @@ See `CONTRIBUTING.md` for local setup, testing, and contribution guidelines.
 ## License
 
 MIT
+- [Recurring Contributions](./docs/FEATURE_48.md)
