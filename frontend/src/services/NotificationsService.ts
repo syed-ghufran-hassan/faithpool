@@ -17,3 +17,5 @@ class NotificationsService {
     return this.items;
   }
 }
+
+export const NotificationsServiceInstance = new NotificationsService();
