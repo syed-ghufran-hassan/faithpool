@@ -1,30 +1,93 @@
-# HearthCircle
+# FaithPool
 
-HearthCircle is a community-first savings circle platform built on Stacks. It modernizes rotating savings groups with transparent rules, trusted payouts, and member reputation.
+Community-powered savings circles on Stacks. FaithPool brings traditional rotating savings groups (ROSCA) on-chain with transparent rules, automated payouts, and built-in reputation tracking.
 
-## Why HearthCircle
+## The Vision
 
-- **Circle management** for creating, joining, and running shared savings pools.
-- **Automated payouts** with predictable schedules and transparent records.
-- **Trust signals** via reputation, participation history, and badges.
-- **Wallet-ready** flows for Stacks-native deposits and withdrawals.
+FaithPool modernizes the ancient practice of community savings circles. Friends, families, and communities pool resources together, taking turns receiving the collective pot, building trust and wealth together.
+
+## Why FaithPool
+
+- **Trustless**: Smart contracts enforce the rules fairly
+- **Transparent**: Every contribution and payout is on-chain
+- **Reputation**: Build on-chain credit through participation
+- **Global**: Anyone, anywhere can join or create a circle
+
+## How It Works
+
+```
+Week 1: 10 members contribute $100 each → Member A receives $1000
+Week 2: 10 members contribute $100 each → Member B receives $1000
+...
+Week 10: 10 members contribute $100 each → Member J receives $1000
+```
+
+## Architecture
+
+```
+faithpool/
+├── contracts/                    # Clarity smart contracts
+│   ├── core.clar                 # Circle creation & management
+│   ├── escrow.clar               # Contribution escrow
+│   ├── reputation.clar           # Member reputation scoring
+│   ├── governance.clar           # Circle voting & disputes
+│   └── nft-badges.clar           # Achievement NFTs
+├── frontend/                     # React + Vite dashboard
+│   ├── components/               # UI components
+│   ├── hooks/                    # Blockchain interactions
+│   ├── utils/                    # Helper utilities
+│   └── pages/                    # Application pages
+└── docs/                         # Documentation
+```
+
+## Features
+
+### Circle Management
+- Create circles with custom parameters
+- Set contribution amounts and frequency
+- Invite members via links
+- Public and private circles
+
+### Contribution System
+- Automated reminders
+- Escrow protection
+- Late penalty configuration
+- Grace periods
+
+### Payout Schedule
+- Transparent rotation order
+- Randomized or predetermined
+- Auto-escalation for missed contributions
+
+### Reputation System
+- On-chain participation score
+- History of completed circles
+- Badges and achievements
+- Trust metrics for invites
+
+### Dispute Resolution
+- Community voting
+- Evidence submission
+- Binding arbitration
+- Slashing for bad actors
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js v18+
-- npm v9+
+- Node.js 18+
+- Leather or Xverse wallet
+- STX for transaction fees
 
-### Install
+### Installation
 
 ```bash
-git clone https://github.com/floxxih/savings-circle-net.git
-cd savings-circle-net
+git clone https://github.com/faithorji/faithpool.git
+cd faithpool
 npm install
 ```
 
-### Frontend
+### Run Frontend
 
 ```bash
 cd frontend
@@ -32,65 +95,82 @@ npm install
 npm run dev
 ```
 
-### Contracts
+### Test Contracts
 
 ```bash
 clarinet check
+npm test
 ```
 
-## Project Layout
+## Circle Parameters
 
-```
-savings-circle-net/
-├── contracts/        # Clarity smart contracts
-│   ├── stacksusu-core-v7.clar
-│   ├── stacksusu-escrow-v7.clar
-│   ├── stacksusu-governance-v7.clar
-│   └── stacksusu-reputation-v7.clar
-├── frontend/         # React + Vite web app
-│   ├── src/
-│   │   ├── components/  # Reusable UI components
-│   │   ├── hooks/       # Custom React hooks
-│   │   ├── lib/         # Contract integration layer
-│   │   ├── utils/       # Helper utilities
-│   │   └── pages/       # Page components
-│   └── package.json
-├── docs/             # Architecture and guides
-│   ├── FRONTEND_ARCHITECTURE.md
-│   ├── CONTRACTS.md
-│   └── API.md
-└── README.md         # Project documentation
-```
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| Contribution Amount | STX per period | Configurable |
+| Cycle Period | Days between rounds | 7 days |
+| Member Limit | Max participants | 2-20 |
+| Late Fee | Penalty for missed contributions | 5% |
+| Grace Period | Days before penalty | 3 days |
 
-## Key Features
+## User Journey
 
-### Smart Contract Integration
+### Creating a Circle
+1. Set contribution amount and frequency
+2. Choose rotation method (random/ordered)
+3. Set member limit
+4. Generate invite links
+5. Activate when full
 
-- **Contract Layer**: Centralized integration with Clarity contracts
-- **Custom Hooks**: React hooks for blockchain interactions
-- **Transaction Monitoring**: Real-time transaction status tracking
-- **Post Conditions**: Safe STX transfers with verification
+### Joining a Circle
+1. Accept invite
+2. Deposit first contribution
+3. Confirm commitment
+4. Receive payout schedule
 
-### Frontend Architecture
+### During the Circle
+1. Receive reminders before each round
+2. Contribute on time
+3. Watch your reputation grow
+4. Receive your payout on your turn
 
-- **React 19**: Modern React with hooks and concurrent features
-- **TypeScript**: Full type safety across the application
-- **Stacks.js**: Seamless blockchain integration
-- **Responsive Design**: Mobile-first, accessible UI
+## Reputation Scoring
 
-See [Frontend Architecture Guide](docs/FRONTEND_ARCHITECTURE.md) for detailed documentation.
+| Action | Points |
+|--------|--------|
+| On-time contribution | +10 |
+| Completing a circle | +100 |
+| Referring new member | +25 |
+| Late contribution | -20 |
+| Missed contribution | -50 |
 
-## Contributing
+## Security Features
 
-See `CONTRIBUTING.md` for local setup, testing, and contribution guidelines.
+- Multi-signature controls for circle parameters
+- Time-locked withdrawals
+- Escrow protection
+- Post-conditions for STX transfers
+- Emergency pause functionality
+
+## Tech Stack
+
+- **Smart Contracts**: Clarity + Clarinet
+- **Frontend**: React 19 + TypeScript + Tailwind CSS
+- **State Management**: Zustand
+- **Blockchain**: Stacks.js
+- **Notifications**: Push protocol integration
+
+## Roadmap
+
+- [ ] Mobile app
+- [ ] Cross-chain deposits
+- [ ] Circle insurance fund
+- [ ] Governance token
+- [ ] Lending against reputation
 
 ## License
 
 MIT
-- [Audit Logging](./docs/AUDIT_LOGS.md)
-- [Circle Discovery](./docs/FEATURE_52.md)
-- [Improve Error Messages](./docs/FEATURE_51.md)
-- [API Documentation](./docs/FEATURE_50.md)
-- [Integration Tests](./docs/FEATURE_49.md)
-- [Recurring Contributions](./docs/FEATURE_48.md)
-- [Notifications System](./docs/FEATURE_47.md)
+
+---
+
+**Building community wealth, one circle at a time**
